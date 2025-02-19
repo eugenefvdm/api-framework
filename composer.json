@@ -1,0 +1,17 @@
+{
+    "name": "eugenefvdm/hellopeterwatcher",
+    "description": "Hello Peter Watcher",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Eugenevdm\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "vlucas/phpdotenv": "^5.5",
+        "guzzlehttp/guzzle": "^7.9",
+        "spatie/ray": "^1.41"
+    },
+    "license": "MIT"
+}

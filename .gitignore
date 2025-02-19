@@ -1,0 +1,7 @@
+/vendor/
+.env
+composer.lock
+tests/stubs/private
+
+
+
