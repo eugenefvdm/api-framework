@@ -31,7 +31,7 @@ class ZADomains
     }
 
     /**
-     * Get domain information
+     * Get domain select info
      *
      * @param string $domainName The domain name to query
      * @return mixed Response from the API
@@ -49,7 +49,7 @@ class ZADomains
     }
 
     /**
-     * Get domain information
+     * Get domain select
      *
      * @param string $domainName The domain name to query
      * @return mixed Response from the API
@@ -67,7 +67,7 @@ class ZADomains
     }
 
     /**
-     * Get domain information
+     * Get domain select all by contact
      *
      * @param string $domainName The domain name to query
      * @return mixed Response from the API
