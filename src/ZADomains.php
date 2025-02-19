@@ -37,7 +37,7 @@ class ZADomains
      * @return mixed Response from the API
      * @throws SoapFault
      */
-    public function getDomainInfo($domainName)
+    public function getDomainSelectInfo($domainName)
     {
         $params = [
             'zadomains_username' => $this->username,
@@ -46,5 +46,41 @@ class ZADomains
         ];
 
         return $this->client->Domain_Select_Info($params);
+    }
+
+    /**
+     * Get domain information
+     *
+     * @param string $domainName The domain name to query
+     * @return mixed Response from the API
+     * @throws SoapFault
+     */
+    public function getDomainSelect($domainName)
+    {
+        $params = [
+            'zadomains_username' => $this->username,
+            'zadomains_password' => $this->password,
+            'domainname' => $domainName,
+        ];
+
+        return $this->client->Domain_Select($params);
+    }
+
+    /**
+     * Get domain information
+     *
+     * @param string $domainName The domain name to query
+     * @return mixed Response from the API
+     * @throws SoapFault
+     */
+    public function getDomainSelectAllByContact($domainName)
+    {
+        $params = [
+            'zadomains_username' => $this->username,
+            'zadomains_password' => $this->password,
+            'contactname' => $domainName,
+        ];
+
+        return $this->client->Domain_SelectAll_ByContact($params);
     }
 } 

@@ -51,7 +51,11 @@ try {
     // Retrieve ZADomains Domain Information
     if ($_ENV['ENABLE_ZADOMAINS'] === 'true') {
         $zadomains = new ZADomains($_ENV['ZADOMAINS_USERNAME'], $_ENV['ZADOMAINS_PASSWORD']);
-        $result = $zadomains->getDomainInfo($_ENV['ZADOMAINS_TEST_DOMAIN']);
+        // $result = $zadomains->getDomainSelectInfo($_ENV['ZADOMAINS_TEST_DOMAIN']);
+        // ray($result);
+        // $result = $zadomains->getDomainSelect($_ENV['ZADOMAINS_TEST_DOMAIN']);
+        // ray($result);
+        $result = $zadomains->getDomainSelectAllByContact('Eugene van der Merwe');
         ray($result);
     }
 } catch (Exception $e) {
