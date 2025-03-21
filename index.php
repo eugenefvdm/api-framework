@@ -51,12 +51,18 @@ try {
     // Retrieve ZADomains Domain Information
     if ($_ENV['ENABLE_ZADOMAINS'] === 'true') {
         $zadomains = new ZADomains($_ENV['ZADOMAINS_USERNAME'], $_ENV['ZADOMAINS_PASSWORD']);
+
+        // $result = $zadomains->getDomainSelectAllByContact('Eugene van der Merwe');
+        // $data = json_decode($result->Domain_SelectAll_ByContactResult, true); 
+        // ray($data);
+
         // $result = $zadomains->getDomainSelectInfo($_ENV['ZADOMAINS_TEST_DOMAIN']);
-        // ray($result);
-        // $result = $zadomains->getDomainSelect($_ENV['ZADOMAINS_TEST_DOMAIN']);
-        // ray($result);
-        $result = $zadomains->getDomainSelectAllByContact('Eugene van der Merwe');
-        ray($result);
+        // $data = json_decode($result->Domain_Select_InfoResult, true); 
+        // ray($data);
+
+        $result = $zadomains->getDomainSelect($_ENV['ZADOMAINS_TEST_DOMAIN']);
+        $data = json_decode($result->Domain_SelectResult, true); 
+        ray($data['Response_Value']['OwnerEmail']);
     }
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
