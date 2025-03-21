@@ -88,14 +88,12 @@ vendor/bin/pest
 
 ## Design philosophy
 
-APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? May PHP libraries after over-engineered. This library collection give you the power of many APIs in one package.
+APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? May PHP libraries are over-engineered. This library collection gives you the power of many APIs in one package.
 
-This library is minimalist and uses Facades and each call is tested using stubs.
+It's minimalist and uses Facades. Each call tested using stubs so you have a handy reference without having to do API calls.
 
-## Contribution Guideline
+## Contribution Guidelines
 
 - Make a pull request
-
 - For each new API and API call, ensure an associated feature test with a stub is made. See the existing examples. Be thorough and make sure your stubs are redacted.
-
 - If you're too busy to add a new API, or a new API call, contact me and I'll happily oblige where I can: eugene (at) vander.host or +27 82 309-6710
