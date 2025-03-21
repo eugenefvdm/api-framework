@@ -1,24 +1,17 @@
 <?php
 
 use Eugenefvdm\Api\Discord;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Http;
 
 test('getUser returns user information', function () {
     $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/public/discord/user/get_user_success.json'), true);
 
-    // Create a mock response
-    $mock = new MockHandler([
-        new Response(200, [], json_encode($stub)),
+    Http::fake([
+        'discord.com/api/v10/users/*' => Http::response($stub, 200),
     ]);
 
-    $handlerStack = HandlerStack::create($mock);
-    $client = new Client(['handler' => $handlerStack]);
-
-    // Create Discord instance with test token and mock client
-    $discord = new Discord('test_bot_token', $client);
+    // Create Discord instance with test token
+    $discord = new Discord('test_bot_token');
 
     $result = $discord->getUser('123456789012345678');
 

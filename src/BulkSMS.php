@@ -2,8 +2,7 @@
 
 namespace Eugenefvdm\Api;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use Illuminate\Support\Facades\Http;
 
 class BulkSMS
 {
@@ -13,24 +12,11 @@ class BulkSMS
 
     private $url;
 
-    private $client;
-
-    public function __construct($username, $password, ?ClientInterface $client = null)
+    public function __construct($username, $password)
     {
         $this->username = $username;
         $this->password = $password;
         $this->url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
-        $this->client = $client ?? new Client;
-    }
-
-    /**
-     * Set the HTTP client (used for testing)
-     *
-     * @param  ClientInterface  $client  The HTTP client to use
-     */
-    public function setClient(ClientInterface $client): void
-    {
-        $this->client = $client;
     }
 
     /**
@@ -135,14 +121,12 @@ class BulkSMS
     private function send_message($post_body)
     {
         try {
-            $response = $this->client->request('POST', $this->url, [
-                'form_params' => $this->parsePostBody($post_body),
-                'timeout' => 20,
-                'connect_timeout' => 20,
-            ]);
+            $response = Http::timeout(20)
+                ->asForm()
+                ->post($this->url, $this->parsePostBody($post_body));
 
-            $response_string = (string) $response->getBody();
-            $status_code = $response->getStatusCode();
+            $response_string = $response->body();
+            $status_code = $response->status();
 
             $sms_result = [
                 'success' => 0,

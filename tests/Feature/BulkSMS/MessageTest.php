@@ -1,22 +1,15 @@
 <?php
 
 use Eugenefvdm\Api\BulkSMS;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Http;
 
 test('sendSMS successfully sends a message', function () {
-    // Create a mock response
-    $mock = new MockHandler([
-        new Response(200, [], '0|IN_PROGRESS|2065473445'),
+    Http::fake([
+        'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|2065473445', 200),
     ]);
 
-    $handlerStack = HandlerStack::create($mock);
-    $client = new Client(['handler' => $handlerStack]);
-
-    // Create BulkSMS instance with test credentials and mock client
-    $bulkSms = new BulkSMS('test_user', 'test_pass', $client);
+    // Create BulkSMS instance with test credentials
+    $bulkSms = new BulkSMS('test_user', 'test_pass');
 
     $result = $bulkSms->sendSMS('Hello!', ['27823096710']);
 
