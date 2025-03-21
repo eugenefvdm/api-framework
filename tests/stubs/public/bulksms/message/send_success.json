@@ -1,0 +1,8 @@
+{
+    "success": 1,
+    "details": "Response from server: 0|IN_PROGRESS|2065473445\n\nMessage sent - batch ID 2065473445\n",
+    "http_status_code": 200,
+    "api_status_code": "0",
+    "api_message": "IN_PROGRESS",
+    "api_batch_id": "2065473445"
+} 

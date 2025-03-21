@@ -1,15 +1,16 @@
+<?php
+
 return [
-    'bulksms' => [
-        'username' => env('BULKSMS_USERNAME'),
-        'password' => env('BULKSMS_PASSWORD'),
-        'recipients' => env('BULKSMS_RECIPIENTS'),
+    'bulk_sms' => [
+        'username' => env('BULK_SMS_USERNAME'),
+        'password' => env('BULK_SMS_PASSWORD'),
     ],
 
     'discord' => [
-        'webhook_url' => env('DISCORD_WEBHOOK_URL'),
+        'bot_token' => env('DISCORD_BOT_TOKEN'),
     ],
 
-    'hellopeter' => [
+    'hello_peter' => [
         'api_key' => env('HELLO_PETER_API_KEY'),
     ],
 
@@ -22,8 +23,8 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
-    'zadomains' => [
-        'username' => env('ZADOMAINS_USERNAME'),
-        'password' => env('ZADOMAINS_PASSWORD'),
+    'za_domains' => [
+        'username' => env('ZA_DOMAINS_USERNAME'),
+        'password' => env('ZA_DOMAINS_PASSWORD'),
     ],
 ]; 

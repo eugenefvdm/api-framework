@@ -1,0 +1,19 @@
+{
+    "ok": true,
+    "result": {
+        "message_id": 39,
+        "from": {
+            "id": 1234567890,
+            "is_bot": true,
+            "first_name": "HelloPeterNotifications",
+            "username": "hello_peter_bot"
+        },
+        "chat": {
+            "id": -1234567890123,
+            "title": "Eugene Telegram Test Group",
+            "type": "supergroup"
+        },
+        "date": 1742559978,
+        "text": "Hi!"
+    }
+} 

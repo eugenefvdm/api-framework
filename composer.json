@@ -28,6 +28,10 @@
         "illuminate/support": "^8.12|^9.0|^10.0|^11.0|^12.0"
     },
     "require-dev": {
+        "guzzlehttp/guzzle": "^7.9",
+        "laravel/pint": "^1.0",
+        "mockery/mockery": "^1.6",        
+        "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
         "pestphp/pest": "^3.7"
     },
     "autoload": {

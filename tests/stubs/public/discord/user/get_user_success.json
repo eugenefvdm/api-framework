@@ -1,0 +1,20 @@
+{
+    "id": "123456789012345678",
+    "username": "username",
+    "avatar": "12345678901234567890123456789012",
+    "discriminator": "0",
+    "public_flags": 0,
+    "flags": 0,
+    "banner": null,
+    "accent_color": null,
+    "global_name": "Eugene van der Merwe",
+    "avatar_decoration_data": {
+        "asset": "a_e2345678901234567890123456789012",
+        "sku_id": "1234567890123456789",
+        "expires_at": null
+    },
+    "collectibles": null,
+    "banner_color": null,
+    "clan": null,
+    "primary_guild": null
+} 

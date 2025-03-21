@@ -1,13 +1,13 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
 use SoapClient;
 use SoapFault;
 
 class ZADomains
 {
-    private $client;
+    private SoapClient $client;
     private $username;
     private $password;
     private $wsdl = 'http://www.zadomains.net/api/API_GENERAL.asmx?WSDL';
@@ -28,6 +28,36 @@ class ZADomains
             'trace' => true,
             'exceptions' => true,
         ]);
+    }
+
+    /**
+     * Set the SOAP client (used for testing)
+     *
+     * @param SoapClient $client The SOAP client to use
+     * @return void
+     */
+    public function setClient(SoapClient $client): void
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Get registrant information for a domain
+     *
+     * @param string $domainName The domain name to query
+     * @return string Registrant email address
+     * @throws SoapFault
+     */
+    public function registrant(string $domainName): string
+    {
+        $result = $this->getDomainSelect($domainName);
+        $data = json_decode($result->Domain_SelectResult, true);
+        
+        if (!isset($data['Response_Value'])) {
+            throw new \RuntimeException('Unable to fetch registrant information');
+        }
+
+        return $data['Response_Value']['OwnerEmail'] ?? null;
     }
 
     /**

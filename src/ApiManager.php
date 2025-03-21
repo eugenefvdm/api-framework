@@ -1,6 +1,6 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
 class ApiManager
 {

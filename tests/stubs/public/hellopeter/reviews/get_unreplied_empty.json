@@ -1,0 +1,13 @@
+{
+    "meta": {
+        "perPage": 10,
+        "current": 1,
+        "from": 1,
+        "to": 0,
+        "totalRecords": 0,
+        "previousPage": null,
+        "lastPage": 0,
+        "nextPage": "https://api.hellopeter.com/v5/api/reviews?page=2"
+    },
+    "data": []
+} 

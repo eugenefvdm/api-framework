@@ -1,12 +1,34 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Discord
 {
+    private $botToken;
+    private $client;
+    private $baseUrl = 'https://discord.com/api/v10';
+
+    public function __construct(string $botToken, ?ClientInterface $client = null)
+    {
+        $this->botToken = $botToken;
+        $this->client = $client ?? new Client();
+    }
+
+    /**
+     * Set the HTTP client (used for testing)
+     *
+     * @param ClientInterface $client The HTTP client to use
+     * @return void
+     */
+    public function setClient(ClientInterface $client): void
+    {
+        $this->client = $client;
+    }
+
     /**
      * Get user information by user ID
      *
@@ -14,23 +36,17 @@ class Discord
      * @return array Returns user data including id, username, and avatar
      * @throws GuzzleException
      */
-    public static function getUser(string $userId)
+    public function getUser(string $userId): array
     {
-        header('Content-Type: application/json');
+        $url = "{$this->baseUrl}/users/{$userId}";
 
-        $botToken = $_ENV['DISCORD_BOT_TOKEN'];
-
-        $url = "https://discord.com/api/v10/users/{$userId}";
-
-        $client = new Client();
-
-        $response = $client->request('GET', $url, [
+        $response = $this->client->request('GET', $url, [
             'headers' => [
-                'Authorization' => "Bot {$botToken}",
+                'Authorization' => "Bot {$this->botToken}",
                 'Content-Type' => 'application/json',
             ],
         ]);
 
-        echo $response->getBody();
+        return json_decode($response->getBody(), true);
     }
 }

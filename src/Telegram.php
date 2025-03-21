@@ -1,21 +1,20 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 
 class Telegram
 {
-    private $botToken;
-    private $chatId;
-    private $client;
-    private $apiUrl = 'https://api.telegram.org/bot';
+    private string $botToken;
+    private string $chatId;
+    private string $apiUrl = 'https://api.telegram.org/bot';
 
     public function __construct(string $botToken, string $chatId)
     {
         $this->botToken = $botToken;
         $this->chatId = $chatId;
-        $this->client = new \GuzzleHttp\Client();
     }
 
     /**
@@ -23,25 +22,18 @@ class Telegram
      *
      * @param string $message The message to send to Telegram
      * @return array
-     * @throws GuzzleException
      */
-    public function sendMessage(string $message)
+    public function sendMessage(string $message): array
     {
         $endpoint = $this->apiUrl . $this->botToken . '/sendMessage';
         
-        $json = [
-            'chat_id' => $this->chatId,
-            'text' => $message,
-            'parse_mode' => 'HTML'
-        ];
-
-        $response = $this->client->post($endpoint, [
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ],
-            'json' => $json
-        ]);
-
-        return json_decode($response->getBody(), true);
+        $response = Http::asJson()
+            ->post($endpoint, [
+                'chat_id' => $this->chatId,
+                'text' => $message,
+                'parse_mode' => 'HTML'
+            ]);
+            
+        return $response->json();
     }
 } 

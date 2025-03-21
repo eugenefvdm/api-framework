@@ -1,40 +1,33 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 
 class Slack
 {
-    private $webhookUrl;
-    private $client;
+    private string $webhookUrl;
 
     public function __construct(string $webhookUrl)
     {
         $this->webhookUrl = $webhookUrl;
-        $this->client = new \GuzzleHttp\Client();
     }
 
     /**
-     * Send message to Slack
+     * Send text to Slack using Incoming Webhook
      *
-     * @param array $message The message to send to Slack
-     * @return array
-     * @throws GuzzleException
+     * @param string $text The text to send to Slack
+     * @return bool Returns true if message was sent successfully
+     * @throws \Illuminate\Http\Client\RequestException If the request fails
      */
-    public function sendMessage(string $message)
+    public function sendText(string $text): bool
     {
-        $json = [
-            'text' => "$message"
-        ];
-
-        $response = $this->client->post($this->webhookUrl, [
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ],
-            'json' => $json
+        $response = Http::post($this->webhookUrl, [
+            'text' => $text
         ]);
 
-        return json_decode($response->getBody(), true);
+        // Slack returns 200 OK with body "ok" for successful webhook calls
+        return $response->successful();
     }
 } 

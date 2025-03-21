@@ -1,25 +1,17 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 class ApiServiceProvider extends ServiceProvider
 {
     /**
-     * All of the container singletons that should be registered.
+     * Register bindings in the container.
      *
-     * @var array
+     * @return void
      */
-    public $singletons = [
-        'bulk_sms' => BulkSMS::class,
-        'discord' => Discord::class,
-        'hello_peter' => HelloPeter::class,
-        'slack' => Slack::class,
-        'telegram' => Telegram::class,
-        'za_domains' => ZADomains::class,
-    ];
-
     public function register()
     {
         // Register the API manager
@@ -27,45 +19,56 @@ class ApiServiceProvider extends ServiceProvider
             return new ApiManager($app);
         });
 
-        // Register individual API services with their configurations
-        $this->app->singleton('bulk_sms', function ($app) {
+        // Register BulkSMS
+        $this->app->singleton(BulkSMS::class, function ($app) {
             return new BulkSMS(
-                config('services.bulk_sms.username'),
-                config('services.bulk_sms.password')
+                Config::get('api.bulk_sms.username'),
+                Config::get('api.bulk_sms.password')
             );
         });
+        $this->app->alias(BulkSMS::class, 'bulk_sms');
 
-        $this->app->singleton('discord', function ($app) {
+        // Register Discord
+        $this->app->singleton(Discord::class, function ($app) {
             return new Discord(
-                config('services.discord.webhook_url')
+                Config::get('api.discord.bot_token'),                
             );
         });
+        $this->app->alias(Discord::class, 'discord');
 
-        $this->app->singleton('hello_peter', function ($app) {
+        // Register HelloPeter
+        $this->app->singleton(HelloPeter::class, function ($app) {
             return new HelloPeter(
-                config('services.hello_peter.api_key')
+                Config::get('api.hello_peter.api_key')
             );
         });
+        $this->app->alias(HelloPeter::class, 'hello_peter');
 
-        $this->app->singleton('slack', function ($app) {
+        // Register Slack
+        $this->app->singleton(Slack::class, function ($app) {
             return new Slack(
-                config('services.slack.webhook_url')
+                Config::get('api.slack.webhook_url')
             );
         });
+        $this->app->alias(Slack::class, 'slack');
 
-        $this->app->singleton('telegram', function ($app) {
+        // Register Telegram
+        $this->app->singleton(Telegram::class, function ($app) {
             return new Telegram(
-                config('services.telegram.bot_token'),
-                config('services.telegram.chat_id')
+                Config::get('api.telegram.bot_token'),
+                Config::get('api.telegram.chat_id')
             );
         });
+        $this->app->alias(Telegram::class, 'telegram');
 
-        $this->app->singleton('zadomains', function ($app) {
+        // Register ZADomains
+        $this->app->singleton(ZADomains::class, function ($app) {
             return new ZADomains(
-                config('services.zadomains.username'),
-                config('services.zadomains.password')
+                Config::get('api.za_domains.username'),
+                Config::get('api.za_domains.password')
             );
         });
+        $this->app->alias(ZADomains::class, 'zadomains');
     }
 
     public function boot()
@@ -74,7 +77,7 @@ class ApiServiceProvider extends ServiceProvider
         // Load routes, views, migrations, etc.
         
         $this->publishes([
-            __DIR__.'/../config/api.php' => config_path('api.php'),
+            __DIR__.'/../config/api.php' => \config_path('api.php'),
         ], 'config');               
     }
 } 

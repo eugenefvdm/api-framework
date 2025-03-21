@@ -1,0 +1,26 @@
+{
+    "Response_Text": "Success",
+    "Response_Code": "1000",
+    "Response_Value": {
+        "Nameserver 1": "ns1.example.com",
+        "TechEmail": "user@example.com",
+        "Expiry Date": "5/17/2025 10:21:50 AM",
+        "OwnerEmail": "user@example.com",
+        "Nameserver 4": "ns4.example.com",
+        "Tech": "Eugene van der Merwe",
+        "LastRegistrySync": "19 Mar 2025 00:37",
+        "Status": "Registered",
+        "Registry Status": "ok",
+        "Nameserver 5": "",
+        "Nameserver 3": "ns3.example.com",
+        "Billing": "Eugene van der Merwe",
+        "Nameserver 2": "ns2.example.com",
+        "Admin": "Eugene van der Merwe",
+        "Owner": "Eugene van der Merwe",
+        "Auto Renew": "False",
+        "Domain": "fintechsystems.co.za",
+        "BillingEmail": "user@example.com",
+        "Locked": "True",
+        "AdminEmail": "user@example.com"
+    }
+} 

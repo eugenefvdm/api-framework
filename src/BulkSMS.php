@@ -1,18 +1,32 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
-require_once('debugger.php');
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 
 class BulkSMS {
     private $username;
     private $password;
     private $url;
+    private $client;
 
-    public function __construct($username, $password) {
+    public function __construct($username, $password, ?ClientInterface $client = null) {
         $this->username = $username;
         $this->password = $password;
         $this->url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
+        $this->client = $client ?? new Client();
+    }
+
+    /**
+     * Set the HTTP client (used for testing)
+     *
+     * @param ClientInterface $client The HTTP client to use
+     * @return void
+     */
+    public function setClient(ClientInterface $client): void
+    {
+        $this->client = $client;
     }
 
     /**
@@ -21,9 +35,7 @@ class BulkSMS {
      * @param array|string $recipients Single number or array of numbers
      * @return array Results of sending attempts
      */
-    public function sendSMS($message, $recipients) {
-        debugger('SMS sending starts');
-        
+    public function sendSMS($message, $recipients) {        
         // Handle different input types for recipients
         if (is_string($recipients)) {
             // Split comma-separated string into array, and trim whitespace
@@ -40,21 +52,12 @@ class BulkSMS {
             $results[$recipient] = $this->sendToSingleRecipient($message, $recipient);
         }
 
-        $this->print_ln("Script ran to completion");
         return $results;
     }
 
     private function sendToSingleRecipient($message, $recipient) {
         $post_body = $this->seven_bit_sms($message, $recipient);
         $result = $this->send_message($post_body);
-        
-        if ($result['success']) {
-            debugger("Success to $recipient", $result);
-        } else {
-            debugger("Fail to $recipient", $result);
-        }
-        
-        $this->print_ln($this->formatted_server_response($result));
         return $result;
     }
 
@@ -117,80 +120,76 @@ class BulkSMS {
         return 0;
     }
 
-    private function formatted_server_response( $result ) {
-        $this_result = "";
+    private function send_message($post_body) {
+        try {
+            $response = $this->client->request('POST', $this->url, [
+                'form_params' => $this->parsePostBody($post_body),
+                'timeout' => 20,
+                'connect_timeout' => 20
+            ]);
 
-        if ($result['success']) {
-            $this_result .= "Success: batch ID " .$result['api_batch_id']. "API message: ".$result['api_message']. "\nFull details " .$result['details'];
-        }
-        else {
-            $this_result .= "Fatal error: HTTP status " .$result['http_status_code']. ", API status " .$result['api_status_code']. " API message " .$result['api_message']. " full details " .$result['details'];
-        }
-        return $this_result;
-    }
+            $response_string = (string) $response->getBody();
+            $status_code = $response->getStatusCode();
 
-    private function send_message ( $post_body ) {
-        $ch = curl_init( );
-        curl_setopt ( $ch, CURLOPT_URL, $this->url );
-        curl_setopt ( $ch, CURLOPT_POST, 1 );
-        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt ( $ch, CURLOPT_POSTFIELDS, $post_body );
-        // Allowing cUrl funtions 20 second to execute
-        curl_setopt ( $ch, CURLOPT_TIMEOUT, 20 );
-        // Waiting 20 seconds while trying to connect
-        curl_setopt ( $ch, CURLOPT_CONNECTTIMEOUT, 20 );
+            $sms_result = [
+                'success' => 0,
+                'details' => '',
+                'http_status_code' => $status_code,
+                'api_status_code' => '',
+                'api_message' => '',
+                'api_batch_id' => ''
+            ];
 
-        $response_string = curl_exec( $ch );
-        $curl_info = curl_getinfo( $ch );
-
-        $sms_result = array();
-        $sms_result['success'] = 0;
-        $sms_result['details'] = '';
-        $sms_result['http_status_code'] = $curl_info['http_code'];
-        $sms_result['api_status_code'] = '';
-        $sms_result['api_message'] = '';
-        $sms_result['api_batch_id'] = '';
-
-        if ( $response_string == FALSE ) {
-            $sms_result['details'] .= "cURL error: " . curl_error( $ch ) . "\n";
-        } elseif ( $curl_info[ 'http_code' ] != 200 ) {
-            $sms_result['details'] .= "Error: non-200 HTTP status code: " . $curl_info[ 'http_code' ] . "\n";
-        }
-        else {
-            $sms_result['details'] .= "Response from server: $response_string\n";
-            $api_result = explode( '|', $response_string );
-            $status_code = $api_result[0];
-            $sms_result['api_status_code'] = $status_code;
-            $sms_result['api_message'] = $api_result[1];
-            if ( count( $api_result ) != 3 ) {
-                $sms_result['details'] .= "Error: could not parse valid return data from server.\n" . count( $api_result );
+            if ($status_code != 200) {
+                $sms_result['details'] .= "Error: non-200 HTTP status code: " . $status_code . "\n";
             } else {
-                if ($status_code == '0') {
-                    $sms_result['success'] = 1;
-                    $sms_result['api_batch_id'] = $api_result[2];
-                    $sms_result['details'] .= "Message sent - batch ID $api_result[2]\n";
-                }
-                else if ($status_code == '1') {
-                    # Success: scheduled for later sending.
-                    $sms_result['success'] = 1;
-                    $sms_result['api_batch_id'] = $api_result[2];
-                }
-                else {
-                    $sms_result['details'] .= "Error sending: status code [$api_result[0]] description [$api_result[1]]\n";
+                $sms_result['details'] .= "Response from server: $response_string\n";
+                $api_result = explode('|', $response_string);
+                $api_status_code = $api_result[0];
+                $sms_result['api_status_code'] = $api_status_code;
+                $sms_result['api_message'] = $api_result[1] ?? '';
+
+                if (count($api_result) != 3) {
+                    $sms_result['details'] .= "Error: could not parse valid return data from server.\n" . count($api_result);
+                } else {
+                    if ($api_status_code == '0' || $api_status_code == '1') {
+                        $sms_result['success'] = 1;
+                        $sms_result['api_batch_id'] = $api_result[2];
+                        $sms_result['details'] .= "Message sent - batch ID $api_result[2]\n";
+                    } else {
+                        $sms_result['details'] .= "Error sending: status code [$api_result[0]] description [$api_result[1]]\n";
+                    }
                 }
             }
-        }
-        curl_close( $ch );
 
-        return $sms_result;
+            return $sms_result;
+        } catch (\Exception $e) {
+            return [
+                'success' => 0,
+                'details' => "Error: " . $e->getMessage() . "\n",
+                'http_status_code' => 0,
+                'api_status_code' => '',
+                'api_message' => $e->getMessage(),
+                'api_batch_id' => ''
+            ];
+        }
     }
 
-    private function print_ln($content) {
-        if (isset($_SERVER["SERVER_NAME"])) {
-            print $content."<br />";
-        } else {
-            print $content."\n";
+    /**
+     * Parse the post body string into an array
+     *
+     * @param string $post_body The post body string
+     * @return array The parsed post body as an array
+     */
+    private function parsePostBody(string $post_body): array
+    {
+        $params = [];
+        $pairs = explode('&', $post_body);
+        foreach ($pairs as $pair) {
+            list($key, $value) = explode('=', $pair);
+            $params[urldecode($key)] = urldecode($value);
         }
+        return $params;
     }
 }
 

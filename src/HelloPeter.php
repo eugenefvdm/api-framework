@@ -1,43 +1,59 @@
 <?php
 
-namespace Eugenefvdm;
+namespace Eugenefvdm\Api;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
 
 class HelloPeter
 {
-    private $apiKey;
-    private $client;
+    private string $apiKey;
+    private string $baseUrl = 'https://api.hellopeter.com/v5/api/';
+    private ?PendingRequest $client = null;
 
     public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
-        $this->client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://api.hellopeter.com/v5/api/',
-            'headers' => [
-                'Accept' => 'application/vnd.api+json',
-                'Content-Type' => 'application/json',
-                'apiKey' => $this->apiKey
-            ]
-        ]);
     }
 
     /**
-     * Get reviews with optional parameters
+     * Get the HTTP client instance
+     */
+    private function client(): PendingRequest
+    {
+        if (!$this->client) {
+            $this->client = Http::baseUrl($this->baseUrl)
+                ->acceptJson()
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'apiKey' => $this->apiKey
+                ]);
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * Set a custom HTTP client (used for testing)
+     */
+    public function setClient(PendingRequest $client): void
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Get unreplied reviews
      *
      * @param array $parameters Optional parameters for filtering reviews
      * @return array
-     * @throws GuzzleException
      */
-    public function getUnrepliedReviews(array $parameters = [])
+    public function getUnrepliedReviews(array $parameters = []): array
     {
-        $response = $this->client->get('reviews', [
-            'query' => [
-                'status' => 'unreplied,unreplied_comment',
-                'channel' => 'HELLOPETER'
-            ]
+        $response = $this->client()->get('reviews', [
+            'status' => 'unreplied,unreplied_comment',
+            'channel' => 'HELLOPETER'
         ]);
 
-        return json_decode($response->getBody(), true);
+        return $response->json();
     }
 } 
