@@ -1,8 +1,8 @@
 <?php
 
-namespace Eugenevdm;
+namespace Eugenefvdm;
 
-if (!function_exists('Eugenevdm\\debugger')) {
+if (!function_exists('Eugenefvdm\\debugger')) {
 function debugger( $message, $variable = '' ) {
 	$serverAddr     = $_SERVER['SERVER_ADDR'];
 	$dateTimeFormat = date( 'Y-m-d H:i:s' );

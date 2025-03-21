@@ -1,6 +1,6 @@
 <?php
 
-namespace Eugenevdm;
+namespace Eugenefvdm;
 
 require_once('debugger.php');
 

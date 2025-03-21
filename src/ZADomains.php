@@ -1,6 +1,6 @@
 <?php
 
-namespace Eugenevdm;
+namespace Eugenefvdm;
 
 use SoapClient;
 use SoapFault;

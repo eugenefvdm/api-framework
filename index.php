@@ -3,12 +3,12 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use Eugenevdm\HelloPeter;
-use Eugenevdm\BulkSMS;
-use Eugenevdm\Discord;
-use Eugenevdm\Slack;
-use Eugenevdm\Telegram;
-use Eugenevdm\ZADomains;
+use Eugenefvdm\HelloPeter;
+use Eugenefvdm\BulkSMS;
+use Eugenefvdm\Discord;
+use Eugenefvdm\Slack;
+use Eugenefvdm\Telegram;
+use Eugenefvdm\ZADomains;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Eugenevdm;
+namespace Eugenefvdm;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;

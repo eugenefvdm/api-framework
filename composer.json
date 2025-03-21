@@ -1,17 +1,56 @@
 {
-    "name": "eugenefvdm/hellopeterwatcher",
-    "description": "Hello Peter Watcher",
-    "type": "project",
+    "name": "eugenefvdm/api",
+    "description": "APIs for various services",
+    "license": "MIT",
+    "keywords": [
+        "api",
+        "apis",
+        "laravel",
+        "php",
+        "bulksms",
+        "discord",
+        "hellopeter",
+        "slack",
+        "telegram",
+        "zadomains"
+    ],
+    "authors": [
+        {
+            "name": "Eugene van der Merwe",
+            "email": "hello@eugenefvdm.com",
+            "homepage": "https://eugenefvdm.com",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/eugenefvdm/api",
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^8.12|^9.0|^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.7"
+    },
     "autoload": {
         "psr-4": {
-            "Eugenevdm\\": "src/"
+            "Eugenefvdm\\Api\\": "src"
         }
     },
-    "require": {
-        "php": ">=7.4",
-        "vlucas/phpdotenv": "^5.5",
-        "guzzlehttp/guzzle": "^7.9",
-        "spatie/ray": "^1.41"
+    "autoload-dev": {
+        "psr-4": {
+            "Eugenefvdm\\Api\\Tests\\": "tests"
+        }
     },
-    "license": "MIT"
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eugenefvdm\\Api\\ApiServiceProvider"
+            ]
+        }
+    }
 }
