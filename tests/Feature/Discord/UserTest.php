@@ -4,7 +4,7 @@ use Eugenefvdm\Api\Discord;
 use Illuminate\Support\Facades\Http;
 
 test('getUser returns user information', function () {
-    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/public/discord/user/get_user_success.json'), true);
+    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/discord/user/get_user_success.json'), true);
 
     Http::fake([
         'discord.com/api/v10/users/*' => Http::response($stub, 200),

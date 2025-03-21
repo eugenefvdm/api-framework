@@ -4,7 +4,7 @@ use Eugenefvdm\Api\HelloPeter;
 use Illuminate\Support\Facades\Http;
 
 test('getUnrepliedReviews returns empty reviews list', function () {
-    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/public/hellopeter/reviews/get_unreplied_empty.json'), true);
+    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/hellopeter/reviews/get_unreplied_empty.json'), true);
 
     Http::fake([
         'https://api.hellopeter.com/v5/api/reviews*' => Http::response($stub, 200),

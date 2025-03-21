@@ -3,7 +3,7 @@
 use Eugenefvdm\Api\ZADomains;
 
 test('registrant returns owner email address', function () {
-    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/public/zadomains/domain/registrant_success.json'), true);
+    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/zadomains/domain/registrant_success.json'), true);
 
     $mockSoapClient = Mockery::mock('SoapClient');
     $mockSoapClient->shouldReceive('Domain_Select')

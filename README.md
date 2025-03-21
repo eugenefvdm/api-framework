@@ -2,9 +2,7 @@
 
 Another day, another API.
 
-A set of Laravel API service providers with Facade access to get me through my day.
-
-List of APIs that are called:
+A set of Laravel API service providers.
 
 - BulkSMS
 - Discord
@@ -60,8 +58,6 @@ return [
 
 ## Usage
 
-I generally used Tinkerwell but TweakPHP is also cool.
-
 ```php
 $bulkSmsResult = \Eugenefvdm\Api\Facades\BulkSMS::sendSMS("Hello SMS!", [
   "27600000000"
@@ -92,10 +88,9 @@ vendor/bin/pest
 
 ## Design philosophy
 
-APIs can be hard. Reading documentation is a drag. What if you only want to use one or two calls? Do you really have to learn everything? Okay, so AI makes it easier. But it's still
-a lot of working, and testing can be ardeous.
+APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? May PHP libraries after over-engineered. This library collection give you the power of many APIs in one package.
 
-This library only calls `the basics`. Of course, the basics differs for everyone, but if you don't have too much time in the day and you just need one or two calls from one or two APIs, then we're on the same page. If you just need `a few` API calls from `many` APIs, we're on the same book.
+This library is minimalist and uses Facades and each call is tested using stubs.
 
 ## Contribution Guideline
 

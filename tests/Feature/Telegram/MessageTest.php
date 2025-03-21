@@ -4,7 +4,7 @@ use Eugenefvdm\Api\Telegram;
 use Illuminate\Support\Facades\Http;
 
 test('sendMessage successfully sends a message to Telegram', function () {
-    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/public/telegram/message/send_success.json'), true);
+    $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/telegram/message/send_success.json'), true);
 
     // Fake HTTP client
     Http::fake([
