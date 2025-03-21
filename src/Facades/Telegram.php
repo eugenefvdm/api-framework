@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static mixed sendMessage(string $message)
- * 
+ *
  * @see \Eugenefvdm\Api\Telegram
  */
 class Telegram extends Facade
@@ -20,4 +20,4 @@ class Telegram extends Facade
     {
         return 'telegram';
     }
-} 
+}

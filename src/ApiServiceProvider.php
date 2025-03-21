@@ -2,8 +2,8 @@
 
 namespace Eugenefvdm\Api;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\ServiceProvider;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -31,7 +31,7 @@ class ApiServiceProvider extends ServiceProvider
         // Register Discord
         $this->app->singleton(Discord::class, function ($app) {
             return new Discord(
-                Config::get('api.discord.bot_token'),                
+                Config::get('api.discord.bot_token'),
             );
         });
         $this->app->alias(Discord::class, 'discord');
@@ -75,9 +75,9 @@ class ApiServiceProvider extends ServiceProvider
     {
         // Bootstrap your package
         // Load routes, views, migrations, etc.
-        
+
         $this->publishes([
             __DIR__.'/../config/api.php' => \config_path('api.php'),
-        ], 'config');               
+        ], 'config');
     }
-} 
+}

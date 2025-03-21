@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static mixed getDomainSelect(string $domainName)
  * @method static mixed getDomainSelectInfo(string $domainName)
  * @method static mixed getDomainSelectAllByContact(string $contactName)
- * 
+ *
  * @see \Eugenefvdm\Api\ZADomains
  */
 class ZADomains extends Facade
@@ -23,4 +23,4 @@ class ZADomains extends Facade
     {
         return 'zadomains';
     }
-} 
+}

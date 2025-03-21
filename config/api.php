@@ -27,4 +27,4 @@ return [
         'username' => env('ZA_DOMAINS_USERNAME'),
         'password' => env('ZA_DOMAINS_PASSWORD'),
     ],
-]; 
+];

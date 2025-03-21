@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /*
@@ -54,4 +53,4 @@ function getPackageProviders($app)
     return [
         'Eugenefvdm\Api\ApiServiceProvider',
     ];
-} 
+}

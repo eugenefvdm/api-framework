@@ -5,6 +5,7 @@ namespace Eugenefvdm\Api;
 class ApiManager
 {
     protected $app;
+
     protected $services = [];
 
     public function __construct($app)
@@ -38,7 +39,7 @@ class ApiManager
         return $this->app->make('hellopeter');
     }
 
-    public function slack() 
+    public function slack()
     {
         return $this->app->make('slack');
     }
@@ -64,4 +65,4 @@ class ApiManager
 
         throw new \InvalidArgumentException("API service [$name] not found.");
     }
-} 
+}

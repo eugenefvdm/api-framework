@@ -8,22 +8,26 @@ use SoapFault;
 class ZADomains
 {
     private SoapClient $client;
+
     private $username;
+
     private $password;
+
     private $wsdl = 'http://www.zadomains.net/api/API_GENERAL.asmx?WSDL';
 
     /**
      * Constructor
      *
-     * @param string $username ZADomains username
-     * @param string $password ZADomains password
+     * @param  string  $username  ZADomains username
+     * @param  string  $password  ZADomains password
+     *
      * @throws SoapFault
      */
     public function __construct($username, $password)
     {
         $this->username = $username;
         $this->password = $password;
-        
+
         $this->client = new SoapClient($this->wsdl, [
             'trace' => true,
             'exceptions' => true,
@@ -33,8 +37,7 @@ class ZADomains
     /**
      * Set the SOAP client (used for testing)
      *
-     * @param SoapClient $client The SOAP client to use
-     * @return void
+     * @param  SoapClient  $client  The SOAP client to use
      */
     public function setClient(SoapClient $client): void
     {
@@ -44,16 +47,17 @@ class ZADomains
     /**
      * Get registrant information for a domain
      *
-     * @param string $domainName The domain name to query
+     * @param  string  $domainName  The domain name to query
      * @return string Registrant email address
+     *
      * @throws SoapFault
      */
     public function registrant(string $domainName): string
     {
         $result = $this->getDomainSelect($domainName);
         $data = json_decode($result->Domain_SelectResult, true);
-        
-        if (!isset($data['Response_Value'])) {
+
+        if (! isset($data['Response_Value'])) {
             throw new \RuntimeException('Unable to fetch registrant information');
         }
 
@@ -63,8 +67,9 @@ class ZADomains
     /**
      * Get domain select info
      *
-     * @param string $domainName The domain name to query
+     * @param  string  $domainName  The domain name to query
      * @return mixed Response from the API
+     *
      * @throws SoapFault
      */
     public function getDomainSelectInfo($domainName)
@@ -81,8 +86,9 @@ class ZADomains
     /**
      * Get domain select
      *
-     * @param string $domainName The domain name to query
+     * @param  string  $domainName  The domain name to query
      * @return mixed Response from the API
+     *
      * @throws SoapFault
      */
     public function getDomainSelect($domainName)
@@ -99,8 +105,9 @@ class ZADomains
     /**
      * Get domain select all by contact
      *
-     * @param string $domainName The domain name to query
+     * @param  string  $domainName  The domain name to query
      * @return mixed Response from the API
+     *
      * @throws SoapFault
      */
     public function getDomainSelectAllByContact($domainName)
@@ -113,4 +120,4 @@ class ZADomains
 
         return $this->client->Domain_SelectAll_ByContact($params);
     }
-} 
+}

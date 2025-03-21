@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static mixed sendSMS(string $message, array $recipients)
- * 
+ *
  * @see \Eugenefvdm\Api\BulkSMS
  */
 class BulkSMS extends Facade
@@ -20,4 +20,4 @@ class BulkSMS extends Facade
     {
         return 'bulk_sms';
     }
-} 
+}

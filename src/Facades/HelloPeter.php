@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getUnrepliedReviews()
- * 
+ *
  * @see \Eugenefvdm\Api\HelloPeter
  */
 class HelloPeter extends Facade
@@ -20,4 +20,4 @@ class HelloPeter extends Facade
     {
         return 'hello_peter';
     }
-} 
+}

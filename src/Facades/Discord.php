@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static array getUser(string $userId)
  * @method static mixed sendMessage(string $message)
- * 
+ *
  * @see \Eugenefvdm\Api\Discord
  */
 class Discord extends Facade
@@ -21,4 +21,4 @@ class Discord extends Facade
     {
         return 'discord';
     }
-} 
+}
