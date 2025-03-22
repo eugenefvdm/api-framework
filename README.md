@@ -88,7 +88,7 @@ vendor/bin/pest
 
 ## Design philosophy
 
-APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? May PHP libraries are over-engineered. This library collection gives you the power of many APIs in one package.
+APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? This library collection gives you the power of many APIs in one package.
 
 It's minimalist and uses Facades. Each call tested using stubs so you have a handy reference without having to do API calls.
 
