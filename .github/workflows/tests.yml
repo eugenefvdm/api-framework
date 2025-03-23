@@ -11,32 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0  # Fetch all history for all branches and tags
+    - uses: actions/checkout@v4    
         
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
-        
-    - name: Clear Composer Cache
-      run: composer clear-cache
-        
-    - name: Verify Directory Structure
+                
+    - name: Install Composer Dependencies
       run: |
-        echo "Current directory structure:"
-        ls -la
-        echo "Contents of src directory:"
-        ls -la src/
-        
-    - name: Install Dependencies
-      run: |
-        rm -rf vendor/
-        composer install -q --no-interaction --prefer-dist
-        
-    - name: Verify Autoloader
-      run: composer dump-autoload -o
-            
+        composer install --no-interaction --prefer-dist
+                    
     - name: Execute tests
       run: vendor/bin/pest 
