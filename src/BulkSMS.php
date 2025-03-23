@@ -4,7 +4,7 @@ namespace Eugenefvdm\Api;
 
 use Illuminate\Support\Facades\Http;
 
-class BulkSMS
+class Bulksms
 {
     private $username;
 

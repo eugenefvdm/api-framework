@@ -5,7 +5,7 @@ namespace Eugenefvdm\Api;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
-class HelloPeter
+class Hellopeter
 {
     private string $apiKey;
 

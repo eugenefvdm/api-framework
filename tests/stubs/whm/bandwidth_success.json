@@ -1,0 +1,51 @@
+{
+    "bandwidth": [
+        {
+            "reseller": "root",
+            "acct": [
+                {
+                    "limit": "unlimited",
+                    "reseller": 0,
+                    "maindomain": "example1.com",
+                    "user": "example1",
+                    "bwlimited": 0,
+                    "totalbytes": 7021740625,
+                    "owner": "root",
+                    "deleted": 0,
+                    "bwusage": [
+                        {
+                            "domain": "example1.com",
+                            "usage": "7021501775",
+                            "deleted": 0
+                        }
+                    ]
+                },
+                {
+                    "totalbytes": 8179292839,
+                    "owner": "root",
+                    "bwlimited": 0,
+                    "deleted": 0,
+                    "bwusage": [
+                        {
+                            "domain": "example2.com",
+                            "deleted": 0,
+                            "usage": 0
+                        },
+                        {
+                            "domain": "example3.com",
+                            "usage": 0,
+                            "deleted": 0
+                        }
+                    ],
+                    "reseller": 0,
+                    "user": "example2",
+                    "maindomain": "example2.com",
+                    "limit": "unlimited"
+                }
+            ],
+            "totalused": "38443469815",
+            "month": 3,
+            "year": 2025
+        }
+    ]
+} 

@@ -5,7 +5,7 @@ namespace Eugenefvdm\Api;
 use SoapClient;
 use SoapFault;
 
-class ZADomains
+class Zadomains
 {
     private SoapClient $client;
 
@@ -18,8 +18,8 @@ class ZADomains
     /**
      * Constructor
      *
-     * @param  string  $username  ZADomains username
-     * @param  string  $password  ZADomains password
+     * @param  string  $username  Zadomains username
+     * @param  string  $password  Zadomains password
      *
      * @throws SoapFault
      */

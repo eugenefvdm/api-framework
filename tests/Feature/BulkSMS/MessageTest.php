@@ -1,6 +1,6 @@
 <?php
 
-use Eugenefvdm\Api\BulkSMS;
+use Eugenefvdm\Api\Bulksms;
 use Illuminate\Support\Facades\Http;
 
 test('sendSMS successfully sends a message', function () {
@@ -9,7 +9,7 @@ test('sendSMS successfully sends a message', function () {
     ]);
 
     // Create BulkSMS instance with test credentials
-    $bulkSms = new BulkSMS('test_user', 'test_pass');
+    $bulkSms = new Bulksms('test_user', 'test_pass');
 
     $result = $bulkSms->sendSMS('Hello!', ['27823096710']);
 

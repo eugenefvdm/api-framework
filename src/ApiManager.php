@@ -13,27 +13,16 @@ class ApiManager
         $this->app = $app;
     }
 
-    /**
-     * Get BulkSMS service
-     *
-     * @return BulkSMS
-     */
     public function bulksms()
     {
         return $this->app->make('bulksms');
     }
 
-    /**
-     * Get Discord service
-     *
-     * @return Discord
-     */
     public function discord()
     {
         return $this->app->make('discord');
     }
 
-    // Add similar methods for other services...
     public function hellopeter()
     {
         return $this->app->make('hellopeter');
@@ -52,6 +41,11 @@ class ApiManager
     public function zadomains()
     {
         return $this->app->make('zadomains');
+    }
+
+    public function whm()
+    {
+        return $this->app->make('whm');
     }
 
     /**

@@ -5,11 +5,11 @@ namespace Eugenefvdm\Api\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array getUnrepliedReviews()
+ * @method static array bandwidth()
  *
- * @see \Eugenefvdm\Api\Hellopeter
+ * @see \Eugenefvdm\Api\Whm
  */
-class Hellopeter extends Facade
+class Whm extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -18,6 +18,6 @@ class Hellopeter extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'hellopeter';
+        return 'whm';
     }
-}
+} 

@@ -12,6 +12,7 @@ A set of Laravel API service providers.
 - Hello Peter
 - Slack
 - Telegram
+- WHM
 - ZADomains
 
 ## Installation
@@ -52,6 +53,12 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
+    'whm' => [
+        'username' => env('WHM_USERNAME'),
+        'password' => env('WHM_PASSWORD'),
+        'server' => env('WHM_SERVER', 'https://server.example.com:2087'),
+    ],
+
     'za_domains' => [
         'username' => env('ZA_DOMAINS_USERNAME'),
         'password' => env('ZA_DOMAINS_PASSWORD'),
@@ -62,25 +69,26 @@ return [
 ## Usage
 
 ```php
-$bulkSmsResult = \Eugenefvdm\Api\Facades\BulkSMS::sendSMS("Hello SMS!", [
-  "27600000000"
-]);
+use Eugenefvdm\Api\Facades\BulkSMS;
+$bulkSMS = BulkSMS::sendSMS("Hello SMS!", ["27600000000"]);
 
-$discordUser = \Eugenefvdm\Api\Facades\Discord::getUser("123456789012345678");
+use Eugenefvdm\Api\Facades\Discord;
+$discord = Discord::getUser("123456789012345678");
 
-$helloPeterUnrepliedReviews = \Eugenefvdm\Api\Facades\HelloPeter::getUnrepliedReviews();
+use Eugenefvdm\Api\Facades\HelloPeter;
+$helloPeter = HelloPeter::getUnrepliedReviews();
 
-$slackTextBoolReturn = \Eugenefvdm\Api\Facades\Slack::sendText(
-  "Hello world testing from API collection!"
-);
+use Eugenefvdm\Api\Facades\Slack;
+$slack = Slack::sendText("Hello Slack!");
 
-$telegramSendMessageResult = \Eugenefvdm\Api\Facades\Telegram::sendMessage(
-  "Hi Telegram!"
-);
+use Eugenefvdm\Api\Facades\Telegram;
+$telegram = Telegram::sendMessage("Hi Telegram!");
 
-$zadomainsRegistrant = \Eugenefvdm\Api\Facades\ZADomains::registrant(
-  "example.co.za"
-);
+use Eugenefvdm\Api\Facades\WHM;
+$bandwidth = WHM::bandwidth();
+
+use Eugenefvdm\Api\Facades\ZADomains;
+$zadomainsRegistrant = ZADomains::registrant("example.co.za");
 ```
 
 ## Testing

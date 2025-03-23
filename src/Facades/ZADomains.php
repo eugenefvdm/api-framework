@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static mixed getDomainSelectInfo(string $domainName)
  * @method static mixed getDomainSelectAllByContact(string $contactName)
  *
- * @see \Eugenefvdm\Api\ZADomains
+ * @see \Eugenefvdm\Api\Zadomains
  */
-class ZADomains extends Facade
+class Zadomains extends Facade
 {
     /**
      * Get the registered name of the component.

@@ -1,6 +1,6 @@
 <?php
 
-use Eugenefvdm\Api\HelloPeter;
+use Eugenefvdm\Api\Hellopeter;
 use Illuminate\Support\Facades\Http;
 
 test('getUnrepliedReviews returns empty reviews list', function () {
@@ -10,7 +10,7 @@ test('getUnrepliedReviews returns empty reviews list', function () {
         'https://api.hellopeter.com/v5/api/reviews*' => Http::response($stub, 200),
     ]);
 
-    $helloPeter = new HelloPeter('test_api_key');
+    $helloPeter = new Hellopeter('test_api_key');
 
     $result = $helloPeter->getUnrepliedReviews();
 

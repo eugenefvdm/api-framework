@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static mixed sendSMS(string $message, array $recipients)
  *
- * @see \Eugenefvdm\Api\BulkSMS
+ * @see \Eugenefvdm\Api\Bulksms
  */
-class BulkSMS extends Facade
+class Bulksms extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -18,6 +18,6 @@ class BulkSMS extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'bulk_sms';
+        return 'bulksms';
     }
 }

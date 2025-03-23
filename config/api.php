@@ -23,6 +23,12 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
+    'whm' => [
+        'username' => env('WHM_USERNAME'),
+        'password' => env('WHM_PASSWORD'),
+        'server' => env('WHM_SERVER'),
+    ],
+
     'za_domains' => [
         'username' => env('ZA_DOMAINS_USERNAME'),
         'password' => env('ZA_DOMAINS_PASSWORD'),
