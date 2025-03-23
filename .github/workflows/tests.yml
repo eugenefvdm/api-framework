@@ -18,11 +18,11 @@ jobs:
       with:
         php-version: '8.3'
         
+    - name: Clear Composer Cache
+      run: composer clear-cache
+        
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      
-    - name: Generate Autoloader
-      run: composer dump-autoload -o
-      
+      run: composer install -q --no-interaction --prefer-dist
+            
     - name: Execute tests
       run: vendor/bin/pest 
