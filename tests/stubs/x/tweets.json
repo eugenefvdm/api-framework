@@ -1,0 +1,35 @@
+{
+    "data": [
+        {
+            "id": "1887364825698738283",
+            "text": "RT @DianaWebdev: Dang, David Hill has a love for design that I haven't seen in a while. The way he talks about it shows just how deeply he…",
+            "edit_history_tweet_ids": ["1887364825698738283"]
+        },
+        {
+            "id": "1887082526004441325",
+            "text": "RT @gauravmakhecha: No one told me that I should keep only relevant files open so that #CoPilot can give better suggestions\n\nDid you know?…",
+            "edit_history_tweet_ids": ["1887082526004441325"]
+        },
+        {
+            "id": "1887082514545590377",
+            "text": "@gauravmakhecha I didn't know this, but I'm slowly but surely learning this, albeit using Cursor. Thanks though for pointing it out from the official documentation!",
+            "edit_history_tweet_ids": ["1887082514545590377"]
+        },
+        {
+            "id": "1886480565919948915",
+            "text": "@elonmusk Yes good point.",
+            "edit_history_tweet_ids": ["1886480565919948915"]
+        },
+        {
+            "id": "1883754167245955588",
+            "text": "Translate a can of worms in coding to business grammar?\n\n\"This feature request could cascade into significant additional complexity, potentially requiring answers to many interdependent questions and unplanned development efforts.\"\n\n- complexity\n- interdependent\n- unplanned",
+            "edit_history_tweet_ids": ["1883754167245955588"]
+        }
+    ],
+    "meta": {
+        "result_count": 5,
+        "newest_id": "1887364825698738283",
+        "oldest_id": "1883754167245955588",
+        "next_token": "7140dibdnow9c7btw4b38mvg7sobxwf19pl0ixd74xxko"
+    }
+} 

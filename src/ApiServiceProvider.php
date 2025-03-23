@@ -39,7 +39,7 @@ class ApiServiceProvider extends ServiceProvider
         // Register HelloPeter
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
-                Config::get('api.hello_peter.api_key')
+                Config::get('api.hellopeter.api_key')
             );
         });
         $this->app->alias(Hellopeter::class, 'hellopeter');
@@ -79,6 +79,14 @@ class ApiServiceProvider extends ServiceProvider
             );
         });
         $this->app->alias(Whm::class, 'whm');
+
+        // Register X
+        $this->app->singleton(X::class, function ($app) {
+            return new X(
+                Config::get('api.x.bearer_token')
+            );
+        });
+        $this->app->alias(X::class, 'x');
     }
 
     public function boot()

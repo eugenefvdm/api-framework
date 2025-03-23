@@ -13,6 +13,7 @@ A set of Laravel API service providers.
 - Slack
 - Telegram
 - WHM
+- X (Twitter)
 - ZADomains
 
 ## Installation
@@ -59,6 +60,10 @@ return [
         'server' => env('WHM_SERVER', 'https://server.example.com:2087'),
     ],
 
+    'x' => [
+        'bearer_token' => env('X_BEARER_TOKEN'),
+    ],
+
     'za_domains' => [
         'username' => env('ZA_DOMAINS_USERNAME'),
         'password' => env('ZA_DOMAINS_PASSWORD'),
@@ -69,26 +74,31 @@ return [
 ## Usage
 
 ```php
-use Eugenefvdm\Api\Facades\BulkSMS;
-$bulkSMS = BulkSMS::sendSMS("Hello SMS!", ["27600000000"]);
+use Eugenefvdm\Api\Facades\Bulksms;
+$bulkSMS = Bulksms::sendSMS("Hello SMS!", ["27600000000"]);
 
 use Eugenefvdm\Api\Facades\Discord;
 $discord = Discord::getUser("123456789012345678");
 
-use Eugenefvdm\Api\Facades\HelloPeter;
-$helloPeter = HelloPeter::getUnrepliedReviews();
+use Eugenefvdm\Api\Facades\Hellopeter;
+$hellopeterUnrepliedReviews = Hellopeter::getUnrepliedReviews();
 
 use Eugenefvdm\Api\Facades\Slack;
-$slack = Slack::sendText("Hello Slack!");
+$textSendResult = Slack::sendText("Hello Slack!");
 
 use Eugenefvdm\Api\Facades\Telegram;
-$telegram = Telegram::sendMessage("Hi Telegram!");
+$messageSendResult = Telegram::sendMessage("Hi Telegram!");
 
-use Eugenefvdm\Api\Facades\WHM;
-$bandwidth = WHM::bandwidth();
+use Eugenefvdm\Api\Facades\Whm;
+$whmBandwidth = Whm::bandwidth();
 
-use Eugenefvdm\Api\Facades\ZADomains;
-$zadomainsRegistrant = ZADomains::registrant("example.co.za");
+use Eugenefvdm\Api\Facades\X;
+$userId = X::userId("eugenefvdm");
+$tweets = X::tweets($userId['data']['id'], 5);
+$userWithLimits = X::userWithRateLimits("eugenefvdm");
+
+use Eugenefvdm\Api\Facades\Zadomains;
+$zadomainsRegistrant = Zadomains::registrant("example.co.za");
 ```
 
 ## Testing

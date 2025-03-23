@@ -48,6 +48,11 @@ class ApiManager
         return $this->app->make('whm');
     }
 
+    public function x()
+    {
+        return $this->app->make('x');
+    }
+
     /**
      * Magic method to dynamically access services
      */

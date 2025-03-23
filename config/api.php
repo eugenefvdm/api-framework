@@ -1,17 +1,17 @@
 <?php
 
 return [
-    'bulk_sms' => [
-        'username' => env('BULK_SMS_USERNAME'),
-        'password' => env('BULK_SMS_PASSWORD'),
+    'bulksms' => [
+        'username' => env('BULKSMS_USERNAME'),
+        'password' => env('BULKSMS_PASSWORD'),
     ],
 
     'discord' => [
         'bot_token' => env('DISCORD_BOT_TOKEN'),
     ],
 
-    'hello_peter' => [
-        'api_key' => env('HELLO_PETER_API_KEY'),
+    'hellopeter' => [
+        'api_key' => env('HELLOPETER_API_KEY'),
     ],
 
     'slack' => [
@@ -29,8 +29,12 @@ return [
         'server' => env('WHM_SERVER'),
     ],
 
-    'za_domains' => [
-        'username' => env('ZA_DOMAINS_USERNAME'),
-        'password' => env('ZA_DOMAINS_PASSWORD'),
+    'x' => [
+        'bearer_token' => env('X_BEARER_TOKEN'),
     ],
+
+    'zadomains' => [
+        'username' => env('ZADOMAINS_USERNAME'),
+        'password' => env('ZADOMAINS_PASSWORD'),
+    ],    
 ];
