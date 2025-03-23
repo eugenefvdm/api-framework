@@ -106,4 +106,6 @@ Each call is tested using stubs which doubles as a handy reference.
 
 - Make a pull request
 - For each new API and API call, add a feature test with a stub. See the existing examples. Be thorough and make sure the stubs are redacted.
+- Many APIs are brand names. Example, BulkSMS, ZADomains, etc. To avoid confusion with casing, just capatilize the first letter. Even if it's compound names, like Hello[ ]Peter, use `Hellopeter` for the name of the API.
+- Getters are not prepended by "get", e.g. getMessage() will be messge().
 - If you're too busy to add a new API, or a new API call, contact me and I'll oblige where I can: eugene (at) vander.host or +27 82 309-6710.

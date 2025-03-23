@@ -1,11 +1,9 @@
 <?php
 
-namespace Eugenefvdm\Api\Tests\Feature\Slack;
-
 use Eugenefvdm\Api\Slack;
 use Illuminate\Support\Facades\Http;
 
-test('sendMessage returns true on successful webhook call', function () {
+test('sendText returns true on successful webhook call', function () {
     // Fake HTTP client
     Http::fake([
         '*' => Http::response('ok', 200),
@@ -26,7 +24,7 @@ test('sendMessage returns true on successful webhook call', function () {
     });
 });
 
-test('sendMessage returns false on failed webhook call', function () {
+test('sendText returns false on failed webhook call', function () {
     // Fake HTTP client with error response
     Http::fake([
         '*' => Http::response('', 400),
