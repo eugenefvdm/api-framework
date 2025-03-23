@@ -11,16 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4    
+    - name: Checkout code
+      uses: actions/checkout@v4    
         
-    - name: Setup PHP
+    - name: Setup PHP 8.3
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
                 
-    - name: Install Composer Dependencies
+    - name: Install dependencies
       run: |
-        composer install --no-interaction --prefer-dist
+        composer update --prefer-dist --no-interaction
                     
     - name: Execute tests
       run: vendor/bin/pest 

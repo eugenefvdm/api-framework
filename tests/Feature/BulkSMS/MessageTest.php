@@ -8,10 +8,10 @@ test('sendSMS successfully sends a message', function () {
         'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|2065473445', 200),
     ]);
 
-    // Create BulkSMS instance with test credentials
+    // Create Bulksms instance with test credentials
     $bulkSms = new Bulksms('test_user', 'test_pass');
 
-    $result = $bulkSms->sendSMS('Hello!', ['27823096710']);
+    $result = $bulkSms->sendSms('Hello!', ['27823096710']);
 
     expect($result['27823096710'])->toHaveKeys(['success', 'details', 'http_status_code', 'api_status_code', 'api_message', 'api_batch_id'])
         ->and($result['27823096710']['success'])->toBe(1)

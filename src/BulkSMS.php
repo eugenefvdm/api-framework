@@ -26,7 +26,7 @@ class Bulksms
      * @param  array|string  $recipients  Single number or array of numbers
      * @return array Results of sending attempts
      */
-    public function sendSMS($message, $recipients)
+    public function sendSms($message, $recipients)
     {
         // Handle different input types for recipients
         if (is_string($recipients)) {
