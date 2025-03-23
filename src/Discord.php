@@ -21,7 +21,7 @@ class Discord
      * @param  string  $userId  The Discord user ID to lookup
      * @return array Returns user data including id, username, and avatar
      */
-    public function getUser(string $userId): array
+    public function user(string $userId): array
     {
         $url = "{$this->baseUrl}/users/{$userId}";
 

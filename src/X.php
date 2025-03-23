@@ -81,10 +81,16 @@ class X
 
         return [
             'data' => $response->json(),
-            'rate_limits' => [
-                'limit' => $response->header('x-rate-limit-limit'),
-                'remaining' => $response->header('x-rate-limit-remaining'),
-                'reset' => $response->header('x-rate-limit-reset'),
+            'headers' => [
+                'api-version' => $response->header('api-version'),
+                'date' => $response->header('date'),
+                'x-rate-limit-limit' => $response->header('x-rate-limit-limit'),
+                'x-rate-limit-reset' => $response->header('x-rate-limit-reset'),
+                'x-rate-limit-remaining' => $response->header('x-rate-limit-remaining'),
+                'x-app-limit-24hour-limit' => $response->header('x-app-limit-24hour-limit'),
+                'x-app-limit-24hour-reset' => $response->header('x-app-limit-24hour-reset'),
+                'x-app-limit-24hour-remaining' => $response->header('x-app-limit-24hour-remaining'),
+                'x-response-time' => $response->header('x-response-time'),
             ],
         ];
     }

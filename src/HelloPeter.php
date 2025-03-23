@@ -48,7 +48,7 @@ class Hellopeter
      *
      * @param  array  $parameters  Optional parameters for filtering reviews
      */
-    public function getUnrepliedReviews(array $parameters = []): array
+    public function unrepliedReviews(array $parameters = []): array
     {
         $response = $this->client()->get('reviews', [
             'status' => 'unreplied,unreplied_comment',

@@ -13,7 +13,7 @@ test('getUser returns user information', function () {
     // Create Discord instance with test token
     $discord = new Discord('test_bot_token');
 
-    $result = $discord->getUser('123456789012345678');
+    $result = $discord->user('123456789012345678');
 
     expect($result)
         ->toBe($stub)

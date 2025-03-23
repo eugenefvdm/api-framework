@@ -3,7 +3,7 @@
 use Eugenefvdm\Api\Hellopeter;
 use Illuminate\Support\Facades\Http;
 
-test('getUnrepliedReviews returns empty reviews list', function () {
+test('unrepliedReviews returns empty reviews list', function () {
     $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/hellopeter/reviews/get_unreplied_empty.json'), true);
 
     Http::fake([
@@ -12,7 +12,7 @@ test('getUnrepliedReviews returns empty reviews list', function () {
 
     $helloPeter = new Hellopeter('test_api_key');
 
-    $result = $helloPeter->getUnrepliedReviews();
+    $result = $helloPeter->unrepliedReviews();
 
     expect($result)
         ->toBe($stub)

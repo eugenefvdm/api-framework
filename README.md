@@ -7,14 +7,14 @@ Another day, another API.
 
 A set of Laravel API service providers.
 
-- BulkSMS
-- Discord
-- Hello Peter
-- Slack
-- Telegram
-- WHM
-- X (Twitter)
-- ZADomains
+1. BulkSMS
+2. Discord
+3. Hello Peter
+4. Slack
+5. Telegram
+6. WHM
+7. X (Twitter)
+8. ZADomains
 
 ## Installation
 
@@ -78,10 +78,10 @@ use Eugenefvdm\Api\Facades\Bulksms;
 $bulkSMS = Bulksms::sendSMS("Hello SMS!", ["27600000000"]);
 
 use Eugenefvdm\Api\Facades\Discord;
-$discord = Discord::getUser("123456789012345678");
+$discord = Discord::user("123456789012345678");
 
 use Eugenefvdm\Api\Facades\Hellopeter;
-$hellopeterUnrepliedReviews = Hellopeter::getUnrepliedReviews();
+$hellopeterUnrepliedReviews = Hellopeter::unrepliedReviews();
 
 use Eugenefvdm\Api\Facades\Slack;
 $textSendResult = Slack::sendText("Hello Slack!");
