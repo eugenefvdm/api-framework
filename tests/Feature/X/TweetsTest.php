@@ -7,12 +7,12 @@ test('tweets returns user tweets with default limit', function () {
     $stub = json_decode(file_get_contents(__DIR__.'/../../stubs/x/tweets.json'), true);
 
     Http::fake([
-        'api.twitter.com/2/users/74251818/tweets*' => Http::response($stub, 200),
+        'api.twitter.com/2/users/12345678/tweets*' => Http::response($stub, 200),
     ]);
 
     $x = new X('test_bearer_token');
 
-    $result = $x->tweets('74251818');
+    $result = $x->tweets('12345678');
 
     expect($result)
         ->toBe($stub)
@@ -37,12 +37,12 @@ test('tweets returns user tweets with custom limit', function () {
     ];
 
     Http::fake([
-        'api.twitter.com/2/users/74251818/tweets*' => Http::response($modifiedStub, 200),
+        'api.twitter.com/2/users/12345678/tweets*' => Http::response($modifiedStub, 200),
     ]);
 
     $x = new X('test_bearer_token');
 
-    $result = $x->tweets('74251818', 3);
+    $result = $x->tweets('12345678', 3);
 
     expect($result)
         ->toBe($modifiedStub)

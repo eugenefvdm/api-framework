@@ -11,7 +11,7 @@ test('registrant returns owner email address', function () {
         ->with([
             'zadomains_username' => 'test_user',
             'zadomains_password' => 'test_pass',
-            'domainname' => 'fintechsystems.co.za',
+            'domainname' => 'example.co.za',
         ])
         ->andReturn((object) [
             'Domain_SelectResult' => json_encode($stub),
@@ -27,7 +27,7 @@ test('registrant returns owner email address', function () {
 
     $api->setClient($mockSoapClient);
 
-    $email = $api->registrant('fintechsystems.co.za');
+    $email = $api->registrant('example.co.za');
 
     expect($email)->toBe('user@example.com');
 });
