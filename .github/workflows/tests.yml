@@ -21,5 +21,8 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       
+    - name: Generate Autoloader
+      run: composer dump-autoload -o
+      
     - name: Execute tests
       run: vendor/bin/pest 
