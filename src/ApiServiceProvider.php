@@ -18,8 +18,7 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->singleton('api', function ($app) {
             return new ApiManager($app);
         });
-
-        // Register BulkSMS
+        
         $this->app->singleton(Bulksms::class, function ($app) {
             return new Bulksms(
                 Config::get('api.bulksms.username'),
@@ -28,15 +27,13 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Bulksms::class, 'bulksms');
 
-        // Register Discord
         $this->app->singleton(Discord::class, function ($app) {
             return new Discord(
                 Config::get('api.discord.bot_token'),
             );
         });
         $this->app->alias(Discord::class, 'discord');
-
-        // Register HelloPeter
+        
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
                 Config::get('api.hellopeter.api_key')
@@ -44,7 +41,6 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Hellopeter::class, 'hellopeter');
 
-        // Register Slack
         $this->app->singleton(Slack::class, function ($app) {
             return new Slack(
                 Config::get('api.slack.webhook_url')
@@ -52,7 +48,6 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Slack::class, 'slack');
 
-        // Register Telegram
         $this->app->singleton(Telegram::class, function ($app) {
             return new Telegram(
                 Config::get('api.telegram.bot_token'),
@@ -61,7 +56,6 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Telegram::class, 'telegram');
 
-        // Register ZADomains
         $this->app->singleton(Zadomains::class, function ($app) {
             return new Zadomains(
                 Config::get('api.zadomains.username'),
@@ -70,7 +64,6 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Zadomains::class, 'zadomains');
 
-        // Register WHM
         $this->app->singleton(Whm::class, function ($app) {
             return new Whm(
                 Config::get('api.whm.username'),
@@ -80,7 +73,6 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Whm::class, 'whm');
 
-        // Register X
         $this->app->singleton(X::class, function ($app) {
             return new X(
                 Config::get('api.x.bearer_token')
