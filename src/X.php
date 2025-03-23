@@ -79,18 +79,24 @@ class X
             'Accept' => 'application/json',
         ])->get("/users/by/username/{$username}");
 
+        $rateLimitReset = $response->header('x-rate-limit-reset');
+        $secondsUntilReset = $rateLimitReset ? max(0, $rateLimitReset - time()) : null;
+
         return [
             'data' => $response->json(),
             'headers' => [
                 'api-version' => $response->header('api-version'),
                 'date' => $response->header('date'),
                 'x-rate-limit-limit' => $response->header('x-rate-limit-limit'),
-                'x-rate-limit-reset' => $response->header('x-rate-limit-reset'),
+                'x-rate-limit-reset' => $rateLimitReset,
                 'x-rate-limit-remaining' => $response->header('x-rate-limit-remaining'),
                 'x-app-limit-24hour-limit' => $response->header('x-app-limit-24hour-limit'),
                 'x-app-limit-24hour-reset' => $response->header('x-app-limit-24hour-reset'),
                 'x-app-limit-24hour-remaining' => $response->header('x-app-limit-24hour-remaining'),
                 'x-response-time' => $response->header('x-response-time'),
+            ],
+            'extra' => [
+                'rate_limit_remaining_seconds' => $secondsUntilReset,
             ],
         ];
     }
