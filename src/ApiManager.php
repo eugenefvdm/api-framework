@@ -23,6 +23,11 @@ class ApiManager
         return $this->app->make('discord');
     }
 
+    public function dns()
+    {
+        return $this->app->make('dns');
+    }
+
     public function hellopeter()
     {
         return $this->app->make('hellopeter');

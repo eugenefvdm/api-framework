@@ -33,7 +33,12 @@ class ApiServiceProvider extends ServiceProvider
             );
         });
         $this->app->alias(Discord::class, 'discord');
-        
+
+        $this->app->singleton(Dns::class, function ($app) {
+            return new Dns();
+        });
+        $this->app->alias(Dns::class, 'dns');
+
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
                 Config::get('api.hellopeter.api_key')
