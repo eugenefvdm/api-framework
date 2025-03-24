@@ -75,7 +75,7 @@ return [
 
 ```php
 use Eugenefvdm\Api\Facades\Bulksms;
-$bulkSMS = Bulksms::sendSMS("Hello SMS!", ["27600000000"]);
+$bulkSms = Bulksms::sendSms("Hello SMS!", ["27600000000"]);
 
 use Eugenefvdm\Api\Facades\Discord;
 $discord = Discord::user("123456789012345678");

@@ -3,7 +3,7 @@
 use Eugenefvdm\Api\Bulksms;
 use Illuminate\Support\Facades\Http;
 
-test('sendSMS successfully sends a message', function () {
+test('sendSms successfully sends a message', function () {
     Http::fake([
         'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
     ]);
