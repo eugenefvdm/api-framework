@@ -5,6 +5,7 @@ namespace Eugenefvdm\Api\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static array NS(string $domain)
  *
  * @see \Eugenefvdm\Api\Dns
  */
