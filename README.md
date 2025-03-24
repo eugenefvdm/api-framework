@@ -93,9 +93,9 @@ use Eugenefvdm\Api\Facades\Whm;
 $whmBandwidth = Whm::bandwidth();
 
 use Eugenefvdm\Api\Facades\X;
-$userId = X::userId("eugenefvdm");
+$userId = X::userId("x_username");
 $tweets = X::tweets($userId['data']['id'], 5);
-$userWithLimits = X::userWithRateLimits("eugenefvdm");
+$userWithLimits = X::userWithRateLimits("x_username");
 
 use Eugenefvdm\Api\Facades\Zadomains;
 $zadomainsRegistrant = Zadomains::registrant("example.co.za");
