@@ -25,7 +25,7 @@ test('userWithRateLimits returns user data and rate limits', function () {
     $result = $x->userWithRateLimits('joebloggs');
 
     expect($result)
-        ->toHaveKeys(['data', 'headers'])
+        ->toHaveKeys(['data', 'headers', 'extra'])
         ->and($result['data'])->toBe($stub)
         ->and($result['headers'])->toHaveKeys([
             'api-version',
@@ -43,5 +43,6 @@ test('userWithRateLimits returns user data and rate limits', function () {
         ->and($result['headers']['x-app-limit-24hour-limit'])->toBe('1200000')
         ->and($result['headers']['x-app-limit-24hour-remaining'])->toBe('1199998')
         ->and($result['headers']['x-app-limit-24hour-reset'])->toBe('1738820163')
-        ->and($result['headers']['x-response-time'])->toBe('80');
+        ->and($result['headers']['x-response-time'])->toBe('80')
+        ->and($result['extra']['rate_limit_remaining_seconds'])->toBe(0);
 }); 
