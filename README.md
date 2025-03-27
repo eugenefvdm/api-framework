@@ -153,6 +153,20 @@ New contributions are super welcome!
     - For compound names, remove also don't capatalize (e.g., `Hellopeter`)
     - Getters should not be prepended by "get" (e.g., `message()` instead of `getMessage()`)
     - Setter should be prepended by "set", e.g. `setServer()`
+  - All API responses should follow this format:
+    ```php
+    // Success response
+    [
+        "status" => "success",
+        "output" => $output,
+    ]
+
+    // Error response
+    [
+        "status" => "error",
+        "output" => "Error message here",
+    ]
+    ```
 
 ### Need Help?
 
