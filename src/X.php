@@ -84,7 +84,7 @@ class X
         ])->get("/users/by/username/{$username}");
 
         $rateLimitReset = $response->header('x-rate-limit-reset');
-        $secondsUntilReset = $rateLimitReset ? max(0, $rateLimitReset - time()) : null;
+        $secondsUntilReset = $rateLimitReset ? max(0, (int) $rateLimitReset - time()) : null;
 
         return [
             'data' => $response->json(),

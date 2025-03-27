@@ -20,10 +20,15 @@ class Bulksms
     }
 
     /**
-     * Send SMS to multiple recipients
+     * Send an SMS message to multiple recipients
+     * 
+     * Formats:
+     * - Single number: `27639123456`
+     * - Comma-separated: `27639123456,27639123457,27639123458`
+     * - Array: `['27639123456', '27639123457', '27639123458']`
      *
      * @param  string  $message  The message to send
-     * @param  array|string  $recipients  Single number or array of numbers
+     * @param  string|mixed|array  $recipients  Single number, or numbers, or array of numbers
      * @return array Results of sending attempts
      */
     public function sendSms($message, $recipients)
@@ -32,7 +37,9 @@ class Bulksms
         if (is_string($recipients)) {
             // Split comma-separated string into array, and trim whitespace
             $recipients = array_map('trim', explode(',', $recipients));
-        } elseif (! is_array($recipients)) {
+        } elseif (is_array($recipients)) {
+            // already an array, do nothing
+        } else {
             $recipients = [$recipients];
         }
 

@@ -1,6 +1,6 @@
 {
     "name": "eugenefvdm/api-collection",
-    "description": "APIs for various services",
+    "description": "APIs for various services with Laravel Facade access and lots of automated tests.",
     "license": "MIT",
     "keywords": [
         "api",
@@ -9,9 +9,12 @@
         "php",
         "bulksms",
         "discord",
+        "fail2ban",
         "hellopeter",
         "slack",
+        "tail",
         "telegram",
+        "whm/cPanel",
         "zadomains"
     ],
     "authors": [
@@ -31,8 +34,9 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.9",
+        "larastan/larastan": "^3.2",
         "laravel/pint": "^1.0",
-        "mockery/mockery": "^1.6",
+        "mockery/mockery": "^1.6",        
         "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
         "pestphp/pest": "^3.7"
     },
