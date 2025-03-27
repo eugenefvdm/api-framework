@@ -1,4 +1,4 @@
 /vendor/
 .env
 composer.lock
-tinkerwell.test
+tinkerwell.test.php
