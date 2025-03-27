@@ -129,8 +129,26 @@ Each call is tested using stubs which doubles as a handy reference.
 
 ## Contribution Guidelines
 
-- Make a pull request
-- For each new API and API call, add a feature test with a stub. See the existing examples. Be thorough and make sure the stubs are redacted.
-- Many APIs are brand names. Example, BulkSMS, ZADomains, etc. To avoid confusion with casing, just capatilize the first letter. Even if it's compound names, like Hello[ ]Peter, use `Hellopeter` for the name of the API.
-- Getters are not prepended by "get", e.g. getMessage() will be messge().
-- If you're too busy to add a new API, or a new API call, contact me and I'll oblige where I can: eugene (at) vander.host or +27 82 309-6710.
+New contributions are super welcome!
+
+1. Fork the repository
+2. Create a new branch for your changes (`git checkout -b feature/amazing-api`)
+3. Make your changes
+4. Run the tests (`vendor/bin/pest`)
+5. Submit a pull request
+
+### Code Style & Standards
+
+- Pint is installed, so simply run `vendor/bin/pint` to make your code clean
+- For new APIs and API calls:
+  - Add feature tests with stubs (see existing examples)
+  - Ensure stubs are redacted of sensitive information
+  - Follow the existing naming conventions:
+    - Capitalize only the first letter of API's name (e.g., `BulkSms`, `Zadomains`)
+    - For compound names, remove also don't capatalize (e.g., `Hellopeter`)
+    - Getters should not be prepended by "get" (e.g., `message()` instead of `getMessage()`)
+    - Setter should be prepended by "set", e.g. `setServer()`
+
+### Need Help?
+
+If you have an idea for a new API or API call but don't have time to implement it, feel free to open a new issue to see if we can do an implementation.
