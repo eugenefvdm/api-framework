@@ -7,12 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  pest-tests:
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Checkout code
+    - name: Checkout out code
       uses: actions/checkout@v4    
         
     - name: Setup PHP
