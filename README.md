@@ -103,7 +103,7 @@ $textSendResult = Slack::sendText("Hello Slack!");
 
 use Eugenefvdm\Api\Facades\Tail;
 Tail::setServer("username", "hostname", 22);
-$mailLogs = Tail::last("storm@vander.host", 1); // 1 = number of entries (optional)
+$mailLogs = Tail::last("user@example.com", 1); // 1 = number of entries (optional)
 
 use Eugenefvdm\Api\Facades\Telegram;
 $messageSendResult = Telegram::sendMessage("Hi Telegram!");
