@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/eugenefvdm/api-collection/actions/workflows/tests.yml/badge.svg)](https://github.com/eugenefvdm/api-collection/actions/workflows/tests.yml)
 [![Downloads](https://img.shields.io/packagist/dt/eugenefvdm/api-collection.svg)](https://packagist.org/packages/eugenefvdm/api-collection)
-[![Larastan](https://img.shields.io/badge/Larastan-Level%208-brightgreen.svg?style=flat)](https://github.com/nunomaduro/larastan)
+[![Larastan](https://img.shields.io/badge/Larastan-Level%210-brightgreen.svg?style=flat)](https://github.com/nunomaduro/larastan)
 
 Another day, another API.
 
