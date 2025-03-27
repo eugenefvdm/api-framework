@@ -18,7 +18,7 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->singleton('api', function ($app) {
             return new ApiManager($app);
         });
-        
+
         $this->app->singleton(Bulksms::class, function ($app) {
             return new Bulksms(
                 Config::get('api.bulksms.username'),
@@ -35,9 +35,14 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->alias(Discord::class, 'discord');
 
         $this->app->singleton(Dns::class, function ($app) {
-            return new Dns();
+            return new Dns;
         });
         $this->app->alias(Dns::class, 'dns');
+
+        $this->app->singleton(Fail2ban::class, function ($app) {
+            return new Fail2ban;
+        });
+        $this->app->alias(Fail2ban::class, 'fail2ban');
 
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
@@ -52,6 +57,11 @@ class ApiServiceProvider extends ServiceProvider
             );
         });
         $this->app->alias(Slack::class, 'slack');
+
+        $this->app->singleton(Tail::class, function ($app) {
+            return new Tail;
+        });
+        $this->app->alias(Tail::class, 'tail');
 
         $this->app->singleton(Telegram::class, function ($app) {
             return new Telegram(

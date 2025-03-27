@@ -12,10 +12,11 @@ A set of Laravel API service providers.
 3. DNS
 4. Hello Peter
 5. Slack
-6. Telegram
-7. WHM
-8. X (Twitter)
-9. ZADomains
+6. Tail
+7. Telegram
+8. WHM
+9. X (Twitter)
+10. ZADomains
 
 ## Installation
 
@@ -89,6 +90,10 @@ $hellopeterUnrepliedReviews = Hellopeter::unrepliedReviews();
 
 use Eugenefvdm\Api\Facades\Slack;
 $textSendResult = Slack::sendText("Hello Slack!");
+
+use Eugenefvdm\Api\Facades\Tail;
+Tail::setServer("username", "hostname", 22);
+$mailLogs = Tail::last("storm@vander.host", 1);
 
 use Eugenefvdm\Api\Facades\Telegram;
 $messageSendResult = Telegram::sendMessage("Hi Telegram!");

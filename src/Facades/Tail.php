@@ -5,13 +5,12 @@ namespace Eugenefvdm\Api\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array userId(string $username)
- * @method static array tweets(string $userId, int $maxResults = 5)
- * @method static array userWithRateLimits(string $username)
+ * @method static \Eugenefvdm\Api\Tail setServer(string $username, string $hostname, int $port = 22)
+ * @method static array last(string $value, int $count = 1)
  *
- * @see \Eugenefvdm\Api\X
+ * @see \Eugenefvdm\Api\Tail
  */
-class X extends Facade
+class Tail extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -20,6 +19,6 @@ class X extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'x';
+        return 'tail';
     }
 }

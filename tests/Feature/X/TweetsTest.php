@@ -26,14 +26,14 @@ test('tweets returns user tweets with custom limit', function () {
     $json = file_get_contents(__DIR__.'/../../stubs/x/tweets.json');
     $stub = json_decode($json, true);
 
-    if (!is_array($stub) || !isset($stub['data']) || !isset($stub['meta'])) {
+    if (! is_array($stub) || ! isset($stub['data']) || ! isset($stub['meta'])) {
         throw new \RuntimeException('Invalid JSON structure in tweets.json stub');
     }
 
     // Create a new array with the modified data
     $modifiedStub = [
         'data' => array_slice($stub['data'], 0, 3),
-        'meta' => array_merge($stub['meta'], ['result_count' => 3])
+        'meta' => array_merge($stub['meta'], ['result_count' => 3]),
     ];
 
     Http::fake([
@@ -49,4 +49,4 @@ test('tweets returns user tweets with custom limit', function () {
         ->and($result['data'])->toBeArray()
         ->and($result['data'])->toHaveCount(3)
         ->and($result['meta']['result_count'])->toBe(3);
-}); 
+});

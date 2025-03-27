@@ -20,4 +20,4 @@ test('userId returns user data', function () {
         ->and($result['data']['id'])->toBe('12345678')
         ->and($result['data']['name'])->toBe('Joe Bloggs')
         ->and($result['data']['username'])->toBe('joebloggs');
-}); 
+});

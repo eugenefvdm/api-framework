@@ -21,10 +21,9 @@ test('bandwidth returns bandwidth information', function () {
     expect($result['bandwidth'][0]['acct'][1]['maindomain'])->toBe('example2.com');
     expect($result['bandwidth'][0]['acct'][1]['totalbytes'])->toBe(8179292839);
 
-
     Http::assertSent(function ($request) {
         return $request->url() === 'https://test.example.com:2087/json-api/showbw'
             && $request->method() === 'GET'
             && $request->header('Authorization')[0] === 'WHM test_user:test_pass';
     });
-}); 
+});

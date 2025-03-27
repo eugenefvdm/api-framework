@@ -20,4 +20,4 @@ test('tweets returns rate limit error when limit is hit', function () {
         ->and($result['detail'])->toBe('Too Many Requests')
         ->and($result['type'])->toBe('about:blank')
         ->and($result['status'])->toBe(429);
-}); 
+});

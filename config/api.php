@@ -36,5 +36,5 @@ return [
     'zadomains' => [
         'username' => env('ZADOMAINS_USERNAME'),
         'password' => env('ZADOMAINS_PASSWORD'),
-    ],    
+    ],
 ];

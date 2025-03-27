@@ -14,13 +14,13 @@ test('sendSms successfully sends a message', function () {
     $result = $bulkSms->sendSms('Hello!', ['27823096710']);
 
     expect($result['27823096710'])->toHaveKeys([
-                'success',
-                'details',
-                'http_status_code',
-                'api_status_code',
-                'api_message',
-                'api_batch_id'
-            ])
+        'success',
+        'details',
+        'http_status_code',
+        'api_status_code',
+        'api_message',
+        'api_batch_id',
+    ])
         ->and($result['27823096710']['success'])->toBe(1)
         ->and($result['27823096710']['http_status_code'])->toBe(200)
         ->and($result['27823096710']['api_status_code'])->toBe('0')

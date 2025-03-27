@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Http;
 class X
 {
     private string $bearerToken;
+
     private string $baseUrl = 'https://api.twitter.com/2';
+
     private ?PendingRequest $client = null;
 
     public function __construct(string $bearerToken)
@@ -49,6 +51,7 @@ class X
     public function userId(string $username): array
     {
         $response = $this->client()->get("/users/by/username/{$username}");
+
         return $response->json();
     }
 
@@ -64,6 +67,7 @@ class X
         $response = $this->client()->get("/users/{$userId}/tweets", [
             'max_results' => $maxResults,
         ]);
+
         return $response->json();
     }
 
@@ -100,4 +104,4 @@ class X
             ],
         ];
     }
-} 
+}

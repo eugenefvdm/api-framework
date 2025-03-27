@@ -28,6 +28,11 @@ class ApiManager
         return $this->app->make('dns');
     }
 
+    public function fail2ban()
+    {
+        return $this->app->make('fail2ban');
+    }
+
     public function hellopeter()
     {
         return $this->app->make('hellopeter');
@@ -36,6 +41,11 @@ class ApiManager
     public function slack()
     {
         return $this->app->make('slack');
+    }
+
+    public function tail()
+    {
+        return $this->app->make('tail');
     }
 
     public function telegram()

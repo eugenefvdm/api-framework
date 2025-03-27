@@ -45,4 +45,4 @@ test('userWithRateLimits returns user data and rate limits', function () {
         ->and($result['headers']['x-app-limit-24hour-reset'])->toBe('1738820163')
         ->and($result['headers']['x-response-time'])->toBe('80')
         ->and($result['extra']['rate_limit_remaining_seconds'])->toBe(0);
-}); 
+});

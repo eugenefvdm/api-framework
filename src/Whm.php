@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Http;
 class Whm
 {
     private ?PendingRequest $client = null;
+
     private string $username;
+
     private string $password;
+
     private string $server;
 
     /**
@@ -17,7 +20,7 @@ class Whm
      *
      * @param  string  $username  Whm username
      * @param  string  $password  Whm password
-     * @param  string  $server    Whm server URL (e.g. https://server.example.com:2087)
+     * @param  string  $server  Whm server URL (e.g. https://server.example.com:2087)
      */
     public function __construct(string $username, string $password, string $server)
     {
@@ -34,7 +37,7 @@ class Whm
         if (! $this->client) {
             $this->client = Http::baseUrl($this->server)
                 ->withHeaders([
-                    'Authorization' => 'WHM ' . $this->username . ':' . $this->password,
+                    'Authorization' => 'WHM '.$this->username.':'.$this->password,
                 ])
                 ->withoutVerifying();
         }
