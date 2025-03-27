@@ -42,7 +42,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Eugenefvdm\\Api\\": "src"
+            "Eugenefvdm\\Api\\": "src/"
         }
     },
     "autoload-dev": {

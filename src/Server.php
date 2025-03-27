@@ -29,7 +29,7 @@ abstract class Server implements ServerInterface
         if (!$this->server) {
             return [
                 'status' => 'error',
-                'error' => 'Server configuration not set. Use setServer() first.',
+                'output' => 'Server configuration not set. Use setServer() first.',
             ];
         }
 
@@ -45,7 +45,7 @@ abstract class Server implements ServerInterface
 
         return [
             'status' => 'error',
-            'error' => $process->getErrorOutput(),
+            'output' => $process->getErrorOutput(),
         ];
     }
 }
