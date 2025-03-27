@@ -51,9 +51,7 @@ class Zadomains
     public function registrant(string $domainName): string
     {
         $result = $this->getDomainSelect($domainName);
-        $data = json_decode($result->Domain_SelectResult, true);
-
-        ray($data);
+        $data = json_decode($result->Domain_SelectResult, true);        
 
         if (! isset($data['Response_Value'])) {
             throw new \RuntimeException('Unable to fetch registrant information');

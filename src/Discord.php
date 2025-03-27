@@ -28,6 +28,6 @@ class Discord
             'Content-Type' => 'application/json',
         ])->get($url);
 
-        return $response->json();
+        return (array)$response->json();
     }
 }

@@ -7,8 +7,8 @@ parameters:
     paths:
         - src/
 
-    # Level 10 is the highest level
-    level: 7
+    # Level 8 is what we're aiming for
+    level: 8
 
     ignoreErrors:
         # Ignore missingType.iterableValue errors globally

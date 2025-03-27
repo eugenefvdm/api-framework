@@ -52,7 +52,7 @@ class Whm
      */
     public function bandwidth(): array
     {
-        return $this->client()->get('/json-api/showbw')->json();
+        return (array)$this->client()->get('/json-api/showbw')->json();
     }
 
     /**
