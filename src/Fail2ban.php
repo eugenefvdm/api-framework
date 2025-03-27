@@ -6,7 +6,7 @@ class Fail2ban extends AbstractServer
 {
     public function first(string $value): array
     {
-        $command = "grep {$value} /var/log/fail2ban.log.1 || grep {$value} /var/log/fail2ban.log";
+        $command = "grep {$value} /var/log/fail2ban.log.1 | head -n 1 || grep {$value} /var/log/fail2ban.log | head -n 1";
 
         return $this->executeCommand($command);
     }

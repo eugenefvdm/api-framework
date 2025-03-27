@@ -10,13 +10,14 @@ A set of Laravel API service providers.
 1. BulkSMS
 2. Discord
 3. DNS
-4. Hello Peter
-5. Slack
-6. Tail
-7. Telegram
-8. WHM
-9. X (Twitter)
-10. ZADomains
+4. Fail2ban
+5. Hello Peter
+6. Slack
+7. Tail
+8. Telegram
+9. WHM
+10. X (Twitter)
+11. ZADomains
 
 ## Installation
 
@@ -85,6 +86,10 @@ $discord = Discord::user("123456789012345678");
 use Eugenefvdm\Api\Facades\Dns;
 $nameservers = Dns::NS("example.com");
 
+use Eugenefvdm\Api\Facades\Fail2ban;
+$firstFail2banEntry = Fail2ban::first("192.168.1.1");
+$lastFail2banEntry = Fail2ban::last("192.168.1.1");
+
 use Eugenefvdm\Api\Facades\Hellopeter;
 $hellopeterUnrepliedReviews = Hellopeter::unrepliedReviews();
 
@@ -92,8 +97,8 @@ use Eugenefvdm\Api\Facades\Slack;
 $textSendResult = Slack::sendText("Hello Slack!");
 
 use Eugenefvdm\Api\Facades\Tail;
-Tail::setServer("username", "hostname", 22);
-$mailLogs = Tail::last("storm@vander.host", 1);
+Tail::setServer("username", "hostname", 22); // Port is optional
+$mailLogs = Tail::last("storm@vander.host", 1); // 1 = number of entries (optional)
 
 use Eugenefvdm\Api\Facades\Telegram;
 $messageSendResult = Telegram::sendMessage("Hi Telegram!");

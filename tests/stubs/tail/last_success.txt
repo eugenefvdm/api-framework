@@ -1,4 +1,4 @@
 Mar 24 10:15:23 mail-server postfix/smtpd[1234]: connect from unknown[192.168.1.100]
 Mar 24 10:15:24 mail-server postfix/smtpd[1234]: 7A9B8C1D2E: client=unknown[192.168.1.100]
 Mar 24 10:15:25 mail-server postfix/cleanup[1235]: 7A9B8C1D2E: message-id=<test@example.com>
-Mar 24 10:15:26 mail-server postfix/qmgr[1236]: 7A9B8C1D2E: from=<storm@vander.host>, size=1234, nrcpt=1 (queue active) 
+Mar 24 10:15:26 mail-server postfix/qmgr[1236]: 7A9B8C1D2E: from=<user@example.com>, size=1234, nrcpt=1 (queue active) 

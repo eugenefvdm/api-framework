@@ -1,0 +1,45 @@
+<?php
+
+use Eugenefvdm\Api\Tail;
+
+test('last returns mail log entries', function () {
+    $stub = file_get_contents(__DIR__.'/../stubs/tail/last_success.txt');
+
+    $tail = Mockery::mock(Tail::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $tail->shouldReceive('executeCommand')
+        ->once()
+        ->with('cat /var/log/mail.log | grep user@example.com | tail -n 1')
+        ->andReturn([
+            'status' => 'success',
+            'output' => $stub
+        ]);
+
+    $tail->setServer('test_user', 'test_host', 22);
+    $result = $tail->last('user@example.com');
+
+    expect($result)
+        ->toBeArray()
+        ->toHaveKeys(['status', 'output'])
+        ->and($result['status'])->toBe('success')
+        ->and($result['output'])->toBe($stub);
+});
+
+test('last returns error when command fails', function () {
+    $tail = Mockery::mock(Tail::class)->makePartial()->shouldAllowMockingProtectedMethods();
+    $tail->shouldReceive('executeCommand')
+        ->once()
+        ->with('cat /var/log/mail.log | grep user@example.com | tail -n 1')
+        ->andReturn([
+            'status' => 'error',
+            'error' => 'Permission denied'
+        ]);
+
+    $tail->setServer('test_user', 'test_host', 22);
+    $result = $tail->last('user@example.com');
+
+    expect($result)
+        ->toBeArray()
+        ->toHaveKeys(['status', 'error'])
+        ->and($result['status'])->toBe('error')
+        ->and($result['error'])->toBe('Permission denied');
+});
