@@ -96,7 +96,7 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->alias(X::class, 'x');
     }
 
-    public function boot()
+    public function boot() : void
     {
         // Bootstrap your package
         // Load routes, views, migrations, etc.

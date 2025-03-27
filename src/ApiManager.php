@@ -2,68 +2,66 @@
 
 namespace Eugenefvdm\Api;
 
+use Illuminate\Contracts\Foundation\Application;
+
 class ApiManager
 {
-    protected $app;
-
-    protected $services = [];
-
-    public function __construct($app)
+    public function __construct(private Application $app)
     {
         $this->app = $app;
     }
 
-    public function bulksms()
+    public function bulksms() : Bulksms
     {
         return $this->app->make('bulksms');
     }
 
-    public function discord()
+    public function discord() : Discord
     {
         return $this->app->make('discord');
     }
 
-    public function dns()
+    public function dns() : Dns
     {
         return $this->app->make('dns');
     }
 
-    public function fail2ban()
+    public function fail2ban() : Fail2ban
     {
         return $this->app->make('fail2ban');
     }
 
-    public function hellopeter()
+    public function hellopeter() : Hellopeter
     {
         return $this->app->make('hellopeter');
     }
 
-    public function slack()
+    public function slack() : Slack
     {
         return $this->app->make('slack');
     }
 
-    public function tail()
+    public function tail() : Tail
     {
         return $this->app->make('tail');
     }
 
-    public function telegram()
+    public function telegram() : Telegram
     {
         return $this->app->make('telegram');
     }
 
-    public function zadomains()
+    public function zadomains() : Zadomains
     {
         return $this->app->make('zadomains');
     }
 
-    public function whm()
+    public function whm() : Whm
     {
         return $this->app->make('whm');
     }
 
-    public function x()
+    public function x() : X
     {
         return $this->app->make('x');
     }
@@ -71,10 +69,10 @@ class ApiManager
     /**
      * Magic method to dynamically access services
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments) : mixed
     {
         if ($this->app->bound($name)) {
-            return $this->app->make($name);
+            return $this->app->make($name, $arguments);
         }
 
         throw new \InvalidArgumentException("API service [$name] not found.");

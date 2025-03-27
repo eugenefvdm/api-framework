@@ -8,10 +8,14 @@ parameters:
         - src/
 
     # Level 10 is the highest level
-    level: 5
+    level: 6
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    ignoreErrors:
+        # Ignore missingType.iterableValue errors globally
+        #- '#missingType\.iterableValue#'
+        - '#no value type specified in iterable type array#'
+        #- '#^Access to an undefined property App\\Foo\:\:\$bar\.$#'
+#       - '#PHPDoc tag @var#'
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php

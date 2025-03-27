@@ -4,7 +4,7 @@ namespace Eugenefvdm\Api;
 
 class Dns
 {
-    public function MX(string $domain, $preferNative = false)
+    public function MX(string $domain, bool $preferNative = false): array
     {
         if (! $preferNative) {
             $results = shell_exec("dig +tries=2 +short MX $domain");

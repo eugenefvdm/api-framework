@@ -6,17 +6,10 @@ use Illuminate\Support\Facades\Http;
 
 class Bulksms
 {
-    private $username;
+    private string $url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
 
-    private $password;
-
-    private $url;
-
-    public function __construct($username, $password)
+    public function __construct(private string $username, private string $password)
     {
-        $this->username = $username;
-        $this->password = $password;
-        $this->url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
     }
 
     /**
@@ -28,19 +21,15 @@ class Bulksms
      * - Array: `['27639123456', '27639123457', '27639123458']`
      *
      * @param  string  $message  The message to send
-     * @param  string|mixed|array  $recipients  Single number, or numbers, or array of numbers
+     * @param  string|array  $recipients  Single number, or numbers, or array of numbers
      * @return array Results of sending attempts
      */
-    public function sendSms($message, $recipients)
+    public function sendSms(string $message, string|array $recipients)
     {
         // Handle different input types for recipients
         if (is_string($recipients)) {
             // Split comma-separated string into array, and trim whitespace
             $recipients = array_map('trim', explode(',', $recipients));
-        } elseif (is_array($recipients)) {
-            // already an array, do nothing
-        } else {
-            $recipients = [$recipients];
         }
 
         // Filter out empty values that might come from the .env
@@ -54,7 +43,7 @@ class Bulksms
         return $results;
     }
 
-    private function sendToSingleRecipient($message, $recipient)
+    private function sendToSingleRecipient(string $message, string $recipient) : array
     {
         $post_body = $this->seven_bit_sms($message, $recipient);
         $result = $this->send_message($post_body);
@@ -62,7 +51,7 @@ class Bulksms
         return $result;
     }
 
-    private function seven_bit_sms($message, $msisdn)
+    private function seven_bit_sms(string $message, string $msisdn) : string
     {
         $post_fields = [
             'username' => $this->username,
@@ -76,7 +65,7 @@ class Bulksms
         return $this->make_post_body($post_fields);
     }
 
-    private function make_post_body($post_fields)
+    private function make_post_body(array $post_fields) : string
     {
         $stop_dup_id = $this->make_stop_dup_id();
         if ($stop_dup_id > 0) {
@@ -91,7 +80,7 @@ class Bulksms
         return $post_body;
     }
 
-    private function character_resolve($body)
+    private function character_resolve(string $body) : string
     {
         $special_chrs = [
             'Δ' => 0xD0, 'Φ' => 0xDE, 'Γ' => 0xAC, 'Λ' => 0xC2, 'Ω' => 0xDB,
@@ -120,12 +109,12 @@ class Bulksms
         return $ret_msg;
     }
 
-    private function make_stop_dup_id()
+    private function make_stop_dup_id() : int
     {
         return 0;
     }
 
-    private function send_message($post_body)
+    private function send_message(string $post_body) : array
     {
         try {
             $response = Http::timeout(20)

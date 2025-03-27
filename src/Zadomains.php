@@ -9,11 +9,7 @@ class Zadomains
 {
     private SoapClient $client;
 
-    private $username;
-
-    private $password;
-
-    private $wsdl = 'http://www.zadomains.net/api/API_GENERAL.asmx?WSDL';
+    private string $wsdl = 'http://www.zadomains.net/api/API_GENERAL.asmx?WSDL';
 
     /**
      * Constructor
@@ -23,7 +19,7 @@ class Zadomains
      *
      * @throws SoapFault
      */
-    public function __construct($username, $password)
+    public function __construct(private string $username, private string $password)
     {
         $this->username = $username;
         $this->password = $password;

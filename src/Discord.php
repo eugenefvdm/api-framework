@@ -6,11 +6,9 @@ use Illuminate\Support\Facades\Http;
 
 class Discord
 {
-    private $botToken;
+    private string $baseUrl = 'https://discord.com/api/v10';
 
-    private $baseUrl = 'https://discord.com/api/v10';
-
-    public function __construct(string $botToken)
+    public function __construct(private string $botToken)
     {
         $this->botToken = $botToken;
     }
