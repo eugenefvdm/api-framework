@@ -18,5 +18,8 @@ jobs:
         with:
           php-version: '8.3'
       
+      - name: Install Composer dependencies
+        run: composer install -q --prefer-dist --no-progress
+      
       - name: Run Larastan
         run: php vendor/bin/phpstan analyse
