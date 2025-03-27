@@ -4,17 +4,22 @@ namespace Eugenefvdm\Api;
 
 use Eugenefvdm\Api\Contracts\ServerInterface;
 
-abstract class AbstractServer implements ServerInterface
+class ServerConfig
 {
-    protected ?object $server = null;
+    public function __construct(
+        public readonly string $username,
+        public readonly string $hostname,
+        public readonly int $ssh_port,
+    ) {}
+}
+
+abstract class Server implements ServerInterface
+{
+    protected ?ServerConfig $server = null;
 
     public function setServer(string $username, string $hostname, int $port = 22): self
     {
-        $this->server = (object) [
-            'username' => $username,
-            'hostname' => $hostname,
-            'ssh_port' => $port,
-        ];
+        $this->server = new ServerConfig($username, $hostname, $port);
 
         return $this;
     }

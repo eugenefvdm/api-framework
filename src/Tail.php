@@ -2,7 +2,7 @@
 
 namespace Eugenefvdm\Api;
 
-class Tail extends AbstractServer
+class Tail extends Server
 {
     public function last(string $value, int $count = 1): array
     {

@@ -4,10 +4,14 @@ namespace Eugenefvdm\Api;
 
 class Dns
 {
-    public function MX(string $domain, bool $preferNative = false): array
+    public function MX(string $domain, bool $useDig = false): array|false|null
     {
-        if (! $preferNative) {
+        if ($useDig) {
             $results = shell_exec("dig +tries=2 +short MX $domain");
+            
+            if (!is_string($results)) {
+                return false;
+            }
 
             $lines = explode("\n", $results);
 

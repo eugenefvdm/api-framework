@@ -16,7 +16,7 @@ A set of Laravel API service providers.
 6. Slack
 7. Tail
 8. Telegram
-9. WHM
+9. WHM/cPanel
 10. X (Twitter)
 11. ZADomains
 
@@ -85,7 +85,10 @@ use Eugenefvdm\Api\Facades\Discord;
 $discord = Discord::user("123456789012345678");
 
 use Eugenefvdm\Api\Facades\Dns;
-$nameservers = Dns::NS("example.com");
+$nameservers = Dns::NS("example.com"); // Use PHP native
+
+use Eugenefvdm\Api\Facades\Dns;
+$nameservers = Dns::NS("example.com", true); // Use Dig
 
 use Eugenefvdm\Api\Facades\Fail2ban;
 Fail2ban:setServer("username", "hostname", 22); // Port is optional
@@ -135,7 +138,8 @@ New contributions are super welcome!
 1. Fork the repository
 2. Create a new branch for your changes (`git checkout -b feature/amazing-api`)
 3. Make your changes
-4. Run the tests (`vendor/bin/pest`)
+4. Run the tests (`./vendor/bin/pest`)
+5. Run Larastan (`./vendor/bin/phpstan analyse`)
 5. Submit a pull request
 
 ### Code Style & Standards

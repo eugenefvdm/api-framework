@@ -2,7 +2,7 @@
 
 namespace Eugenefvdm\Api;
 
-class Fail2ban extends AbstractServer
+class Fail2ban extends Server
 {
     public function first(string $value): array
     {
