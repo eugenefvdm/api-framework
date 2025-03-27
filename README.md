@@ -87,6 +87,7 @@ use Eugenefvdm\Api\Facades\Dns;
 $nameservers = Dns::NS("example.com");
 
 use Eugenefvdm\Api\Facades\Fail2ban;
+Fail2ban:setServer("username", "hostname", 22); // Port is optional
 $firstFail2banEntry = Fail2ban::first("192.168.1.1");
 $lastFail2banEntry = Fail2ban::last("192.168.1.1");
 
@@ -97,7 +98,7 @@ use Eugenefvdm\Api\Facades\Slack;
 $textSendResult = Slack::sendText("Hello Slack!");
 
 use Eugenefvdm\Api\Facades\Tail;
-Tail::setServer("username", "hostname", 22); // Port is optional
+Tail::setServer("username", "hostname", 22);
 $mailLogs = Tail::last("storm@vander.host", 1); // 1 = number of entries (optional)
 
 use Eugenefvdm\Api\Facades\Telegram;
