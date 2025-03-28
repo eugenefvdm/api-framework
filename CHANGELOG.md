@@ -1,3 +1,7 @@
+# 28 March 2025
+
+- Renamed composer package name from `api-collection` to `api-framework`
+
 # 21 March 2025
 
 - Updated README.md file to specify new examples for testing

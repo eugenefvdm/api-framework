@@ -4,7 +4,14 @@ namespace Eugenefvdm\Api;
 
 class Dns
 {
-    public function MX(string $domain, bool $useDig = false): array
+    /**
+     * Get MX records for a domain using dig or PHP native
+     * 
+     * @param string $domain 
+     * @param bool $useDig 
+     * @return array 
+     */
+    public function MX(string $domain, bool $useDig = true): array
     {
         if ($useDig) {
             $results = shell_exec("dig +tries=2 +short MX $domain");

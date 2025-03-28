@@ -1,20 +1,23 @@
 {
-    "name": "eugenefvdm/api-collection",
+    "name": "eugenefvdm/api-framework",
     "description": "APIs for various services with Laravel Facade access and lots of automated tests.",
     "license": "MIT",
     "keywords": [
         "api",
         "apis",
+        "facade",
         "laravel",
         "php",
         "bulksms",
         "discord",
+        "dns",
         "fail2ban",
         "hellopeter",
         "slack",
         "tail",
         "telegram",
         "whm/cPanel",
+        "x/twitter",
         "zadomains"
     ],
     "authors": [
