@@ -37,6 +37,14 @@ abstract class Server implements ServerInterface
             ->execute($command);
 
         if ($process->isSuccessful()) {
+            // If the output is empty, return an error that nothing was found
+            if (empty($process->getOutput())) {
+                return [
+                    'status' => 'success',
+                    'output' => 'Nothing was found',
+                ];
+            }
+
             return [
                 'status' => 'success',
                 'output' => $process->getOutput(),
