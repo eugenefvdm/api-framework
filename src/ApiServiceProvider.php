@@ -3,7 +3,8 @@
 namespace Eugenefvdm\Api;
 
 use Illuminate\Support\ServiceProvider;
-
+use Eugenefvdm\Api\Contracts\TailInterface;
+use Eugenefvdm\Api\Contracts\Fail2banInterface;
 class ApiServiceProvider extends ServiceProvider
 {
     /**
@@ -38,10 +39,10 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Dns::class, 'dns');
 
-        $this->app->singleton(Fail2ban::class, function ($app) {
+        $this->app->singleton(Fail2banInterface::class, function ($app) {
             return new Fail2ban;
         });
-        $this->app->alias(Fail2ban::class, 'fail2ban');
+        $this->app->alias(Fail2banInterface::class, 'fail2ban');
 
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
@@ -57,10 +58,11 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Slack::class, 'slack');
 
-        $this->app->singleton(Tail::class, function ($app) {
+        // Single binding for Tail that handles both interface and concrete class
+        $this->app->singleton(TailInterface::class, function ($app) {
             return new Tail;
         });
-        $this->app->alias(Tail::class, 'tail');
+        $this->app->alias(TailInterface::class, 'tail');
 
         $this->app->singleton(Telegram::class, function ($app) {
             return new Telegram(

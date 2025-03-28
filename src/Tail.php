@@ -2,7 +2,9 @@
 
 namespace Eugenefvdm\Api;
 
-class Tail extends Server
+use Eugenefvdm\Api\Contracts\TailInterface;
+
+class Tail extends Server implements TailInterface
 {
     public function last(string $value, int $count = 1): array
     {
