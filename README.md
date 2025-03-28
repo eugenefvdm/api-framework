@@ -1,8 +1,8 @@
-# API Collection
+# API Framework
 
-[![Tests](https://github.com/eugenefvdm/api-collection/actions/workflows/tests.yml/badge.svg)](https://github.com/eugenefvdm/api-collection/actions/workflows/tests.yml)
-[![Larastan](https://github.com/eugenefvdm/api-collection/actions/workflows/larastan.yml/badge.svg)](https://github.com/eugenefvdm/api-collection/actions/workflows/larastan.yml)
-[![Downloads](https://img.shields.io/packagist/dt/eugenefvdm/api-collection.svg)](https://packagist.org/packages/eugenefvdm/api-collection)
+[![Tests](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml)
+[![Larastan](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml)
+[![Downloads](https://img.shields.io/packagist/dt/eugenefvdm/api-framework.svg)](https://packagist.org/packages/eugenefvdm/api-framework)
 
 Another day, another API.
 
@@ -23,7 +23,7 @@ A set of Laravel API service providers.
 ## Installation
 
 ```bash
-composer require eugenefvdm/api-collection
+composer require eugenefvdm/api-framework
 ```
 
 ## Publish the configuration file
@@ -128,7 +128,7 @@ vendor/bin/pest
 
 ## Design philosophy
 
-APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? This library collection gives you the power of many APIs in one package. It's minimalist and uses Laravel's facades for easy access.
+APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? This framework gives you the power of many APIs in one package. It's minimalist and uses Laravel's facades for easy access.
 Each call is tested using stubs which doubles as a handy reference.
 
 ## Contribution Guidelines

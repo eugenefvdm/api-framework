@@ -11,7 +11,7 @@ test('sendText returns true on successful webhook call', function () {
 
     $slack = new Slack('https://hooks.slack.com/services/test/webhook');
 
-    $result = $slack->sendText('Hello testing from API collection');
+    $result = $slack->sendText('Hello testing from API framework');
 
     // Assert the message was sent successfully
     expect($result)->toBeTrue();
@@ -20,7 +20,7 @@ test('sendText returns true on successful webhook call', function () {
     Http::assertSent(function ($request) {
         return $request->url() === 'https://hooks.slack.com/services/test/webhook'
             && $request->method() === 'POST'
-            && $request['text'] === 'Hello testing from API collection';
+            && $request['text'] === 'Hello testing from API framework';
     });
 });
 
@@ -32,7 +32,7 @@ test('sendText returns false on failed webhook call', function () {
 
     $slack = new Slack('https://hooks.slack.com/services/test/webhook');
 
-    $result = $slack->sendText('Hello testing from API collection');
+    $result = $slack->sendText('Hello testing from API framework');
 
     // Assert the message was not sent successfully
     expect($result)->toBeFalse();
@@ -41,6 +41,6 @@ test('sendText returns false on failed webhook call', function () {
     Http::assertSent(function ($request) {
         return $request->url() === 'https://hooks.slack.com/services/test/webhook'
             && $request->method() === 'POST'
-            && $request['text'] === 'Hello testing from API collection';
+            && $request['text'] === 'Hello testing from API framework';
     });
 });

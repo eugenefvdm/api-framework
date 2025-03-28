@@ -16,8 +16,8 @@
         "slack",
         "tail",
         "telegram",
-        "whm/cPanel",
-        "x/twitter",
+        "whm-cpanel",
+        "x-twitter",
         "zadomains"
     ],
     "authors": [
