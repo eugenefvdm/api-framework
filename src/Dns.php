@@ -19,7 +19,7 @@ class Dns
             if (!is_string($results)) {
                 return [
                     'status' => 'error',
-                    'output' => 'The shell_exec command dig command failed.'
+                    'output' => 'shell_exec executed dig but failed'
                 ];
             }
 
@@ -36,7 +36,7 @@ class Dns
         if (empty($records)) {
             return [
                 'status' => 'error',
-                'output' => "dns_get_record didn't return any records."
+                'output' => "dns_get_record didn't return any records"
             ];
         }
         
@@ -62,7 +62,7 @@ class Dns
         if (empty($servers)) {
             return [
                 'status' => 'error',
-                'output' => "dns_get_record didn't return any 'target' records."
+                'output' => "dns_get_record didn't return any 'target' records"
             ];
         }
 
