@@ -5,6 +5,8 @@ namespace Eugenefvdm\Api;
 use Illuminate\Support\ServiceProvider;
 use Eugenefvdm\Api\Contracts\TailInterface;
 use Eugenefvdm\Api\Contracts\Fail2banInterface;
+use Eugenefvdm\Api\Contracts\WhmInterface;
+
 class ApiServiceProvider extends ServiceProvider
 {
     /**
@@ -72,22 +74,14 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Telegram::class, 'telegram');
 
-        $this->app->singleton(Zadomains::class, function ($app) {
-            return new Zadomains(
-                config('api.zadomains.username'),
-                config('api.zadomains.password')
-            );
-        });
-        $this->app->alias(Zadomains::class, 'zadomains');
-
-        $this->app->singleton(Whm::class, function ($app) {
+        $this->app->singleton(WhmInterface::class, function ($app) {
             return new Whm(
                 config('api.whm.username'),
                 config('api.whm.password'),
                 config('api.whm.server')
             );
         });
-        $this->app->alias(Whm::class, 'whm');
+        $this->app->alias(WhmInterface::class, 'whm');
 
         $this->app->singleton(X::class, function ($app) {
             return new X(
@@ -95,6 +89,14 @@ class ApiServiceProvider extends ServiceProvider
             );
         });
         $this->app->alias(X::class, 'x');
+
+        $this->app->singleton(Zadomains::class, function ($app) {
+            return new Zadomains(
+                config('api.zadomains.username'),
+                config('api.zadomains.password')
+            );
+        });
+        $this->app->alias(Zadomains::class, 'zadomains');
     }
 
     public function boot() : void

@@ -6,7 +6,7 @@ test('it can retrieve the last log entry containing a search value', function ()
     // Create a mock of the interface instead of the concrete class
     $tail = mock(TailInterface::class);
     
-    $stub = file_get_contents(__DIR__.'/../stubs/tail/last_success.txt');
+    $stub = file_get_contents(__DIR__.'/../stubs/tail/postfix_mail_log');
     $logLines = explode("\n", trim($stub));
     
     // Mock the last method directly since we're working with the interface
