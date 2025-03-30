@@ -110,6 +110,8 @@ $messageSendResult = Telegram::sendMessage("Hi Telegram!");
 
 use Eugenefvdm\Api\Facades\Whm;
 $whmBandwidth = Whm::bandwidth();
+Whm::disableEmail('cPanel_username','user@example.com');
+Whm::enableEmail('cPanel_username','user@example.com');
 
 use Eugenefvdm\Api\Facades\X;
 $userId = X::userId("x_username");
