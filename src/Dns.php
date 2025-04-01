@@ -46,6 +46,12 @@ class Dns
         ];
     }
 
+    /**
+     * Get name server records for a domain using PHP native
+     * 
+     * @param string $domain 
+     * @return array 
+     */
     public function NS(string $domain): array
     {
         $records = dns_get_record($domain, DNS_NS);
