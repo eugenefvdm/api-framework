@@ -77,49 +77,47 @@ return [
 
 ## Usage
 
+Precede access by the facade namespace, e.g.
+
 ```php
 use Eugenefvdm\Api\Facades\Bulksms;
-$bulkSms = Bulksms::sendSms("Hello SMS!", ["27600000000"]);
+Bulksms::sendSms("Hello SMS!", ["27600000000"]);
+```
 
-use Eugenefvdm\Api\Facades\Discord;
-$discord = Discord::user("123456789012345678");
+Here is a list of all the API calls:
 
-use Eugenefvdm\Api\Facades\Dns;
-$nameservers = Dns::NS("example.com"); // Use PHP native
+```php
+Bulksms::sendSms("Hello SMS!", ["27600000001","2760000000"]);
 
-use Eugenefvdm\Api\Facades\Dns;
-$nameservers = Dns::NS("example.com", true); // Use Dig
+$discordUser = Discord::user("123456789012345678");
 
-use Eugenefvdm\Api\Facades\Fail2ban;
+$nsRecords = Dns::NS("example.com");
+
+$digMxRecords = Dns::MX("example.com"); // Use `dig` to get MX records
+$nativeMxRecords = Dns::MX("example.com", false); // Use PHP native to get MX recorss
+
 Fail2ban:setServer("username", "hostname", 22); // Port is optional
-$firstFail2banEntry = Fail2ban::first("192.168.1.1");
-$lastFail2banEntry = Fail2ban::last("192.168.1.1");
+$firstEntry = Fail2ban::first("192.168.1.1");
+$lastEntry = Fail2ban::last("192.168.1.1");
 
-use Eugenefvdm\Api\Facades\Hellopeter;
-$hellopeterUnrepliedReviews = Hellopeter::unrepliedReviews();
+$unrepliedReviews = Hellopeter::unrepliedReviews();
 
-use Eugenefvdm\Api\Facades\Slack;
-$textSendResult = Slack::sendText("Hello Slack!");
+Slack::sendText("Hello Slack!");
 
-use Eugenefvdm\Api\Facades\Tail;
 Tail::setServer("username", "hostname", 22);
-$mailLogs = Tail::last("user@example.com", 1); // 1 = number of entries (optional)
+$logEntry = Tail::last("user@example.com", 1); // 1 = optional number of log entries
 
-use Eugenefvdm\Api\Facades\Telegram;
-$messageSendResult = Telegram::sendMessage("Hi Telegram!");
+Telegram::sendMessage("Hi Telegram!");
 
-use Eugenefvdm\Api\Facades\Whm;
-$whmBandwidth = Whm::bandwidth();
+$bandwidth = Whm::bandwidth();
 Whm::disableEmail('cPanel_username','user@example.com');
 Whm::enableEmail('cPanel_username','user@example.com');
 
-use Eugenefvdm\Api\Facades\X;
 $userId = X::userId("x_username");
 $tweets = X::tweets($userId['data']['id'], 5);
 $userWithLimits = X::userWithRateLimits("x_username");
 
-use Eugenefvdm\Api\Facades\Zadomains;
-$zadomainsRegistrant = Zadomains::registrant("example.co.za");
+$registrant = Zadomains::registrant("example.co.za");
 ```
 
 ## Testing
@@ -151,24 +149,24 @@ New contributions are super welcome!
   - Add feature tests with stubs (see existing examples)
   - Ensure stubs are redacted of sensitive information
   - Follow the existing naming conventions:
-    - Capitalize only the first letter of API's name (e.g., `BulkSms`, `Zadomains`)
-    - For compound names, remove also don't capatalize (e.g., `Hellopeter`)
-    - Getters should not be prepended by "get" (e.g., `message()` instead of `getMessage()`)
-    - Setter should be prepended by "set", e.g. `setServer()`
+    - Capitalize only the first letter of API's name, e.g., `Bulksms`, `Zadomains`
+    - For compound names, also don't capatalize, e.g., `Hellopeter`
+    - Getters should not be prepended by "get", e.g. use `message()` instead of `getMessage()`
+    - Setters should be prepended by "set", e.g. `setServer()`
   - All API responses should follow this format:
-    ```php
-    // Success response
-    [
-        "status" => "success",
-        "output" => $output,
-    ]
 
-    // Error response
-    [
-        "status" => "error",
-        "output" => "Error message here",
-    ]
-    ```
+```php
+// Success response
+[
+    "status" => "success",
+    "output" => $output,
+]
+// Error response
+[
+    "status" => "error",
+    "output" => "Error message here",
+]
+```
 
 ### Need Help?
 

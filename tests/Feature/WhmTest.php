@@ -55,7 +55,7 @@ test('it can suspend an email account', function () {
     expect($result)->toBe($response);
 }); 
 
-test('the second time you suspend the same email account it return a new message', function () {
+test('the second time you suspend the same email account it returns a new message', function () {
     $response = [
         "result" => [
           "messages" => [
