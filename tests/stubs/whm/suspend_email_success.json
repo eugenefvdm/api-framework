@@ -1,0 +1,13 @@
+{
+  "func": "suspend_login",
+  "module": "Email",
+  "apiversion": 3,
+  "result": {
+    "warnings": null,
+    "errors": null,
+    "data": null,
+    "metadata": [],
+    "messages": null,
+    "status": 1
+  }
+}

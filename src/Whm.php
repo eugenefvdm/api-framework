@@ -61,17 +61,46 @@ class Whm implements WhmInterface
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/suspend_login/
      * @param string $email The email address to suspend
      * @param string $cpanelUsername The cPanel username that owns the email account
-     * @return array Response from the API
+     * @return array Response from the API with HTTP status code
      */
-    public function suspendEmail(string $cpanelUsername,string $email): array
+    public function suspendEmail(string $cpanelUsername, string $email): array
     {
-        return $this->client()->get('/json-api/cpanel', [
+        $response = $this->client()->get('/json-api/cpanel', [
             'cpanel_jsonapi_apiversion' => 3,
             'cpanel_jsonapi_user' => $cpanelUsername,
             'cpanel_jsonapi_module' => 'Email',
             'cpanel_jsonapi_func' => 'suspend_login',            
             'email' => $email,
         ])->json();
+
+        // Check for email not found error message
+        if (isset($response['result']['errors'])) {
+            foreach ($response['result']['errors'] as $error) {
+                if (str_contains($error, 'You do not have an email account named')) {
+                    return [
+                        'status' => 'error',
+                        'code' => 404,
+                        'output' => "Email address '$email' not found"
+                    ];
+                }
+            }
+        }
+
+        // Check for other messages (e.g. already suspended)
+        if (!empty($response['result']['messages'])) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => $response['result']['messages'][0]
+            ];
+        }
+
+        // Success case
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => [],
+        ];
     }
 
     /**
@@ -79,17 +108,46 @@ class Whm implements WhmInterface
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/suspend_login/
      * @param string $email The email address to unsuspend
      * @param string $cpanelUsername The cPanel username that owns the email account
-     * @return array Response from the API
+     * @return array Response from the API with HTTP status code
      */
-    public function unsuspendEmail(string $cpanelUsername,string $email): array
+    public function unsuspendEmail(string $cpanelUsername, string $email): array
     {
-        return $this->client()->get('/json-api/cpanel', [
+        $response = $this->client()->get('/json-api/cpanel', [
             'cpanel_jsonapi_apiversion' => 3,
             'cpanel_jsonapi_user' => $cpanelUsername,
             'cpanel_jsonapi_module' => 'Email',
             'cpanel_jsonapi_func' => 'unsuspend_login',
             'email' => $email,
         ])->json();
+
+        // Check for email not found error message
+        if (isset($response['result']['errors'])) {
+            foreach ($response['result']['errors'] as $error) {
+                if (str_contains($error, 'You do not have an email account named')) {
+                    return [
+                        'status' => 'error',
+                        'code' => 404,
+                        'output' => "Email address '$email' not found"
+                    ];
+                }
+            }
+        }
+
+        // Check for already unsuspended message
+        if (!empty($response['result']['messages'])) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => $response['result']['messages'][0]
+            ];
+        }
+
+        // Success case
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => [],
+        ];
     }
 
     /**

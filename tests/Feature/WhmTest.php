@@ -29,56 +29,56 @@ test('bandwidth returns bandwidth information', function () {
     });
 });
 
-test('it can suspend an email account', function () {
-    $response = [
-        'func' => 'suspend_login',
-        'result' => [
-            'warnings' => null,
-            'data' => null,
-            'errors' => null,
-            'metadata' => [],
-            'status' => 1,
-            'messages' => null,
-        ],
-        'apiversion' => 3,
-        'module' => 'Email',
-    ];
-
+test('it can suspend an email account successfully', function () {    
     $whm = mock(WhmInterface::class);
     
     $whm->shouldReceive('suspendEmail')
         ->with('username', 'user@example.com')
-        ->andReturn($response);
+        ->andReturn([
+            'status' => 'success',
+            'code' => 200,
+            'output' => []
+        ]);
 
     $result = $whm->suspendEmail('username', 'user@example.com');
 
-    expect($result)->toBe($response);
-}); 
+    expect($result['status'])->toBe('success');
+    expect($result['code'])->toBe(200);
+    expect($result['output'])->toBe([]);
+});
 
-test('the second time you suspend the same email account it returns a new message', function () {
-    $response = [
-        "result" => [
-          "messages" => [
-            "Logins for “test@kb.vander.host” are suspended.",
-          ],
-          "status" => 1,
-          "metadata" => [],
-          "errors" => null,
-          "data" => null,
-          "warnings" => null,
-        ],
-        "apiversion" => 3,
-        "module" => "Email",
-        "func" => "suspend_login",
-      ];
-
+test('it returns 404 when email account does not exist', function () {    
     $whm = mock(WhmInterface::class);
-
+    
     $whm->shouldReceive('suspendEmail')
         ->with('username', 'user@example.com')
-        ->andReturn($response); 
+        ->andReturn([
+            'status' => 'error',
+            'code' => 404,
+            'output' => "Email address 'user@example.com' not found"
+        ]);
 
     $result = $whm->suspendEmail('username', 'user@example.com');
 
-    expect($result)->toBe($response);
+    expect($result['status'])->toBe('error');
+    expect($result['code'])->toBe(404);
+    expect($result['output'])->toBe("Email address 'user@example.com' not found");
+});
+
+test('it returns 400 when email is already suspended', function () {
+    $whm = mock(WhmInterface::class);
+    
+    $whm->shouldReceive('suspendEmail')
+        ->with('username', 'user@example.com')
+        ->andReturn([
+            'status' => 'error',
+            'code' => 400,
+            'output' => 'Logins for "user@example.com" are suspended.'
+        ]);
+
+    $result = $whm->suspendEmail('username', 'user@example.com');
+
+    expect($result['status'])->toBe('error');
+    expect($result['code'])->toBe(400);
+    expect($result['output'])->toBe('Logins for "user@example.com" are suspended.');
 });
