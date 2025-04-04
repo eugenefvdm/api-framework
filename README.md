@@ -17,8 +17,9 @@ A set of Laravel API service providers.
 7. Tail
 8. Telegram
 9. WHM/cPanel
-10. X (Twitter)
-11. ZADomains
+10. WHMCS
+11. X (Twitter)
+12. ZADomains
 
 ## Installation
 
@@ -62,6 +63,15 @@ return [
         'username' => env('WHM_USERNAME'),
         'password' => env('WHM_PASSWORD'),
         'server' => env('WHM_SERVER', 'https://server.example.com:2087'),
+    ],
+
+    'whmcs' => [
+        'url' => env('WHMCS_URL'),
+        'api_identifier' => env('WHMCS_API_IDENTIFIER'),
+        'api_secret' => env('WHMCS_API_SECRET'),
+        'database_name' => env('WHMCS_DATABASE_NAME'),
+        'database_username' => env('WHMCS_DATABASE_USERNAME'),
+        'database_password' => env('WHMCS_DATABASE_PASSWORD'),
     ],
 
     'x' => [
@@ -112,6 +122,9 @@ Telegram::sendMessage("Hi Telegram!");
 $bandwidth = Whm::bandwidth();
 Whm::disableEmail('cPanel_username','user@example.com');
 Whm::enableEmail('cPanel_username','user@example.com');
+
+Whmcs::createClientGroup($name, $colour = '#ffffff');
+Whmcs::createCustomClientField($name, $type = 'text');
 
 $userId = X::userId("x_username");
 $tweets = X::tweets($userId['data']['id'], 5);

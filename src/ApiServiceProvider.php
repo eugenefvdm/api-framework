@@ -5,6 +5,7 @@ namespace Eugenefvdm\Api;
 use Illuminate\Support\ServiceProvider;
 use Eugenefvdm\Api\Contracts\TailInterface;
 use Eugenefvdm\Api\Contracts\Fail2banInterface;
+use Eugenefvdm\Api\Contracts\WhmcsInterface;
 use Eugenefvdm\Api\Contracts\WhmInterface;
 
 class ApiServiceProvider extends ServiceProvider
@@ -83,6 +84,16 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(WhmInterface::class, 'whm');
 
+        // Note the difference here between bind and singleton. Still a mystery to me.
+        $this->app->bind('whmcs', function () {
+            return new Whmcs([
+                'url' => config('whmcs.url'),
+                'api_identifier' => config('whmcs.api_identifier'),
+                'api_secret' => config('whmcs.api_secret'),
+            ]);
+        });
+        $this->app->alias(WhmcsInterface::class, 'whmcs');
+        
         $this->app->singleton(X::class, function ($app) {
             return new X(
                 config('api.x.bearer_token')

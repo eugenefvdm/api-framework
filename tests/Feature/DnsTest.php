@@ -50,8 +50,6 @@ test('mxRecords returns error for non-existent domain', function () {
 
     $response = $dns->MX('nonexistent-domain-that-should-not-exist.com');
 
-    ray($response);
-
     expect($response)
         ->toBeArray()
         ->toHaveKeys(['status', 'output'])
