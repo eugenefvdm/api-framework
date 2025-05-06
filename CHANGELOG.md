@@ -1,3 +1,8 @@
+# 06 May 2025
+
+- Updated tail to also accept a path
+- Added cphulkWhitelist and cphulkBlacklist commands and associated tests
+
 # 28 March 2025
 
 - Renamed composer package name from `api-collection` to `api-framework`

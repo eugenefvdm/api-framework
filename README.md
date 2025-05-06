@@ -115,13 +115,15 @@ $unrepliedReviews = Hellopeter::unrepliedReviews();
 Slack::sendText("Hello Slack!");
 
 Tail::setServer("username", "hostname", 22);
-$logEntry = Tail::last("user@example.com", 1); // 1 = optional number of log entries
+$logEntry = Tail::last("/var/log/mail.log", "user@example.com", 1); // 1 = optional number of log entries to return
 
 Telegram::sendMessage("Hi Telegram!");
 
 $bandwidth = Whm::bandwidth();
 Whm::disableEmail('cPanel_username','user@example.com');
 Whm::enableEmail('cPanel_username','user@example.com');
+$whitelist = Whm::cphulkWhitelist();
+$blacklist = Whm::cphulkBlacklist();
 
 Whmcs::createClientGroup($name, $colour = '#ffffff');
 Whmcs::createCustomClientField($name, $type = 'text');

@@ -1,0 +1,24 @@
+{
+  "data": {
+    "requester_ip": "1.2.3.4",
+    "ips_in_list": {
+      "1.2.3.4": null,
+      "4.5.106.198": null,
+      "6.7.197.2": null,
+      "8.9.123.98": null,
+      "10.11.197.6": null,
+      "12.13.197.5": null,
+      "14.15.197.4": null,
+      "16.17.251.242": "John Computer",
+      "18.19.197.3": null,
+      "20.21.131.175": null
+    },
+    "list_name": "white"
+  },
+  "metadata": {
+    "result": 1,
+    "version": 1,
+    "command": "read_cphulk_records",
+    "reason": "OK"
+  }
+}

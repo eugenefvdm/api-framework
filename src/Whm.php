@@ -151,6 +151,32 @@ class Whm implements WhmInterface
     }
 
     /**
+     * Get cPHulk blacklist records
+     * 
+     * See api.version=1 in the link below
+     * 
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     * @return array cPHulk blacklist records
+     */
+    public function cphulkBlacklist(): array
+    {
+        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=black')->json();
+    }
+
+    /**
+     * Get cPHulk whitelist records
+     * 
+     * See api.version=1 in the link below
+     * 
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     * @return array cPHulk whitelist records
+     */
+    public function cphulkWhitelist(): array
+    {
+        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=white')->json();
+    }
+
+    /**
      * Set the HTTP client (used for testing)
      *
      * @param  PendingRequest  $client  The HTTP client to use

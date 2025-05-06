@@ -82,3 +82,29 @@ test('it returns 400 when email is already suspended', function () {
     expect($result['code'])->toBe(400);
     expect($result['output'])->toBe('Logins for "user@example.com" are suspended.');
 });
+
+test('it can get cPHulk whitelist records successfully', function () {
+    $whm = mock(WhmInterface::class);
+
+    $whm->shouldReceive('cphulkWhitelist')
+        ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/whitelist_success.json'), true));
+
+    $result = $whm->cphulkWhitelist();
+
+    expect($result['data']['ips_in_list'])->toHaveCount(10);
+    expect($result['data']['ips_in_list'])->toHaveKey('1.2.3.4');
+    expect($result['data']['ips_in_list'])->toHaveKey('4.5.106.198');
+});
+
+test('it can get cPHulk blacklist records successfully', function () {
+    $whm = mock(WhmInterface::class);
+
+    $whm->shouldReceive('cphulkBlacklist')
+        ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/blacklist_success.json'), true));
+
+    $result = $whm->cphulkBlacklist();
+
+    expect($result['data']['ips_in_list'])->toHaveCount(10);
+    expect($result['data']['ips_in_list'])->toHaveKey('1.2.3.4');
+    expect($result['data']['ips_in_list'])->toHaveKey('4.5.106.198');
+});
