@@ -124,6 +124,8 @@ $blacklist = Whm::cphulkBlacklist();
 Whm::createEmail('user@example.com');
 $password = Whm::generatePassword(); // Generate a random 12 character password
 
+Whmcs::addClient([]); // See `addClient()` in `Whmcs.php` for required parameters
+// Laravel model wrappers:
 Whmcs::createClientGroup($name, $colour = '#ffffff');
 Whmcs::createCustomClientField($name, $type = 'text');
 
@@ -155,6 +157,8 @@ New contributions are super welcome!
 4. Run the tests (`./vendor/bin/pest`)
 5. Run Larastan (`./vendor/bin/phpstan analyse`)
 5. Submit a pull request
+
+When adding a new API, it has to be added to both ApiServiceProvider, ApiManager and a Facade.
 
 ### Code Style & Standards
 

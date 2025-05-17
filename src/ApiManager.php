@@ -61,6 +61,11 @@ class ApiManager
         return $this->app->make('whm');
     }
 
+    public function whmcs(): Whmcs
+    {
+        return $this->app->make('whmcs');
+    }
+
     public function x(): X
     {
         return $this->app->make('x');

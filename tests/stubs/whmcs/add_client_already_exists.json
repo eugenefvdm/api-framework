@@ -1,0 +1,4 @@
+{
+    "result": "error",
+    "message": "A user already exists with that email address"
+}

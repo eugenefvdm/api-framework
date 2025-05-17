@@ -19,11 +19,11 @@ class Whmcs implements WhmcsInterface
 
     private array $mergeData;
 
-    public function __construct(array $client)
+    public function __construct(string $url, string $api_identifier, string $api_secret)
     {
-        $this->url = $client['url'] ?? null;
-        $this->api_identifier = $client['api_identifier'] ?? null;
-        $this->api_secret = $client['api_secret'] ?? null;
+        $this->url = $url;
+        $this->api_identifier = $api_identifier;
+        $this->api_secret = $api_secret;
 
         $this->throwExceptionIfUrlNotPresent();
 
@@ -55,38 +55,52 @@ class Whmcs implements WhmcsInterface
             ->asForm()
             ->post($apiUrl, $postfields);
 
-        if (isset($response->json()['result'])) {
-            if ($response->json()['result'] == 'error') {
-                // Log the error
-                Log::error($response->json()['message']);
-
-                throw new Exception($response->json()['message']);
-            }
-        }
-
-        config('whmcs.debug') && ray($response->json());
-
         return $response->json();
     }
 
     /**
      * Add client
      *
-     * https://developers.whmcs.com/api-reference/addclient/
+     * @param array $data Required parameters:
+     *                    - firstname (string) Client's first name
+     *                    - lastname (string) Client's last name
+     *                    - email (string) Client's email address
+     *                    - phonenumber (string) Client's phone number
+     *                    - address1 (string) Client's street address
+     *                    - city (string) Client's city
+     *                    - state (string) Client's state/province
+     *                    - postcode (string) Client's postal code
+     *                    - country (string) Client's country code (e.g. ZA)
+     *                    - password2 (string) Client's password
+     * @return array Response from the WHMCS API
+     *
+     * @see https://developers.whmcs.com/api-reference/addclient/
      */
     public function addClient(array $data): array
     {
         return $this->call('AddClient', $data);
     }
 
+    /**
+     * A Laravel model wrapper around `tblclientgroups`
+     * @param string $name 
+     * @param string $color 
+     * @return void 
+     */
     public function createClientGroup(string $name, string $color = '#ffffff'): void
-    {
+    {        
         ClientGroup::create([
             'groupname' => $name,
             'groupcolour' => $color,
         ]);
     }
 
+    /**
+     * A Laravel model wrapper around `tblcustomfields`
+     * @param string $name 
+     * @param string $type 
+     * @return void 
+     */
     public function createCustomClientField(string $name, string $type = 'text'): void
     {
         CustomField::create([

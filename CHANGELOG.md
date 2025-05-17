@@ -1,6 +1,8 @@
 # 17 May 2025
 
 - Added WHM createEmail and generatePassword commands
+- Refined the WHMCS by adding proper tests and align the API with the rest
+- Added addClient API for WHMCS
 
 # 06 May 2025
 

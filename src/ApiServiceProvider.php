@@ -22,6 +22,7 @@ class ApiServiceProvider extends ServiceProvider
             return new ApiManager($app);
         });
 
+        // Bulksms
         $this->app->singleton(Bulksms::class, function ($app) {
             return new Bulksms(
                 config('api.bulksms.username'),
@@ -30,6 +31,7 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Bulksms::class, 'bulksms');
 
+        // Discord
         $this->app->singleton(Discord::class, function ($app) {
             return new Discord(
                 config('api.discord.bot_token'),
@@ -42,11 +44,13 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Dns::class, 'dns');
 
+        // Fail2ban
         $this->app->singleton(Fail2banInterface::class, function ($app) {
             return new Fail2ban;
         });
         $this->app->alias(Fail2banInterface::class, 'fail2ban');
 
+        // Hellopeter
         $this->app->singleton(Hellopeter::class, function ($app) {
             return new Hellopeter(
                 config('api.hellopeter.api_key')
@@ -54,6 +58,7 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Hellopeter::class, 'hellopeter');
 
+        // Slack
         $this->app->singleton(Slack::class, function ($app) {
             return new Slack(
                 config('api.slack.webhook_url')
@@ -61,12 +66,14 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Slack::class, 'slack');
 
+        // Tail
         // Single binding for Tail that handles both interface and concrete class
         $this->app->singleton(TailInterface::class, function ($app) {
             return new Tail;
         });
         $this->app->alias(TailInterface::class, 'tail');
 
+        // Telegram
         $this->app->singleton(Telegram::class, function ($app) {
             return new Telegram(
                 config('api.telegram.bot_token'),
@@ -75,6 +82,7 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(Telegram::class, 'telegram');
 
+        // WHM
         $this->app->singleton(WhmInterface::class, function ($app) {
             return new Whm(
                 config('api.whm.username'),
@@ -85,13 +93,12 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->alias(WhmInterface::class, 'whm');
 
         // WHMCS
-        // TODO: Note the difference here between bind and singleton. Still a mystery to me.
-        $this->app->bind('whmcs', function () {
-            return new Whmcs([
-                'url' => config('whmcs.url'),
-                'api_identifier' => config('whmcs.api_identifier'),
-                'api_secret' => config('whmcs.api_secret'),
-            ]);
+        $this->app->singleton(WhmcsInterface::class, function ($app) {
+            return new Whmcs(
+                config('api.whmcs.url'),
+                config('api.whmcs.api_identifier'),
+                config('api.whmcs.api_secret')
+            );
         });
         $this->app->alias(WhmcsInterface::class, 'whmcs');
 
@@ -103,6 +110,7 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(X::class, 'x');
 
+        // Zadomains
         $this->app->singleton(Zadomains::class, function ($app) {
             return new Zadomains(
                 config('api.zadomains.username'),
