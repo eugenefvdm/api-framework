@@ -1,0 +1,5 @@
+{
+    "status": "error",
+    "code": 400,
+    "output": "The account user@example.com already exists!"
+}

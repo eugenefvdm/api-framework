@@ -124,6 +124,7 @@ Whm::disableEmail('cPanel_username','user@example.com');
 Whm::enableEmail('cPanel_username','user@example.com');
 $whitelist = Whm::cphulkWhitelist();
 $blacklist = Whm::cphulkBlacklist();
+Whm::createEmail('user@example.com');
 
 Whmcs::createClientGroup($name, $colour = '#ffffff');
 Whmcs::createCustomClientField($name, $type = 'text');
