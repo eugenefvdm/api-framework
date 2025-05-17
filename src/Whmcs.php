@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class Whmcs implements WhmcsInterface
 {
-    private ?string $url;
+    private string $url;
 
-    private ?string $api_identifier;
+    private string $api_identifier;
 
-    private ?string $api_secret;
+    private string $api_secret;
 
     private array $mergeData;
 
