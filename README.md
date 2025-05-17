@@ -125,6 +125,7 @@ Whm::enableEmail('cPanel_username','user@example.com');
 $whitelist = Whm::cphulkWhitelist();
 $blacklist = Whm::cphulkBlacklist();
 Whm::createEmail('user@example.com');
+$password = Whm::generatePassword(); // Generate a random 12 character password
 
 Whmcs::createClientGroup($name, $colour = '#ffffff');
 Whmcs::createCustomClientField($name, $type = 'text');

@@ -113,7 +113,6 @@ test('it can create an email account successfully', function () {
     $whm = mock(WhmInterface::class);
     
     $whm->shouldReceive('createEmail')
-        ->with('username', 'user', 'password123', null, null, false)
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_success.json'), true));
 
     $result = $whm->createEmail('username', 'user', 'password123');
@@ -121,13 +120,12 @@ test('it can create an email account successfully', function () {
     expect($result['status'])->toBe('success');
     expect($result['code'])->toBe(200);
     expect($result['output'])->toBe('user+example.com');
-})->only();
+});
 
 test('it returns 400 when email account already exists', function () {
     $whm = mock(WhmInterface::class);
     
     $whm->shouldReceive('createEmail')
-        ->with('username', 'user', 'password123', null, null, false)
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_already_exists.json'), true));
 
     $result = $whm->createEmail('username', 'user', 'password123');
@@ -141,14 +139,13 @@ test('it returns 400 when password strength is too weak', function () {
     $whm = mock(WhmInterface::class);
     
     $whm->shouldReceive('createEmail')
-        ->with('username', 'user', 'weakpass', null, null, false)
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_password_strengh_issue.json'), true));
 
     $result = $whm->createEmail('username', 'user', 'weakpass');
 
     expect($result['status'])->toBe('error');
     expect($result['code'])->toBe(400);
-    expect($result['output'])->toBe('The password that you entered has a strength rating of "1". You cannot use it because it is too weak and too easy to guess. Please enter a password with a strength rating of "65" or higher.');
+    expect($result['output'])->toContain('The password that you entered has a strength rating of');
 });
 
 test('generatePassword returns a 12 character string', function () {

@@ -1,3 +1,7 @@
+# 17 May 2025
+
+- Added WHM createEmail and generatePassword commands
+
 # 06 May 2025
 
 - Updated tail to also accept a path

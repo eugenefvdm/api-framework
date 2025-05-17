@@ -58,6 +58,72 @@ class Whm implements WhmInterface
     }
 
     /**
+     * Get cPHulk blacklist records using API version 1
+     * 
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     * @return array cPHulk blacklist records
+     */
+    public function cphulkBlacklist(): array
+    {
+        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=black')->json();
+    }
+
+    /**
+     * Get cPHulk whitelist records using API version 1
+     * 
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     * @return array cPHulk whitelist records
+     */
+    public function cphulkWhitelist(): array
+    {
+        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=white')->json();
+    }
+
+    /**
+     * Create a new email account
+     * @link https://api.docs.cpanel.net/openapi/cpanel/operation/add_pop/ WHM API Documentation for add_pop
+     * @param string $cpanelUsername The cPanel username that owns the email account
+     * @param string $email The email account username (without domain)
+     * @param string $password The email account password
+     * @return array Response from the API with HTTP status code
+     */
+    public function createEmail(
+        string $cpanelUsername,
+        string $email,
+        string $password,
+        ?string $domain = null,
+        ?int $quota = null,
+        bool $sendWelcomeEmail = false
+    ): array {
+        $params = [
+            'cpanel_jsonapi_apiversion' => 3,
+            'cpanel_jsonapi_user' => $cpanelUsername,
+            'cpanel_jsonapi_module' => 'Email',
+            'cpanel_jsonapi_func' => 'add_pop',
+            'email' => $email,
+            'password' => $password,
+        ];    
+
+        $response = $this->client()->get('/json-api/cpanel', $params)->json();
+
+        // Check for errors
+        if (isset($response['result']['errors'])) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => $response['result']['errors'][0] ?? 'Unknown error occurred'
+            ];
+        }
+
+        // Success case
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => $response['result']['data'] ?? [],
+        ];
+    }
+
+    /**
      * Suspend an email account's login ability
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/suspend_login/
      * @param string $email The email address to suspend
@@ -152,90 +218,8 @@ class Whm implements WhmInterface
     }
 
     /**
-     * Get cPHulk blacklist records
-     * 
-     * See api.version=1 in the link below
-     * 
-     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
-     * @return array cPHulk blacklist records
+     * Generate a random password of 12 characters
      */
-    public function cphulkBlacklist(): array
-    {
-        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=black')->json();
-    }
-
-    /**
-     * Get cPHulk whitelist records
-     * 
-     * See api.version=1 in the link below
-     * 
-     * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
-     * @return array cPHulk whitelist records
-     */
-    public function cphulkWhitelist(): array
-    {
-        return $this->client()->get('/json-api/read_cphulk_records?api.version=1&list_name=white')->json();
-    }
-
-    /**
-     * Create a new email account
-     * @link https://api.docs.cpanel.net/openapi/cpanel/operation/add_pop/ WHM API Documentation for add_pop
-     * @param string $cpanelUsername The cPanel username that owns the email account
-     * @param string $email The email account username (without domain)
-     * @param string $password The email account password
-     * @param string|null $domain The domain for the email account (defaults to account's main domain)
-     * @param int|null $quota The maximum disk space in MB (0 for unlimited)
-     * @param bool $sendWelcomeEmail Whether to send client configuration instructions
-     * @return array Response from the API with HTTP status code
-     */
-    public function createEmail(
-        string $cpanelUsername,
-        string $email,
-        string $password,
-        ?string $domain = null,
-        ?int $quota = null,
-        bool $sendWelcomeEmail = false
-    ): array {
-        $params = [
-            'cpanel_jsonapi_apiversion' => 3,
-            'cpanel_jsonapi_user' => $cpanelUsername,
-            'cpanel_jsonapi_module' => 'Email',
-            'cpanel_jsonapi_func' => 'add_pop',
-            'email' => $email,
-            'password' => $password,
-        ];
-
-        if ($domain !== null) {
-            $params['domain'] = $domain;
-        }
-
-        if ($quota !== null) {
-            $params['quota'] = $quota;
-        }
-
-        if ($sendWelcomeEmail) {
-            $params['send_welcome_email'] = 1;
-        }
-
-        $response = $this->client()->get('/json-api/cpanel', $params)->json();
-
-        // Check for errors
-        if (isset($response['result']['errors'])) {
-            return [
-                'status' => 'error',
-                'code' => 400,
-                'output' => $response['result']['errors'][0] ?? 'Unknown error occurred'
-            ];
-        }
-
-        // Success case
-        return [
-            'status' => 'success',
-            'code' => 200,
-            'output' => $response['result']['data'] ?? [],
-        ];
-    }
-
     public static function generatePassword(): string
     {
         return Str::random(12);
