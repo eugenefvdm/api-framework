@@ -93,7 +93,11 @@ class Bulksms
 
         $ret_msg = '';
         if (mb_detect_encoding($body, 'UTF-8') != 'UTF-8') {
-            $body = mb_convert_encoding($body, 'UTF-8', 'auto');
+            $converted = mb_convert_encoding($body, 'UTF-8', 'auto');
+            if ($converted == false) {
+                throw new \RuntimeException('Failed to convert string encoding to UTF-8');
+            }
+            $body = $converted;
         }
         for ($i = 0; $i < mb_strlen($body, 'UTF-8'); $i++) {
             $c = mb_substr($body, $i, 1, 'UTF-8');
