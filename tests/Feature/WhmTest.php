@@ -1,7 +1,7 @@
 <?php
 
-use Eugenefvdm\Api\Whm;
 use Eugenefvdm\Api\Contracts\WhmInterface;
+use Eugenefvdm\Api\Whm;
 use Illuminate\Support\Facades\Http;
 
 test('bandwidth returns bandwidth information', function () {
@@ -29,15 +29,15 @@ test('bandwidth returns bandwidth information', function () {
     });
 });
 
-test('it can suspend an email account successfully', function () {    
+test('it can suspend an email account successfully', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('suspendEmail')
         ->with('username', 'user@example.com')
         ->andReturn([
             'status' => 'success',
             'code' => 200,
-            'output' => []
+            'output' => [],
         ]);
 
     $result = $whm->suspendEmail('username', 'user@example.com');
@@ -47,15 +47,15 @@ test('it can suspend an email account successfully', function () {
     expect($result['output'])->toBe([]);
 });
 
-test('it returns 404 when email account does not exist', function () {    
+test('it returns 404 when email account does not exist', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('suspendEmail')
         ->with('username', 'user@example.com')
         ->andReturn([
             'status' => 'error',
             'code' => 404,
-            'output' => "Email address 'user@example.com' not found"
+            'output' => "Email address 'user@example.com' not found",
         ]);
 
     $result = $whm->suspendEmail('username', 'user@example.com');
@@ -67,13 +67,13 @@ test('it returns 404 when email account does not exist', function () {
 
 test('it returns 400 when email is already suspended', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('suspendEmail')
         ->with('username', 'user@example.com')
         ->andReturn([
             'status' => 'error',
             'code' => 400,
-            'output' => 'Logins for "user@example.com" are suspended.'
+            'output' => 'Logins for "user@example.com" are suspended.',
         ]);
 
     $result = $whm->suspendEmail('username', 'user@example.com');
@@ -111,7 +111,7 @@ test('it can get cPHulk blacklist records successfully', function () {
 
 test('it can create an email account successfully', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('createEmail')
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_success.json'), true));
 
@@ -124,7 +124,7 @@ test('it can create an email account successfully', function () {
 
 test('it returns 400 when email account already exists', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('createEmail')
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_already_exists.json'), true));
 
@@ -137,7 +137,7 @@ test('it returns 400 when email account already exists', function () {
 
 test('it returns 400 when password strength is too weak', function () {
     $whm = mock(WhmInterface::class);
-    
+
     $whm->shouldReceive('createEmail')
         ->andReturn(json_decode(file_get_contents(__DIR__.'/../stubs/whm/create_email_password_strengh_issue.json'), true));
 
@@ -150,7 +150,7 @@ test('it returns 400 when password strength is too weak', function () {
 
 test('generatePassword returns a 12 character string', function () {
     $password = Whm::generatePassword();
-    
+
     expect($password)->toBeString()
         ->toHaveLength(12);
 });

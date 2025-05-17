@@ -6,20 +6,16 @@ class Dns
 {
     /**
      * Get MX records for a domain using dig or PHP native
-     * 
-     * @param string $domain 
-     * @param bool $useDig 
-     * @return array 
      */
     public function MX(string $domain, bool $useDig = true): array
     {
         if ($useDig) {
             $results = shell_exec("dig +tries=2 +short MX $domain");
-            
-            if (!is_string($results)) {
+
+            if (! is_string($results)) {
                 return [
                     'status' => 'error',
-                    'output' => 'shell_exec executed dig but failed'
+                    'output' => 'shell_exec executed dig but failed',
                 ];
             }
 
@@ -28,7 +24,7 @@ class Dns
 
             return [
                 'status' => 'success',
-                'output' => $lines
+                'output' => $lines,
             ];
         }
 
@@ -36,21 +32,18 @@ class Dns
         if (empty($records)) {
             return [
                 'status' => 'error',
-                'output' => "dns_get_record didn't return any records"
+                'output' => "dns_get_record didn't return any records",
             ];
         }
-        
+
         return [
             'status' => 'success',
-            'output' => $records
+            'output' => $records,
         ];
     }
 
     /**
      * Get name server records for a domain using PHP native
-     * 
-     * @param string $domain 
-     * @return array 
      */
     public function NS(string $domain): array
     {
@@ -68,13 +61,13 @@ class Dns
         if (empty($servers)) {
             return [
                 'status' => 'error',
-                'output' => "dns_get_record didn't return any 'target' records"
+                'output' => "dns_get_record didn't return any 'target' records",
             ];
         }
 
         return [
             'status' => 'success',
-            'output' => $servers
+            'output' => $servers,
         ];
     }
 }

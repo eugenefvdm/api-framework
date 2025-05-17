@@ -34,6 +34,6 @@ class Telegram
                 'parse_mode' => 'HTML',
             ]);
 
-        return (array)$response->json();
+        return (array) $response->json();
     }
 }

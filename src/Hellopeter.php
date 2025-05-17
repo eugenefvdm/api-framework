@@ -55,6 +55,6 @@ class Hellopeter
             'channel' => 'HELLOPETER',
         ]);
 
-        return (array)$response->json();
+        return (array) $response->json();
     }
 }

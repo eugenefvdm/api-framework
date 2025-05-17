@@ -2,11 +2,11 @@
 
 namespace Eugenefvdm\Api;
 
-use Illuminate\Support\ServiceProvider;
-use Eugenefvdm\Api\Contracts\TailInterface;
 use Eugenefvdm\Api\Contracts\Fail2banInterface;
+use Eugenefvdm\Api\Contracts\TailInterface;
 use Eugenefvdm\Api\Contracts\WhmcsInterface;
 use Eugenefvdm\Api\Contracts\WhmInterface;
+use Illuminate\Support\ServiceProvider;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -84,7 +84,8 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(WhmInterface::class, 'whm');
 
-        // Note the difference here between bind and singleton. Still a mystery to me.
+        // WHMCS
+        // TODO: Note the difference here between bind and singleton. Still a mystery to me.
         $this->app->bind('whmcs', function () {
             return new Whmcs([
                 'url' => config('whmcs.url'),
@@ -93,7 +94,8 @@ class ApiServiceProvider extends ServiceProvider
             ]);
         });
         $this->app->alias(WhmcsInterface::class, 'whmcs');
-        
+
+        // X        
         $this->app->singleton(X::class, function ($app) {
             return new X(
                 config('api.x.bearer_token')
@@ -110,7 +112,7 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->alias(Zadomains::class, 'zadomains');
     }
 
-    public function boot() : void
+    public function boot(): void
     {
         // Bootstrap your package
         // Load routes, views, migrations, etc.

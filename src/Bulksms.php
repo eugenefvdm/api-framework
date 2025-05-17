@@ -8,13 +8,11 @@ class Bulksms
 {
     private string $url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
 
-    public function __construct(private string $username, private string $password)
-    {
-    }
+    public function __construct(private string $username, private string $password) {}
 
     /**
      * Send an SMS message to multiple recipients
-     * 
+     *
      * Formats:
      * - Single number: `27639123456`
      * - Comma-separated: `27639123456,27639123457,27639123458`
@@ -43,7 +41,7 @@ class Bulksms
         return $results;
     }
 
-    private function sendToSingleRecipient(string $message, string $recipient) : array
+    private function sendToSingleRecipient(string $message, string $recipient): array
     {
         $post_body = $this->seven_bit_sms($message, $recipient);
         $result = $this->send_message($post_body);
@@ -51,7 +49,7 @@ class Bulksms
         return $result;
     }
 
-    private function seven_bit_sms(string $message, string $msisdn) : string
+    private function seven_bit_sms(string $message, string $msisdn): string
     {
         $post_fields = [
             'username' => $this->username,
@@ -65,7 +63,7 @@ class Bulksms
         return $this->make_post_body($post_fields);
     }
 
-    private function make_post_body(array $post_fields) : string
+    private function make_post_body(array $post_fields): string
     {
         $stop_dup_id = $this->make_stop_dup_id();
         if ($stop_dup_id > 0) {
@@ -80,7 +78,7 @@ class Bulksms
         return $post_body;
     }
 
-    private function character_resolve(string $body) : string
+    private function character_resolve(string $body): string
     {
         $special_chrs = [
             'Δ' => 0xD0, 'Φ' => 0xDE, 'Γ' => 0xAC, 'Λ' => 0xC2, 'Ω' => 0xDB,
@@ -109,12 +107,12 @@ class Bulksms
         return $ret_msg;
     }
 
-    private function make_stop_dup_id() : int
+    private function make_stop_dup_id(): int
     {
         return 0;
     }
 
-    private function send_message(string $post_body) : array
+    private function send_message(string $post_body): array
     {
         try {
             $response = Http::timeout(20)

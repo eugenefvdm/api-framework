@@ -3,8 +3,8 @@
 namespace Eugenefvdm\Api\Contracts;
 
 interface WhmcsInterface
-{   
-    public function createCustomClientField(
-        string $fieldname, string $fieldtype = 'text'
-        ): void;
+{
+    public function createClientGroup(string $name, string $color = '#ffffff'): void;
+
+    public function createCustomClientField(string $name, string $type = 'text'): void;
 }

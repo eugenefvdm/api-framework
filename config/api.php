@@ -34,9 +34,7 @@ return [
         'url' => env('WHMCS_URL'),
         'api_identifier' => env('WHMCS_API_IDENTIFIER'),
         'api_secret' => env('WHMCS_API_SECRET'),
-        'database_name' => env('WHMCS_DATABASE_NAME'),
-        'database_username' => env('WHMCS_DATABASE_USERNAME'),
-        'database_password' => env('WHMCS_DATABASE_PASSWORD'),
+        'limitnum' => env('WHMCS_LIMITNUM'),
     ],
 
     'x' => [

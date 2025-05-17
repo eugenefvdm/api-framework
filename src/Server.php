@@ -23,10 +23,10 @@ abstract class Server implements ServerInterface
 
         return $this;
     }
-    
+
     protected function executeCommand(string $command): array
-    {       
-        if (!$this->server) {
+    {
+        if (! $this->server) {
             return [
                 'status' => 'error',
                 'output' => 'Server configuration not set. Use setServer() first.',

@@ -52,7 +52,7 @@ class X
     {
         $response = $this->client()->get("/users/by/username/{$username}");
 
-        return (array)$response->json();
+        return (array) $response->json();
     }
 
     /**
@@ -68,7 +68,7 @@ class X
             'max_results' => $maxResults,
         ]);
 
-        return (array)$response->json();
+        return (array) $response->json();
     }
 
     /**

@@ -49,7 +49,9 @@ class Whm implements WhmInterface
 
     /**
      * Get bandwidth information for all domains
+     *
      * @link https://api.docs.cpanel.net/openapi/whm/operation/showbw/ WHM API Documentation for showbw
+     *
      * @return array Bandwidth information
      */
     public function bandwidth(): array
@@ -59,8 +61,9 @@ class Whm implements WhmInterface
 
     /**
      * Get cPHulk blacklist records using API version 1
-     * 
+     *
      * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     *
      * @return array cPHulk blacklist records
      */
     public function cphulkBlacklist(): array
@@ -70,8 +73,9 @@ class Whm implements WhmInterface
 
     /**
      * Get cPHulk whitelist records using API version 1
-     * 
+     *
      * @link https://api.docs.cpanel.net/openapi/whm/operation/read_cphulk_records/ WHM API Documentation for read_cphulk_records
+     *
      * @return array cPHulk whitelist records
      */
     public function cphulkWhitelist(): array
@@ -81,10 +85,12 @@ class Whm implements WhmInterface
 
     /**
      * Create a new email account
+     *
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/add_pop/ WHM API Documentation for add_pop
-     * @param string $cpanelUsername The cPanel username that owns the email account
-     * @param string $email The email account username (without domain)
-     * @param string $password The email account password
+     *
+     * @param  string  $cpanelUsername  The cPanel username that owns the email account
+     * @param  string  $email  The email account username (without domain)
+     * @param  string  $password  The email account password
      * @return array Response from the API with HTTP status code
      */
     public function createEmail(
@@ -102,7 +108,7 @@ class Whm implements WhmInterface
             'cpanel_jsonapi_func' => 'add_pop',
             'email' => $email,
             'password' => $password,
-        ];    
+        ];
 
         $response = $this->client()->get('/json-api/cpanel', $params)->json();
 
@@ -111,7 +117,7 @@ class Whm implements WhmInterface
             return [
                 'status' => 'error',
                 'code' => 400,
-                'output' => $response['result']['errors'][0] ?? 'Unknown error occurred'
+                'output' => $response['result']['errors'][0] ?? 'Unknown error occurred',
             ];
         }
 
@@ -125,9 +131,11 @@ class Whm implements WhmInterface
 
     /**
      * Suspend an email account's login ability
+     *
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/suspend_login/
-     * @param string $email The email address to suspend
-     * @param string $cpanelUsername The cPanel username that owns the email account
+     *
+     * @param  string  $email  The email address to suspend
+     * @param  string  $cpanelUsername  The cPanel username that owns the email account
      * @return array Response from the API with HTTP status code
      */
     public function suspendEmail(string $cpanelUsername, string $email): array
@@ -136,7 +144,7 @@ class Whm implements WhmInterface
             'cpanel_jsonapi_apiversion' => 3,
             'cpanel_jsonapi_user' => $cpanelUsername,
             'cpanel_jsonapi_module' => 'Email',
-            'cpanel_jsonapi_func' => 'suspend_login',            
+            'cpanel_jsonapi_func' => 'suspend_login',
             'email' => $email,
         ])->json();
 
@@ -147,18 +155,18 @@ class Whm implements WhmInterface
                     return [
                         'status' => 'error',
                         'code' => 404,
-                        'output' => "Email address '$email' not found"
+                        'output' => "Email address '$email' not found",
                     ];
                 }
             }
         }
 
         // Check for other messages (e.g. already suspended)
-        if (!empty($response['result']['messages'])) {
+        if (! empty($response['result']['messages'])) {
             return [
                 'status' => 'error',
                 'code' => 400,
-                'output' => $response['result']['messages'][0]
+                'output' => $response['result']['messages'][0],
             ];
         }
 
@@ -172,9 +180,11 @@ class Whm implements WhmInterface
 
     /**
      * Unsuspend an email account's login ability
+     *
      * @link https://api.docs.cpanel.net/openapi/cpanel/operation/unsuspend_login/
-     * @param string $email The email address to unsuspend
-     * @param string $cpanelUsername The cPanel username that owns the email account
+     *
+     * @param  string  $email  The email address to unsuspend
+     * @param  string  $cpanelUsername  The cPanel username that owns the email account
      * @return array Response from the API with HTTP status code
      */
     public function unsuspendEmail(string $cpanelUsername, string $email): array
@@ -194,18 +204,18 @@ class Whm implements WhmInterface
                     return [
                         'status' => 'error',
                         'code' => 404,
-                        'output' => "Email address '$email' not found"
+                        'output' => "Email address '$email' not found",
                     ];
                 }
             }
         }
 
         // Check for already unsuspended message
-        if (!empty($response['result']['messages'])) {
+        if (! empty($response['result']['messages'])) {
             return [
                 'status' => 'error',
                 'code' => 400,
-                'output' => $response['result']['messages'][0]
+                'output' => $response['result']['messages'][0],
             ];
         }
 

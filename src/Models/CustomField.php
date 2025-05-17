@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CustomField extends Model
 {
     protected $table = 'tblcustomfields';
-    
+
     protected $fillable = [
         'type',
         'fieldname',
@@ -30,4 +30,4 @@ class CustomField extends Model
         'showorder' => '',
         'showinvoice' => '',
     ];
-} 
+}
