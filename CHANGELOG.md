@@ -2,6 +2,7 @@
 
 ## 2026-05-05
 
+- Condense optional services README section to cover both WHM and cPanel
 - Add cPanel service with email CRUD operations and refactor WHM to support optional credentials
 - Remove spatie/ray dependency and ray debug call
 

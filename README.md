@@ -139,25 +139,17 @@ $registrant = Zadomains::registrant("example.co.za");
 
 ## Optional services
 
-Some services — like WHM — are optional. The singleton is always registered, but no credentials are required until an actual API call is made. This means the application boots without error even when `.env` keys are absent.
-
-### Checking if WHM is configured
-
-Use `isConfigured()` before making calls that require credentials:
+WHM and cPanel are optional — the singletons are always registered but credentials are only required when an API call is made. Use `isConfigured()` to check before calling:
 
 ```php
 if (Whm::isConfigured()) {
     Whm::createEmail('cpanel_username', 'user@example.com', 'password');
 }
-```
 
-If you call a method without credentials set, a `RuntimeException` is thrown with a clear message pointing to the missing `.env` keys:
-
+if (Cpanel::isConfigured()) {
+    Cpanel::createEmail('user@example.com', 'password');
+}
 ```
-WHM is not configured. Set WHM_USERNAME, WHM_PASSWORD, and WHM_SERVER in your .env file.
-```
-
-`generatePassword()` is the one exception — it generates a random string and never touches the API, so it works regardless of whether WHM is configured.
 
 ### Required `.env` keys for WHM
 
