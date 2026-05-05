@@ -46,9 +46,6 @@ class Whmcs implements WhmcsInterface
         ];
         $postfields = array_merge($data, $this->mergeData, $postfields);
 
-        // Display the input to the API call if debugging is enabled
-        config('whmcs.debug') && ray($postfields);
-
         $apiUrl = $this->url.'/includes/api.php';
 
         $response = Http::withOptions(['verify' => false])
