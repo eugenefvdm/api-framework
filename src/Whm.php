@@ -11,33 +11,52 @@ class Whm implements WhmInterface
 {
     private ?PendingRequest $client = null;
 
-    private string $username;
-
-    private string $password;
-
-    private string $server;
-
     /**
      * Constructor
      *
-     * @param  string  $username  Whm username
-     * @param  string  $password  Whm password
-     * @param  string  $server  Whm server URL (e.g. https://server.example.com:2087)
+     * Credentials are optional at construction time — the singleton is always registered
+     * regardless of whether WHM is configured. Actual API calls will throw a RuntimeException
+     * if credentials are missing. Use isConfigured() to guard calls in application code.
+     *
+     * @param  string|null  $username  WHM username (WHM_USERNAME)
+     * @param  string|null  $password  WHM password (WHM_PASSWORD)
+     * @param  string|null  $server    WHM server URL, e.g. https://server.example.com:2087 (WHM_SERVER)
      */
-    public function __construct(string $username, string $password, string $server)
+    public function __construct(
+        private readonly ?string $username,
+        private readonly ?string $password,
+        private readonly ?string $server,
+    ) {}
+
+    /**
+     * Whether WHM credentials are configured.
+     *
+     * Use this to guard calls in application code rather than checking config keys directly:
+     *
+     *   if (Whm::isConfigured()) {
+     *       Whm::createEmail(...);
+     *   }
+     */
+    public function isConfigured(): bool
     {
-        $this->username = $username;
-        $this->password = $password;
-        $this->server = rtrim($server, '/');
+        return (bool) $this->username && (bool) $this->server;
     }
 
     /**
-     * Get the HTTP client instance
+     * Get the HTTP client instance.
+     *
+     * @throws \RuntimeException When WHM credentials are not configured.
      */
     private function client(): PendingRequest
     {
+        if (! $this->isConfigured()) {
+            throw new \RuntimeException(
+                'WHM is not configured. Set WHM_USERNAME, WHM_PASSWORD, and WHM_SERVER in your .env file.'
+            );
+        }
+
         if (! $this->client) {
-            $this->client = Http::baseUrl($this->server)
+            $this->client = Http::baseUrl(rtrim($this->server, '/'))
                 ->withHeaders([
                     'Authorization' => 'WHM '.$this->username.':'.$this->password,
                 ])
@@ -122,6 +141,40 @@ class Whm implements WhmInterface
         }
 
         // Success case
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => $response['result']['data'] ?? [],
+        ];
+    }
+
+    /**
+     * Delete an email account
+     *
+     * @link https://api.docs.cpanel.net/openapi/cpanel/operation/delete_pop/ WHM API Documentation for delete_pop
+     *
+     * @param  string  $cpanelUsername  The cPanel username that owns the email account
+     * @param  string  $email  The full email address to delete
+     * @return array Response from the API with HTTP status code
+     */
+    public function deleteEmail(string $cpanelUsername, string $email): array
+    {
+        $response = $this->client()->get('/json-api/cpanel', [
+            'cpanel_jsonapi_apiversion' => 3,
+            'cpanel_jsonapi_user' => $cpanelUsername,
+            'cpanel_jsonapi_module' => 'Email',
+            'cpanel_jsonapi_func' => 'delete_pop',
+            'email' => $email,
+        ])->json();
+
+        if (isset($response['result']['errors'])) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => $response['result']['errors'][0] ?? 'Unknown error occurred',
+            ];
+        }
+
         return [
             'status' => 'success',
             'code' => 200,

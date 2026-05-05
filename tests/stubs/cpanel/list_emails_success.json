@@ -1,0 +1,21 @@
+{
+    "warnings": null,
+    "data": [
+        {
+            "email": "accounts@eugenefvdm.com",
+            "login": "accounts@eugenefvdm.com",
+            "suspended_login": 0,
+            "suspended_incoming": 0
+        },
+        {
+            "email": "dash-37ce@eugenefvdm.com",
+            "login": "dash-37ce@eugenefvdm.com",
+            "suspended_login": 0,
+            "suspended_incoming": 0
+        }
+    ],
+    "errors": null,
+    "metadata": {"transformed": 1},
+    "status": 1,
+    "messages": null
+}

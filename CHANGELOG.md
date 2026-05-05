@@ -2,6 +2,7 @@
 
 ## 2026-05-05
 
+- Add cPanel service with email CRUD operations and refactor WHM to support optional credentials
 - Remove spatie/ray dependency and ray debug call
 
 - Added WHM createEmail and generatePassword commands

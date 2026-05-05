@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'cpanel' => [
+        'username' => env('CPANEL_USERNAME'),
+        'password' => env('CPANEL_PASSWORD'),
+        'server' => env('CPANEL_SERVER'),
+    ],
+
     'bulksms' => [
         'username' => env('BULKSMS_USERNAME'),
         'password' => env('BULKSMS_PASSWORD'),

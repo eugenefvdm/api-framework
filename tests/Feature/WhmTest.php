@@ -154,3 +154,38 @@ test('generatePassword returns a 12 character string', function () {
     expect($password)->toBeString()
         ->toHaveLength(12);
 });
+
+test('isConfigured returns true when credentials are present', function () {
+    $whm = new Whm('user', 'pass', 'https://server.example.com:2087');
+
+    expect($whm->isConfigured())->toBeTrue();
+});
+
+test('isConfigured returns false when credentials are absent', function () {
+    $whm = new Whm(null, null, null);
+
+    expect($whm->isConfigured())->toBeFalse();
+});
+
+test('any api call throws RuntimeException when not configured', function () {
+    $whm = new Whm(null, null, null);
+
+    $whm->bandwidth();
+})->throws(\RuntimeException::class, 'WHM is not configured');
+
+test('it can delete an email account successfully', function () {
+    $whm = mock(WhmInterface::class);
+
+    $whm->shouldReceive('deleteEmail')
+        ->with('cpaneluser', 'user@example.com')
+        ->andReturn([
+            'status' => 'success',
+            'code' => 200,
+            'output' => [],
+        ]);
+
+    $result = $whm->deleteEmail('cpaneluser', 'user@example.com');
+
+    expect($result['status'])->toBe('success');
+    expect($result['code'])->toBe(200);
+});

@@ -4,6 +4,8 @@ namespace Eugenefvdm\Api\Contracts;
 
 interface WhmInterface
 {
+    public function isConfigured(): bool;
+
     public function bandwidth(): array;
 
     public function suspendEmail(string $username, string $email): array;
@@ -22,6 +24,8 @@ interface WhmInterface
         ?int $quota = null,
         bool $sendWelcomeEmail = false
     ): array;
+
+    public function deleteEmail(string $cpanelUsername, string $email): array;
 
     public static function generatePassword(): string;
 }

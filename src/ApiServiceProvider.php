@@ -2,6 +2,7 @@
 
 namespace Eugenefvdm\Api;
 
+use Eugenefvdm\Api\Contracts\CpanelInterface;
 use Eugenefvdm\Api\Contracts\Fail2banInterface;
 use Eugenefvdm\Api\Contracts\TailInterface;
 use Eugenefvdm\Api\Contracts\WhmcsInterface;
@@ -21,6 +22,16 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->singleton('api', function ($app) {
             return new ApiManager($app);
         });
+
+        // cPanel
+        $this->app->singleton(CpanelInterface::class, function ($app) {
+            return new Cpanel(
+                config('api.cpanel.username'),
+                config('api.cpanel.password'),
+                config('api.cpanel.server')
+            );
+        });
+        $this->app->alias(CpanelInterface::class, 'cpanel');
 
         // Bulksms
         $this->app->singleton(Bulksms::class, function ($app) {

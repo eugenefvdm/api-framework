@@ -117,11 +117,12 @@ $logEntry = Tail::last("/var/log/mail.log", "user@example.com", 1); // 1 = optio
 Telegram::sendMessage("Hi Telegram!");
 
 $bandwidth = Whm::bandwidth();
-Whm::disableEmail('cPanel_username','user@example.com');
-Whm::enableEmail('cPanel_username','user@example.com');
+Whm::suspendEmail('cPanel_username', 'user@example.com');
+Whm::unsuspendEmail('cPanel_username', 'user@example.com');
 $whitelist = Whm::cphulkWhitelist();
 $blacklist = Whm::cphulkBlacklist();
-Whm::createEmail('cpanel_username','user@example.com','password');
+Whm::createEmail('cpanel_username', 'user@example.com', 'password');
+Whm::deleteEmail('cpanel_username', 'user@example.com');
 $password = Whm::generatePassword(); // Generate a random 12 character password
 
 Whmcs::addClient([]); // See `addClient()` in `Whmcs.php` for required parameters
@@ -134,6 +135,36 @@ $tweets = X::tweets($userId['data']['id'], 5);
 $userWithLimits = X::userWithRateLimits("x_username");
 
 $registrant = Zadomains::registrant("example.co.za");
+```
+
+## Optional services
+
+Some services — like WHM — are optional. The singleton is always registered, but no credentials are required until an actual API call is made. This means the application boots without error even when `.env` keys are absent.
+
+### Checking if WHM is configured
+
+Use `isConfigured()` before making calls that require credentials:
+
+```php
+if (Whm::isConfigured()) {
+    Whm::createEmail('cpanel_username', 'user@example.com', 'password');
+}
+```
+
+If you call a method without credentials set, a `RuntimeException` is thrown with a clear message pointing to the missing `.env` keys:
+
+```
+WHM is not configured. Set WHM_USERNAME, WHM_PASSWORD, and WHM_SERVER in your .env file.
+```
+
+`generatePassword()` is the one exception — it generates a random string and never touches the API, so it works regardless of whether WHM is configured.
+
+### Required `.env` keys for WHM
+
+```env
+WHM_USERNAME=root
+WHM_PASSWORD=your-password-or-api-token
+WHM_SERVER=https://your-server.example.com:2087
 ```
 
 ## Testing
