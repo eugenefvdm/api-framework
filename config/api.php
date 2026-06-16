@@ -10,6 +10,7 @@ return [
     'bulksms' => [
         'username' => env('BULKSMS_USERNAME'),
         'password' => env('BULKSMS_PASSWORD'),
+        'encoding' => env('BULKSMS_ENCODING', '7bit'),
     ],
 
     'discord' => [

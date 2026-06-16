@@ -9,7 +9,7 @@ class HellopeterReviewSms
         $pattern = '/^You received a (.+?) review by (.+?) at Hellopeter\. Please reply ASAP\.(.*)$/us';
 
         if (! preg_match($pattern, $message, $matches)) {
-            return self::limit($message, $maxLength);
+            return SmsText::limitTo($message, $maxLength, Bulksms::ENCODING_16BIT);
         }
 
         $stars = $matches[1];
@@ -25,7 +25,7 @@ class HellopeterReviewSms
         $nameMaxLength = $maxLength - mb_strlen($prefix, 'UTF-8') - mb_strlen($suffix, 'UTF-8');
 
         if ($nameMaxLength < 4) {
-            return self::limit($compact, $maxLength);
+            return SmsText::limitTo($compact, $maxLength, Bulksms::ENCODING_16BIT);
         }
 
         $truncatedName = mb_substr($name, 0, $nameMaxLength - 3, 'UTF-8').'...';
@@ -46,22 +46,5 @@ class HellopeterReviewSms
         );
 
         return $replaced ?? $message;
-    }
-
-    private static function limit(string $message, int $maxLength): string
-    {
-        if ($maxLength < 1) {
-            throw new \InvalidArgumentException('Maximum SMS length must be at least 1 character');
-        }
-
-        if (mb_strlen($message, 'UTF-8') <= $maxLength) {
-            return $message;
-        }
-
-        if ($maxLength <= 3) {
-            return mb_substr($message, 0, $maxLength, 'UTF-8');
-        }
-
-        return mb_substr($message, 0, $maxLength - 3, 'UTF-8').'...';
     }
 }

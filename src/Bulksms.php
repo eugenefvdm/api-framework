@@ -6,14 +6,20 @@ use Illuminate\Support\Facades\Http;
 
 class Bulksms
 {
+    public const ENCODING_7BIT = '7bit';
+
+    public const ENCODING_16BIT = '16bit';
+
+    public const ENCODING_AUTO = 'auto';
+
     private string $url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
 
     public function __construct(
         private string $username,
         private string $password,
-        private string $encoding = '7bit',
+        private string $encoding = self::ENCODING_7BIT,
     ) {
-        $this->encoding = strtolower($this->encoding);
+        $this->encoding = $this->normaliseEncoding($this->encoding);
     }
 
     /**
@@ -49,7 +55,7 @@ class Bulksms
 
     private function sendToSingleRecipient(string $message, string $recipient): array
     {
-        if ($this->encoding === '16bit') {
+        if ($this->encodingForMessage($message) === self::ENCODING_16BIT) {
             $post_body = $this->sixteen_bit_sms($message, $recipient);
         } else {
             $post_body = $this->seven_bit_sms($message, $recipient);
@@ -58,6 +64,43 @@ class Bulksms
         $result = $this->send_message($post_body);
 
         return $result;
+    }
+
+    public function sendUnicodeSms(string $message, string|array $recipients): array
+    {
+        return $this->encoding(self::ENCODING_16BIT)->sendSms($message, $recipients);
+    }
+
+    public function encoding(string $encoding): self
+    {
+        $client = clone $this;
+        $client->encoding = $this->normaliseEncoding($encoding);
+
+        return $client;
+    }
+
+    private function encodingForMessage(string $message): string
+    {
+        if ($this->encoding === self::ENCODING_AUTO) {
+            return SmsText::encoding($message);
+        }
+
+        return $this->encoding;
+    }
+
+    private function normaliseEncoding(string $encoding): string
+    {
+        $encoding = strtolower($encoding);
+
+        if (! in_array($encoding, [
+            self::ENCODING_7BIT,
+            self::ENCODING_16BIT,
+            self::ENCODING_AUTO,
+        ], true)) {
+            throw new \InvalidArgumentException("Unsupported BulkSMS encoding [$encoding]");
+        }
+
+        return $encoding;
     }
 
     private function utf8ToUcs2Hex(string $utf8): string

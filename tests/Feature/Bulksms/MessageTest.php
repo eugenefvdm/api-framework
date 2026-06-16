@@ -1,7 +1,10 @@
 <?php
 
+use Eugenefvdm\Api\ApiServiceProvider;
 use Eugenefvdm\Api\Bulksms;
+use Eugenefvdm\Api\Facades\Bulksms as BulksmsFacade;
 use Eugenefvdm\Api\HellopeterReviewSms;
+use Eugenefvdm\Api\SmsText;
 use Illuminate\Support\Facades\Http;
 
 it('sends an sms message successfully', function () {
@@ -61,6 +64,93 @@ it('sends unicode sms messages as sixteen bit payloads', function () {
     });
 });
 
+it('sends unicode sms messages with the convenience method', function () {
+    Http::fake([
+        'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
+    ]);
+
+    $bulkSms = new Bulksms('test_user', 'test_pass');
+    $message = 'Hello ⭐️';
+
+    $bulkSms->sendUnicodeSms($message, ['27823096710']);
+
+    Http::assertSent(function ($request) use ($message) {
+        return $request['message'] === bin2hex(mb_convert_encoding($message, 'UCS-2BE', 'UTF-8'))
+            && $request['dca'] === '16bit';
+    });
+});
+
+it('can use a temporary encoding without changing the default sender', function () {
+    Http::fake([
+        'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
+    ]);
+
+    $bulkSms = new Bulksms('test_user', 'test_pass');
+    $message = 'Hello ⭐️';
+
+    $bulkSms->encoding('16bit')->sendSms($message, ['27823096710']);
+    $bulkSms->sendSms('Hello again', ['27823096711']);
+
+    Http::assertSent(function ($request) use ($message) {
+        return $request['msisdn'] === '27823096710'
+            && $request['message'] === bin2hex(mb_convert_encoding($message, 'UCS-2BE', 'UTF-8'))
+            && $request['dca'] === '16bit';
+    });
+
+    Http::assertSent(function ($request) {
+        return $request['msisdn'] === '27823096711'
+            && $request['message'] === 'Hello again'
+            && ($request['dca'] ?? null) === null;
+    });
+});
+
+it('can choose unicode automatically when the message is not gsm safe', function () {
+    Http::fake([
+        'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
+    ]);
+
+    $bulkSms = new Bulksms('test_user', 'test_pass', 'auto');
+    $unicodeMessage = 'Hello ⭐️';
+
+    $bulkSms->sendSms('Plain text', ['27823096710']);
+    $bulkSms->sendSms($unicodeMessage, ['27823096711']);
+
+    Http::assertSent(function ($request) {
+        return $request['msisdn'] === '27823096710'
+            && $request['message'] === 'Plain text'
+            && ($request['dca'] ?? null) === null;
+    });
+
+    Http::assertSent(function ($request) use ($unicodeMessage) {
+        return $request['msisdn'] === '27823096711'
+            && $request['message'] === bin2hex(mb_convert_encoding($unicodeMessage, 'UCS-2BE', 'UTF-8'))
+            && $request['dca'] === '16bit';
+    });
+});
+
+it('uses configured encoding for facade sms messages', function () {
+    config()->set('api.bulksms.username', 'test_user');
+    config()->set('api.bulksms.password', 'test_pass');
+    config()->set('api.bulksms.encoding', '16bit');
+
+    app()->register(ApiServiceProvider::class);
+    app()->forgetInstance(Bulksms::class);
+    BulksmsFacade::clearResolvedInstance('bulksms');
+
+    Http::fake([
+        'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
+    ]);
+
+    $message = 'Hello ⭐️';
+
+    BulksmsFacade::sendSms($message, ['27823096710']);
+
+    Http::assertSent(function ($request) use ($message) {
+        return $request['message'] === bin2hex(mb_convert_encoding($message, 'UCS-2BE', 'UTF-8'))
+            && $request['dca'] === '16bit';
+    });
+});
+
 it('does not shorten hellopeter unicode review sms messages by default', function () {
     Http::fake([
         'bulksms.2way.co.za/*' => Http::response('0|IN_PROGRESS|1234567890', 200),
@@ -101,4 +191,14 @@ it('can make hellopeter star ratings readable for seven bit sms messages', funct
     $message = HellopeterReviewSms::starText('You received a ⭐️⭐️⭐️⭐️⭐️ review');
 
     expect($message)->toBe('You received a 5 star review');
+});
+
+it('can limit sms text by encoding and message parts', function () {
+    $unicode = str_repeat('⭐', 80);
+    $sevenBit = str_repeat('{', 80);
+
+    expect(SmsText::encoding('Plain text'))->toBe('7bit')
+        ->and(SmsText::encoding('Hello ⭐'))->toBe('16bit')
+        ->and(SmsText::length(SmsText::limit($unicode, encoding: '16bit'), '16bit'))->toBe(70)
+        ->and(SmsText::length(SmsText::limit($sevenBit, encoding: '7bit'), '7bit'))->toBe(160);
 });

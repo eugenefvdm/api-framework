@@ -2,6 +2,7 @@
 
 ## 2026-06-16
 
+- Add SmsText utility, auto encoding, and facade encoding config support
 - Add BulkSMS 16-bit Unicode support and HellopeterReviewSms message formatter
 
 ## 2026-05-05

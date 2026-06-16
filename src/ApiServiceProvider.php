@@ -35,9 +35,12 @@ class ApiServiceProvider extends ServiceProvider
 
         // Bulksms
         $this->app->singleton(Bulksms::class, function ($app) {
+            $encoding = config('api.bulksms.encoding', Bulksms::ENCODING_7BIT);
+
             return new Bulksms(
                 config('api.bulksms.username'),
-                config('api.bulksms.password')
+                config('api.bulksms.password'),
+                is_string($encoding) && $encoding !== '' ? $encoding : Bulksms::ENCODING_7BIT
             );
         });
         $this->app->alias(Bulksms::class, 'bulksms');
@@ -113,7 +116,7 @@ class ApiServiceProvider extends ServiceProvider
         });
         $this->app->alias(WhmcsInterface::class, 'whmcs');
 
-        // X        
+        // X
         $this->app->singleton(X::class, function ($app) {
             return new X(
                 config('api.x.bearer_token')

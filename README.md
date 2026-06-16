@@ -35,19 +35,26 @@ php artisan vendor:publish --provider="Eugenefvdm\Api\ApiServiceProvider" --tag=
 
 ## Contents of `config/api.php`
 
-```env
+```php
 return [
-    'bulk_sms' => [
-        'username' => env('BULK_SMS_USERNAME'),
-        'password' => env('BULK_SMS_PASSWORD'),
+    'cpanel' => [
+        'username' => env('CPANEL_USERNAME'),
+        'password' => env('CPANEL_PASSWORD'),
+        'server' => env('CPANEL_SERVER'),
+    ],
+
+    'bulksms' => [
+        'username' => env('BULKSMS_USERNAME'),
+        'password' => env('BULKSMS_PASSWORD'),
+        'encoding' => env('BULKSMS_ENCODING', '7bit'),
     ],
 
     'discord' => [
         'bot_token' => env('DISCORD_BOT_TOKEN'),
     ],
 
-    'hello_peter' => [
-        'api_key' => env('HELLO_PETER_API_KEY'),
+    'hellopeter' => [
+        'api_key' => env('HELLOPETER_API_KEY'),
     ],
 
     'slack' => [
@@ -62,22 +69,24 @@ return [
     'whm' => [
         'username' => env('WHM_USERNAME'),
         'password' => env('WHM_PASSWORD'),
-        'server' => env('WHM_SERVER', 'https://server.example.com:2087'),
+        'server' => env('WHM_SERVER'),
     ],
 
+    // Use either the API or the database credentials or both
     'whmcs' => [
         'url' => env('WHMCS_URL'),
         'api_identifier' => env('WHMCS_API_IDENTIFIER'),
-        'api_secret' => env('WHMCS_API_SECRET'),        
+        'api_secret' => env('WHMCS_API_SECRET'),
+        'limitnum' => env('WHMCS_LIMITNUM'),
     ],
 
     'x' => [
         'bearer_token' => env('X_BEARER_TOKEN'),
     ],
 
-    'za_domains' => [
-        'username' => env('ZA_DOMAINS_USERNAME'),
-        'password' => env('ZA_DOMAINS_PASSWORD'),
+    'zadomains' => [
+        'username' => env('ZADOMAINS_USERNAME'),
+        'password' => env('ZADOMAINS_PASSWORD'),
     ],
 ]; 
 ```
@@ -93,13 +102,41 @@ Bulksms::sendSms("Hello SMS!", ["27825551231"]);
 
 ### BulkSMS Unicode and custom wording
 
-BulkSMS defaults to 7-bit messages. For Unicode content like emoji, create a 16-bit sender:
+BulkSMS defaults to 7-bit messages. To make the Laravel facade send Unicode content like emoji, configure the encoding:
+
+```env
+BULKSMS_ENCODING=16bit
+```
+
+Then keep using the facade as usual:
 
 ```php
-use Eugenefvdm\Api\Bulksms;
+use Eugenefvdm\Api\Facades\Bulksms;
 
-$bulksms = new Bulksms("username", "password", "16bit");
-$bulksms->sendSms("Hello ⭐️", ["27825551232"]);
+Bulksms::sendSms("Hello ⭐️", ["27825551232"]);
+```
+
+For one-off Unicode sends, use the convenience method or a temporary encoding:
+
+```php
+use Eugenefvdm\Api\Facades\Bulksms;
+
+Bulksms::sendUnicodeSms("Hello ⭐️", ["27825551232"]);
+Bulksms::encoding("16bit")->sendSms("Hello ⭐️", ["27825551232"]);
+```
+
+Supported encodings are `7bit`, `16bit`, and `auto`. The `auto` option sends GSM-safe text as 7-bit and switches to 16-bit when Unicode is needed.
+
+```env
+BULKSMS_ENCODING=auto
+```
+
+For generic message length handling, use `SmsText`:
+
+```php
+use Eugenefvdm\Api\SmsText;
+
+$message = SmsText::limit("Hello ⭐️", encoding: "16bit", parts: 1);
 ```
 
 The BulkSMS client stays generic: it sends the message you give it and handles the transport encoding. If an app needs specific SMS wording, prepare that message first and then pass it to the generic sender.
@@ -107,16 +144,14 @@ The BulkSMS client stays generic: it sends the message you give it and handles t
 For example, Hellopeter review notifications can use the included formatter before sending:
 
 ```php
-use Eugenefvdm\Api\Bulksms;
+use Eugenefvdm\Api\Facades\Bulksms;
 use Eugenefvdm\Api\HellopeterReviewSms;
-
-$bulksms = new Bulksms("username", "password", "16bit");
 
 $message = HellopeterReviewSms::shorten(
     "You received a ⭐️⭐️⭐️⭐️⭐️ review by Eugene at Hellopeter. Please reply ASAP."
 );
 
-$bulksms->sendSms($message, ["27825551233"]);
+Bulksms::sendUnicodeSms($message, ["27825551233"]);
 ```
 
 Here is a list of all the API calls:
