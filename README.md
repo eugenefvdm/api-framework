@@ -88,13 +88,41 @@ Precede access by the facade namespace, e.g.
 
 ```php
 use Eugenefvdm\Api\Facades\Bulksms;
-Bulksms::sendSms("Hello SMS!", ["27600000000"]);
+Bulksms::sendSms("Hello SMS!", ["27825551231"]);
+```
+
+### BulkSMS Unicode and custom wording
+
+BulkSMS defaults to 7-bit messages. For Unicode content like emoji, create a 16-bit sender:
+
+```php
+use Eugenefvdm\Api\Bulksms;
+
+$bulksms = new Bulksms("username", "password", "16bit");
+$bulksms->sendSms("Hello ⭐️", ["27825551232"]);
+```
+
+The BulkSMS client stays generic: it sends the message you give it and handles the transport encoding. If an app needs specific SMS wording, prepare that message first and then pass it to the generic sender.
+
+For example, Hellopeter review notifications can use the included formatter before sending:
+
+```php
+use Eugenefvdm\Api\Bulksms;
+use Eugenefvdm\Api\HellopeterReviewSms;
+
+$bulksms = new Bulksms("username", "password", "16bit");
+
+$message = HellopeterReviewSms::shorten(
+    "You received a ⭐️⭐️⭐️⭐️⭐️ review by Eugene at Hellopeter. Please reply ASAP."
+);
+
+$bulksms->sendSms($message, ["27825551233"]);
 ```
 
 Here is a list of all the API calls:
 
 ```php
-Bulksms::sendSms("Hello SMS!", ["27600000001","2760000000"]);
+Bulksms::sendSms("Hello SMS!", ["27825551234","27825551235"]);
 
 $discordUser = Discord::user("123456789012345678");
 

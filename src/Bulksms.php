@@ -8,7 +8,13 @@ class Bulksms
 {
     private string $url = 'http://bulksms.2way.co.za/eapi/submission/send_sms/2/2.0';
 
-    public function __construct(private string $username, private string $password) {}
+    public function __construct(
+        private string $username,
+        private string $password,
+        private string $encoding = '7bit',
+    ) {
+        $this->encoding = strtolower($this->encoding);
+    }
 
     /**
      * Send an SMS message to multiple recipients
@@ -22,7 +28,7 @@ class Bulksms
      * @param  string|array  $recipients  Single number, or numbers, or array of numbers
      * @return array Results of sending attempts
      */
-    public function sendSms(string $message, string|array $recipients)
+    public function sendSms(string $message, string|array $recipients): array
     {
         // Handle different input types for recipients
         if (is_string($recipients)) {
@@ -43,10 +49,39 @@ class Bulksms
 
     private function sendToSingleRecipient(string $message, string $recipient): array
     {
-        $post_body = $this->seven_bit_sms($message, $recipient);
+        if ($this->encoding === '16bit') {
+            $post_body = $this->sixteen_bit_sms($message, $recipient);
+        } else {
+            $post_body = $this->seven_bit_sms($message, $recipient);
+        }
+
         $result = $this->send_message($post_body);
 
         return $result;
+    }
+
+    private function utf8ToUcs2Hex(string $utf8): string
+    {
+        $ucs2be = mb_convert_encoding($utf8, 'UCS-2BE', 'UTF-8');
+
+        if ($ucs2be === false) {
+            throw new \RuntimeException('Failed to convert string encoding to UCS-2BE');
+        }
+
+        return bin2hex($ucs2be);
+    }
+
+    private function sixteen_bit_sms(string $message, string $msisdn): string
+    {
+        $post_fields = [
+            'username' => $this->username,
+            'password' => $this->password,
+            'message' => $this->utf8ToUcs2Hex($message),
+            'msisdn' => $msisdn,
+            'dca' => '16bit',
+        ];
+
+        return $this->make_post_body($post_fields);
     }
 
     private function seven_bit_sms(string $message, string $msisdn): string

@@ -59,6 +59,9 @@
             "pestphp/pest-plugin": true
         }
     },
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
     "extra": {
         "laravel": {
             "providers": [

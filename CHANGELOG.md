@@ -1,5 +1,9 @@
 # 17 May 2025
 
+## 2026-06-16
+
+- Add BulkSMS 16-bit Unicode support and HellopeterReviewSms message formatter
+
 ## 2026-05-05
 
 - Condense optional services README section to cover both WHM and cPanel
