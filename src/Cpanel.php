@@ -19,7 +19,7 @@ class Cpanel implements CpanelInterface
      *
      * @param  string|null  $username  cPanel username (CPANEL_USERNAME)
      * @param  string|null  $password  cPanel password (CPANEL_PASSWORD)
-     * @param  string|null  $server    cPanel server URL, e.g. https://server.example.com:2083 (CPANEL_SERVER)
+     * @param  string|null  $server  cPanel server URL, e.g. https://server.example.com:2083 (CPANEL_SERVER)
      */
     public function __construct(
         private readonly ?string $username,
@@ -38,7 +38,9 @@ class Cpanel implements CpanelInterface
      */
     public function isConfigured(): bool
     {
-        return (bool) $this->username && (bool) $this->server;
+        return $this->username !== null && $this->username !== ''
+            && $this->password !== null && $this->password !== ''
+            && $this->server !== null && $this->server !== '';
     }
 
     /**
@@ -48,15 +50,11 @@ class Cpanel implements CpanelInterface
      */
     private function client(): PendingRequest
     {
-        if (! $this->isConfigured()) {
-            throw new \RuntimeException(
-                'cPanel is not configured. Set CPANEL_USERNAME, CPANEL_PASSWORD, and CPANEL_SERVER in your .env file.'
-            );
-        }
+        $credentials = $this->credentials();
 
         if (! $this->client) {
-            $this->client = Http::baseUrl(rtrim($this->server, '/'))
-                ->withBasicAuth($this->username, $this->password ?? '')
+            $this->client = Http::baseUrl(rtrim($credentials['server'], '/'))
+                ->withBasicAuth($credentials['username'], $credentials['password'])
                 ->withoutVerifying();
         }
 
@@ -64,11 +62,35 @@ class Cpanel implements CpanelInterface
     }
 
     /**
+     * @return array{username: string, password: string, server: string}
+     */
+    private function credentials(): array
+    {
+        $username = $this->username;
+        $password = $this->password;
+        $server = $this->server;
+
+        if ($username === null || $username === ''
+            || $password === null || $password === ''
+            || $server === null || $server === '') {
+            throw new \RuntimeException(
+                'cPanel is not configured. Set CPANEL_USERNAME, CPANEL_PASSWORD, and CPANEL_SERVER in your .env file.'
+            );
+        }
+
+        return [
+            'username' => $username,
+            'password' => $password,
+            'server' => $server,
+        ];
+    }
+
+    /**
      * Create a new email account via cPanel UAPI.
      *
      * @link https://api.docs.cpanel.net/cpanel/uapi/email/add-pop/
      *
-     * @param  string  $email     The local part of the email address (without @domain)
+     * @param  string  $email  The local part of the email address (without @domain)
      * @param  string  $password  The email account password
      * @param  string|null  $domain  The domain (defaults to the account's primary domain)
      * @return array{status: string, code: int, output: mixed}
@@ -103,7 +125,7 @@ class Cpanel implements CpanelInterface
      *
      * @link https://api.docs.cpanel.net/cpanel/uapi/email/delete-pop/
      *
-     * @param  string  $email   The local part of the email address (without @domain)
+     * @param  string  $email  The local part of the email address (without @domain)
      * @param  string|null  $domain  The domain (defaults to the account's primary domain)
      * @return array{status: string, code: int, output: mixed}
      */

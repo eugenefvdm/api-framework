@@ -64,10 +64,6 @@ class Bulksms
     {
         $ucs2be = mb_convert_encoding($utf8, 'UCS-2BE', 'UTF-8');
 
-        if ($ucs2be === false) {
-            throw new \RuntimeException('Failed to convert string encoding to UCS-2BE');
-        }
-
         return bin2hex($ucs2be);
     }
 

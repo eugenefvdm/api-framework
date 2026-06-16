@@ -20,7 +20,7 @@ class Whm implements WhmInterface
      *
      * @param  string|null  $username  WHM username (WHM_USERNAME)
      * @param  string|null  $password  WHM password (WHM_PASSWORD)
-     * @param  string|null  $server    WHM server URL, e.g. https://server.example.com:2087 (WHM_SERVER)
+     * @param  string|null  $server  WHM server URL, e.g. https://server.example.com:2087 (WHM_SERVER)
      */
     public function __construct(
         private readonly ?string $username,
@@ -39,7 +39,9 @@ class Whm implements WhmInterface
      */
     public function isConfigured(): bool
     {
-        return (bool) $this->username && (bool) $this->server;
+        return $this->username !== null && $this->username !== ''
+            && $this->password !== null && $this->password !== ''
+            && $this->server !== null && $this->server !== '';
     }
 
     /**
@@ -49,21 +51,41 @@ class Whm implements WhmInterface
      */
     private function client(): PendingRequest
     {
-        if (! $this->isConfigured()) {
-            throw new \RuntimeException(
-                'WHM is not configured. Set WHM_USERNAME, WHM_PASSWORD, and WHM_SERVER in your .env file.'
-            );
-        }
+        $credentials = $this->credentials();
 
         if (! $this->client) {
-            $this->client = Http::baseUrl(rtrim($this->server, '/'))
+            $this->client = Http::baseUrl(rtrim($credentials['server'], '/'))
                 ->withHeaders([
-                    'Authorization' => 'WHM '.$this->username.':'.$this->password,
+                    'Authorization' => 'WHM '.$credentials['username'].':'.$credentials['password'],
                 ])
                 ->withoutVerifying();
         }
 
         return $this->client;
+    }
+
+    /**
+     * @return array{username: string, password: string, server: string}
+     */
+    private function credentials(): array
+    {
+        $username = $this->username;
+        $password = $this->password;
+        $server = $this->server;
+
+        if ($username === null || $username === ''
+            || $password === null || $password === ''
+            || $server === null || $server === '') {
+            throw new \RuntimeException(
+                'WHM is not configured. Set WHM_USERNAME, WHM_PASSWORD, and WHM_SERVER in your .env file.'
+            );
+        }
+
+        return [
+            'username' => $username,
+            'password' => $password,
+            'server' => $server,
+        ];
     }
 
     /**

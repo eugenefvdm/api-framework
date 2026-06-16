@@ -190,7 +190,7 @@ WHM_SERVER=https://your-server.example.com:2087
 ## Testing
 
 ```bash
-vendor/bin/pest
+composer test
 ```
 
 ## Design philosophy
