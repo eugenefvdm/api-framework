@@ -82,6 +82,11 @@ return [
 
     'x' => [
         'bearer_token' => env('X_BEARER_TOKEN'),
+        // OAuth 1.0a user-context credentials, only required for posting tweets
+        'consumer_key' => env('X_CONSUMER_KEY'),
+        'consumer_secret' => env('X_CONSUMER_SECRET'),
+        'access_token' => env('X_ACCESS_TOKEN'),
+        'access_token_secret' => env('X_ACCESS_TOKEN_SECRET'),
     ],
 
     'zadomains' => [
@@ -196,6 +201,7 @@ Whmcs::createCustomClientField($name, $type = 'text');
 $userId = X::userId("x_username");
 $tweets = X::tweets($userId['data']['id'], 5);
 $userWithLimits = X::userWithRateLimits("x_username");
+$posted = X::tweet("Hello X!"); // Requires OAuth 1.0a credentials (write access)
 
 $registrant = Zadomains::registrant("example.co.za");
 ```

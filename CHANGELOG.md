@@ -1,5 +1,9 @@
 # Change Log
 
+## 2026-06-26
+
+- Add OAuth 1.0a-signed tweet posting support to the X client
+
 ## 2026-06-16
 
 - Add SmsText utility, auto encoding, and facade encoding config support

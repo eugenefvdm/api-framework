@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static array userId(string $username)
  * @method static array tweets(string $userId, int $maxResults = 5)
  * @method static array userWithRateLimits(string $username)
+ * @method static array tweet(string $text)
+ * @method static bool canPost()
  *
  * @see \Eugenefvdm\Api\X
  */

@@ -46,6 +46,11 @@ return [
 
     'x' => [
         'bearer_token' => env('X_BEARER_TOKEN'),
+        // OAuth 1.0a user-context credentials, only required for posting tweets
+        'consumer_key' => env('X_CONSUMER_KEY'),
+        'consumer_secret' => env('X_CONSUMER_SECRET'),
+        'access_token' => env('X_ACCESS_TOKEN'),
+        'access_token_secret' => env('X_ACCESS_TOKEN_SECRET'),
     ],
 
     'zadomains' => [

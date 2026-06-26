@@ -119,7 +119,11 @@ class ApiServiceProvider extends ServiceProvider
         // X
         $this->app->singleton(X::class, function ($app) {
             return new X(
-                config('api.x.bearer_token')
+                config('api.x.bearer_token'),
+                config('api.x.consumer_key'),
+                config('api.x.consumer_secret'),
+                config('api.x.access_token'),
+                config('api.x.access_token_secret')
             );
         });
         $this->app->alias(X::class, 'x');
