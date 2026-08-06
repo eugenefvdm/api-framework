@@ -2,6 +2,7 @@
 
 ## 2026-08-06
 
+- Add domain parking support and cPanel email helpers to README examples
 - Add WHM domain parking helpers (parkDomain, domainOwner, listParkedDomains, findParkedDomain) with tests
 - Add WHM park domain helpers: `parkDomain`, `domainOwner`, `listParkedDomains`, `findParkedDomain`
 

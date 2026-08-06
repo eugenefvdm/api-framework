@@ -192,6 +192,13 @@ $blacklist = Whm::cphulkBlacklist();
 Whm::createEmail('cpanel_username', 'user@example.com', 'password');
 Whm::deleteEmail('cpanel_username', 'user@example.com');
 $password = Whm::generatePassword(); // Generate a random 12 character password
+Whm::parkDomain('alias.example.com', 'cpanel_username', 'example.com');
+$owner = Whm::domainOwner('alias.example.com'); // cPanel username or null
+$parked = Whm::listParkedDomains('cpanel_username');
+$match = Whm::findParkedDomain('alias.example.com'); // parked domain row or null
+
+Cpanel::createEmail('user@example.com', 'password');
+Cpanel::deleteEmail('user@example.com');
 
 Whmcs::addClient([]); // See `addClient()` in `Whmcs.php` for required parameters
 // Laravel model wrappers:
@@ -206,27 +213,7 @@ $posted = X::tweet("Hello X!"); // Requires OAuth 1.0a credentials (write access
 $registrant = Zadomains::registrant("example.co.za");
 ```
 
-## Optional services
-
-WHM and cPanel are optional — the singletons are always registered but credentials are only required when an API call is made. Use `isConfigured()` to check before calling:
-
-```php
-if (Whm::isConfigured()) {
-    Whm::createEmail('cpanel_username', 'user@example.com', 'password');
-}
-
-if (Cpanel::isConfigured()) {
-    Cpanel::createEmail('user@example.com', 'password');
-}
-```
-
-### Required `.env` keys for WHM
-
-```env
-WHM_USERNAME=root
-WHM_PASSWORD=your-password-or-api-token
-WHM_SERVER=https://your-server.example.com:2087
-```
+WHM/cPanel `.env` keys are only required when you call those APIs. Guard with `Whm::isConfigured()` / `Cpanel::isConfigured()` if they may be missing.
 
 ## Testing
 
