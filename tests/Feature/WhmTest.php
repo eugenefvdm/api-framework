@@ -189,3 +189,126 @@ test('it can delete an email account successfully', function () {
     expect($result['status'])->toBe('success');
     expect($result['code'])->toBe(200);
 });
+
+test('parkDomain parks a domain via create_parked_domain_for_user', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/park_domain_success.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/create_parked_domain_for_user*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->parkDomain('dripread.co.za', 'park', 'park.vander.host');
+
+    expect($result['status'])->toBe('success')
+        ->and($result['code'])->toBe(200)
+        ->and($result['reason'])->toBe('OK');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '/json-api/create_parked_domain_for_user')
+            && $request['domain'] === 'dripread.co.za'
+            && $request['username'] === 'park'
+            && $request['web_vhost_domain'] === 'park.vander.host'
+            && $request['api.version'] == 1;
+    });
+});
+
+test('parkDomain returns an error when WHM rejects the park request', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/park_domain_failure.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/create_parked_domain_for_user*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->parkDomain('dripread.co.za', 'park', 'park.vander.host');
+
+    expect($result['status'])->toBe('error')
+        ->and($result['code'])->toBe(400)
+        ->and($result['output'])->toContain('already configured');
+});
+
+test('domainOwner returns the cPanel username for a domain', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/getdomainowner_success.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/getdomainowner*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    expect($api->domainOwner('park.vander.host'))->toBe('park');
+});
+
+test('domainOwner returns null when the domain is not on the server', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/getdomainowner_missing.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/getdomainowner*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    expect($api->domainOwner('missing.example.com'))->toBeNull();
+});
+
+test('listParkedDomains returns parked domains for an account', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/list_parked_domains_success.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/cpanel*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->listParkedDomains('park', 'dripread');
+
+    expect($result['status'])->toBe('success')
+        ->and($result['output'])->toHaveCount(2)
+        ->and($result['output'][0]['domain'])->toBe('dripread.co.za');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '/json-api/cpanel')
+            && $request['cpanel_jsonapi_module'] === 'Park'
+            && $request['cpanel_jsonapi_func'] === 'listparkeddomains'
+            && $request['cpanel_jsonapi_user'] === 'park'
+            && $request['regex'] === 'dripread';
+    });
+});
+
+test('findParkedDomain returns a match using domain owner lookup', function () {
+    Http::fake([
+        'test.example.com:2087/json-api/getdomainowner*' => Http::response(
+            json_decode(file_get_contents(__DIR__.'/../stubs/whm/getdomainowner_success.json'), true),
+            200
+        ),
+        'test.example.com:2087/json-api/cpanel*' => Http::response(
+            json_decode(file_get_contents(__DIR__.'/../stubs/whm/list_parked_domains_success.json'), true),
+            200
+        ),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->findParkedDomain('dripread.co.za');
+
+    expect($result)->toBeArray()
+        ->and($result['domain'])->toBe('dripread.co.za')
+        ->and($result['username'])->toBe('park')
+        ->and($result['status'])->toBe('not redirected');
+});
+
+test('findParkedDomain returns null when the domain is not parked', function () {
+    Http::fake([
+        'test.example.com:2087/json-api/getdomainowner*' => Http::response(
+            json_decode(file_get_contents(__DIR__.'/../stubs/whm/getdomainowner_missing.json'), true),
+            200
+        ),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    expect($api->findParkedDomain('missing.example.com'))->toBeNull();
+});

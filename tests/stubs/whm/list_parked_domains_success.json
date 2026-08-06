@@ -1,0 +1,1 @@
+{"cpanelresult": {"apiversion": 2, "module": "Park", "func": "listparkeddomains", "data": [{"domain": "dripread.co.za", "status": "not redirected", "dir": "/home/park/public_html", "reldir": "home:public_html"}, {"domain": "other.example.com", "status": "not redirected", "dir": "/home/park/public_html", "reldir": "home:public_html"}]}}

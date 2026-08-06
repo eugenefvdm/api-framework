@@ -1,5 +1,10 @@
 # Change Log
 
+## 2026-08-06
+
+- Add WHM domain parking helpers (parkDomain, domainOwner, listParkedDomains, findParkedDomain) with tests
+- Add WHM park domain helpers: `parkDomain`, `domainOwner`, `listParkedDomains`, `findParkedDomain`
+
 ## 2026-06-26
 
 - Add OAuth 1.0a-signed tweet posting support to the X client

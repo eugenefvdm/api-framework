@@ -303,6 +303,158 @@ class Whm implements WhmInterface
     }
 
     /**
+     * Park (alias) a domain onto an existing web virtual host.
+     *
+     * This is the API behind WHM → DNS Functions → Park a Domain. The UI shows
+     * targets as "park.vander.host (park)"; those map to web_vhost_domain and username.
+     *
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/create_parked_domain_for_user/
+     *
+     * @return array{status: string, code: int, output: mixed, reason?: string}
+     */
+    public function parkDomain(string $domain, string $username, string $webVhostDomain): array
+    {
+        $response = $this->client()->get('/json-api/create_parked_domain_for_user', [
+            'api.version' => 1,
+            'domain' => $domain,
+            'username' => $username,
+            'web_vhost_domain' => $webVhostDomain,
+        ])->json();
+
+        $result = (int) ($response['metadata']['result'] ?? 0);
+        $reason = (string) ($response['metadata']['reason'] ?? '');
+
+        if ($result !== 1) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => $reason !== '' ? $reason : 'Unable to park domain.',
+                'reason' => $reason,
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => $response['data'] ?? [],
+            'reason' => $reason !== '' ? $reason : 'OK',
+        ];
+    }
+
+    /**
+     * Return the cPanel username that owns a domain, or null if not found.
+     *
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/getdomainowner/
+     */
+    public function domainOwner(string $domain): ?string
+    {
+        $response = $this->client()->get('/json-api/getdomainowner', [
+            'api.version' => 1,
+            'domain' => $domain,
+        ])->json();
+
+        $user = $response['data']['user'] ?? null;
+
+        if (! is_string($user) || trim($user) === '') {
+            return null;
+        }
+
+        return trim($user);
+    }
+
+    /**
+     * List parked domains (aliases) for a cPanel account.
+     *
+     * @link https://api.docs.cpanel.net/cpanel-api-2/cpanel-api-2-modules-park/cpanel-api-2-functions-park-listparkeddomains
+     *
+     * @return array{status: string, code: int, output: list<array<string, mixed>>}
+     */
+    public function listParkedDomains(string $cpanelUsername, ?string $regex = null): array
+    {
+        $params = [
+            'cpanel_jsonapi_apiversion' => 2,
+            'cpanel_jsonapi_user' => $cpanelUsername,
+            'cpanel_jsonapi_module' => 'Park',
+            'cpanel_jsonapi_func' => 'listparkeddomains',
+        ];
+
+        if ($regex !== null && $regex !== '') {
+            $params['regex'] = $regex;
+        }
+
+        $response = $this->client()->get('/json-api/cpanel', $params)->json();
+
+        if (isset($response['cpanelresult']['error'])) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => [],
+            ];
+        }
+
+        $data = $response['cpanelresult']['data'] ?? [];
+
+        if (! is_array($data)) {
+            $data = [];
+        }
+
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => array_values($data),
+        ];
+    }
+
+    /**
+     * Search for a parked domain on the server.
+     *
+     * Resolves the owning account via getdomainowner (or the optional username),
+     * then lists parked domains filtered by the domain name.
+     *
+     * @return array{domain: string, username: string, status?: string, dir?: string, reldir?: string}|null
+     */
+    public function findParkedDomain(string $domain, ?string $cpanelUsername = null): ?array
+    {
+        $username = $cpanelUsername;
+
+        if ($username === null || $username === '') {
+            $username = $this->domainOwner($domain);
+        }
+
+        if ($username === null || $username === '') {
+            return null;
+        }
+
+        $listed = $this->listParkedDomains($username, preg_quote($domain, '/'));
+
+        if ($listed['status'] !== 'success') {
+            return null;
+        }
+
+        foreach ($listed['output'] as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            $parked = (string) ($row['domain'] ?? '');
+
+            if (strcasecmp($parked, $domain) !== 0) {
+                continue;
+            }
+
+            return [
+                'domain' => $parked,
+                'username' => $username,
+                'status' => isset($row['status']) ? (string) $row['status'] : null,
+                'dir' => isset($row['dir']) ? (string) $row['dir'] : null,
+                'reldir' => isset($row['reldir']) ? (string) $row['reldir'] : null,
+            ];
+        }
+
+        return null;
+    }
+
+    /**
      * Generate a random password of 12 characters
      */
     public static function generatePassword(): string
