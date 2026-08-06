@@ -28,6 +28,14 @@ interface WhmInterface
     public function deleteEmail(string $cpanelUsername, string $email): array;
 
     /**
+     * List hosting plans (packages) available to the authenticated WHM user.
+     *
+     * @param  string  $want  Package scope: all, creatable, editable, or viewable
+     * @return array{status: string, code: int, output: list<array<string, mixed>>, reason?: string}
+     */
+    public function listPackages(string $want = 'all'): array;
+
+    /**
      * Park (alias) a domain onto an existing web virtual host.
      *
      * @return array{status: string, code: int, output: mixed, reason?: string}

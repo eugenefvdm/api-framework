@@ -303,6 +303,47 @@ class Whm implements WhmInterface
     }
 
     /**
+     * List hosting plans (packages) available to the authenticated WHM user.
+     *
+     * @link https://api.docs.cpanel.net/openapi/whm/operation/listpkgs/
+     *
+     * @param  string  $want  Package scope: all, creatable, editable, or viewable
+     * @return array{status: string, code: int, output: list<array<string, mixed>>, reason?: string}
+     */
+    public function listPackages(string $want = 'all'): array
+    {
+        $response = $this->client()->get('/json-api/listpkgs', [
+            'api.version' => 1,
+            'want' => $want,
+        ])->json();
+
+        $result = (int) ($response['metadata']['result'] ?? 0);
+        $reason = (string) ($response['metadata']['reason'] ?? '');
+
+        if ($result !== 1) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'output' => [],
+                'reason' => $reason !== '' ? $reason : 'Unable to list packages.',
+            ];
+        }
+
+        $packages = $response['data']['pkg'] ?? [];
+
+        if (! is_array($packages)) {
+            $packages = [];
+        }
+
+        return [
+            'status' => 'success',
+            'code' => 200,
+            'output' => array_values($packages),
+            'reason' => $reason !== '' ? $reason : 'OK',
+        ];
+    }
+
+    /**
      * Park (alias) a domain onto an existing web virtual host.
      *
      * This is the API behind WHM → DNS Functions → Park a Domain. The UI shows
@@ -432,23 +473,30 @@ class Whm implements WhmInterface
         }
 
         foreach ($listed['output'] as $row) {
-            if (! is_array($row)) {
-                continue;
-            }
-
             $parked = (string) ($row['domain'] ?? '');
 
             if (strcasecmp($parked, $domain) !== 0) {
                 continue;
             }
 
-            return [
+            $match = [
                 'domain' => $parked,
                 'username' => $username,
-                'status' => isset($row['status']) ? (string) $row['status'] : null,
-                'dir' => isset($row['dir']) ? (string) $row['dir'] : null,
-                'reldir' => isset($row['reldir']) ? (string) $row['reldir'] : null,
             ];
+
+            if (isset($row['status'])) {
+                $match['status'] = (string) $row['status'];
+            }
+
+            if (isset($row['dir'])) {
+                $match['dir'] = (string) $row['dir'];
+            }
+
+            if (isset($row['reldir'])) {
+                $match['reldir'] = (string) $row['reldir'];
+            }
+
+            return $match;
         }
 
         return null;

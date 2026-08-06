@@ -1,0 +1,38 @@
+{
+    "metadata": {
+        "command": "listpkgs",
+        "reason": "OK",
+        "result": 1,
+        "version": 1
+    },
+    "data": {
+        "pkg": [
+            {
+                "name": "basic",
+                "BWLIMIT": "10240",
+                "QUOTA": "2048",
+                "MAXPARK": "5",
+                "MAXADDON": "5",
+                "MAXPOP": "unlimited",
+                "CGI": "y",
+                "CPMOD": "jupiter",
+                "FEATURELIST": "default",
+                "HASSHELL": "n",
+                "IP": "n"
+            },
+            {
+                "name": "pro",
+                "BWLIMIT": "unlimited",
+                "QUOTA": "10240",
+                "MAXPARK": "unlimited",
+                "MAXADDON": "unlimited",
+                "MAXPOP": "unlimited",
+                "CGI": "y",
+                "CPMOD": "jupiter",
+                "FEATURELIST": "default",
+                "HASSHELL": "n",
+                "IP": "n"
+            }
+        ]
+    }
+}

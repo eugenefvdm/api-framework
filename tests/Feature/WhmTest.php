@@ -190,6 +190,52 @@ test('it can delete an email account successfully', function () {
     expect($result['code'])->toBe(200);
 });
 
+it('lists hosting packages via listpkgs', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/list_packages_success.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/listpkgs*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->listPackages();
+
+    expect($result['status'])->toBe('success')
+        ->and($result['code'])->toBe(200)
+        ->and($result['output'])->toHaveCount(2)
+        ->and($result['output'][0]['name'])->toBe('basic')
+        ->and($result['output'][1]['name'])->toBe('pro');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '/json-api/listpkgs')
+            && $request['api.version'] == 1
+            && $request['want'] === 'all';
+    });
+});
+
+it('returns an error when listpkgs is denied', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/list_packages_failure.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/listpkgs*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->listPackages('creatable');
+
+    expect($result['status'])->toBe('error')
+        ->and($result['code'])->toBe(400)
+        ->and($result['output'])->toBe([])
+        ->and($result['reason'])->toBe('Access denied');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '/json-api/listpkgs')
+            && $request['want'] === 'creatable';
+    });
+});
+
 test('parkDomain parks a domain via create_parked_domain_for_user', function () {
     $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/park_domain_success.json'), true);
 

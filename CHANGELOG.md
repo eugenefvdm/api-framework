@@ -2,6 +2,7 @@
 
 ## 2026-08-06
 
+- Update PHP to 8.4 across CI workflows, bump testbench/Pest constraints, add WHM package listing (listPackages), commit composer.lock, and refresh README docs.
 - Add domain parking support and cPanel email helpers to README examples
 - Add WHM domain parking helpers (parkDomain, domainOwner, listParkedDomains, findParkedDomain) with tests
 - Add WHM park domain helpers: `parkDomain`, `domainOwner`, `listParkedDomains`, `findParkedDomain`

@@ -1,8 +1,8 @@
 # API Framework
 
-[![Tests](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml)
-[![Larastan](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml)
-[![Downloads](https://img.shields.io/packagist/dt/eugenefvdm/api-framework.svg)](https://packagist.org/packages/eugenefvdm/api-framework)
+[Tests](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml)
+[Larastan](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml)
+[Downloads](https://packagist.org/packages/eugenefvdm/api-framework)
 
 Another day, another API.
 
@@ -32,6 +32,8 @@ composer require eugenefvdm/api-framework
 ```bash
 php artisan vendor:publish --provider="Eugenefvdm\Api\ApiServiceProvider" --tag="config"
 ```
+
+
 
 ## Contents of `config/api.php`
 
@@ -96,6 +98,8 @@ return [
 ]; 
 ```
 
+
+
 ## Usage
 
 Precede access by the facade namespace, e.g.
@@ -104,6 +108,8 @@ Precede access by the facade namespace, e.g.
 use Eugenefvdm\Api\Facades\Bulksms;
 Bulksms::sendSms("Hello SMS!", ["27825551231"]);
 ```
+
+
 
 ### BulkSMS Unicode and custom wording
 
@@ -192,6 +198,7 @@ $blacklist = Whm::cphulkBlacklist();
 Whm::createEmail('cpanel_username', 'user@example.com', 'password');
 Whm::deleteEmail('cpanel_username', 'user@example.com');
 $password = Whm::generatePassword(); // Generate a random 12 character password
+$packages = Whm::listPackages(); // want=all by default; or listPackages('creatable')
 Whm::parkDomain('alias.example.com', 'cpanel_username', 'example.com');
 $owner = Whm::domainOwner('alias.example.com'); // cPanel username or null
 $parked = Whm::listParkedDomains('cpanel_username');
@@ -215,6 +222,27 @@ $registrant = Zadomains::registrant("example.co.za");
 
 WHM/cPanel `.env` keys are only required when you call those APIs. Guard with `Whm::isConfigured()` / `Cpanel::isConfigured()` if they may be missing.
 
+### WHM API token privileges
+
+Create a token in WHM → **Development → Manage API Tokens**. Whitelist the caller IP, and grant only the privileges below - do **not** enable **Everything** (`all`).
+
+
+| What you want to do                          | Code / call                                                                               | Privilege (red label in WHM)      | Category in WHM                                                                |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------ |
+| List hosting packages / plans                | `Whm::listPackages()` → `listpkgs`                                                        | `list-pkgs`                       | Packages → List Packages                                                       |
+| Look up which account owns a domain          | `Whm::domainOwner()` → `getdomainowner`                                                   | `list-accts`                      | Account Information → List Accounts                                            |
+| Park (alias) a domain                        | `Whm::parkDomain()` → `create_parked_domain_for_user`                                     | `park-dns`                        | DNS → Park DNS Zones                                                           |
+| List parked domains for an account           | `Whm::listParkedDomains()` → cPanel API2 `Park::listparkeddomains` via `/json-api/cpanel` | `cpanel-api`                      | Initial Privileges → Perform cPanel API and UAPI functions through the WHM API |
+| Find one parked domain (owner lookup + list) | `Whm::findParkedDomain()`                                                                 | `list-accts` **and** `cpanel-api` | As above                                                                       |
+
+
+**Minimum set for parking + package listing:** `park-dns`, `list-accts`, `cpanel-api`, `list-pkgs`.
+
+Notes:
+
+- `listParkedDomains` / email helpers go through the WHM cPanel proxy, so they need `cpanel-api`, not a separate “list parked domains” ACL.
+- `listPackages(want: 'all')` returns root and reseller packages; package create/edit/delete privileges are not required.
+
 ## Testing
 
 ```bash
@@ -223,21 +251,19 @@ composer test
 
 ## Design philosophy
 
-APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? This framework gives you the power of many APIs in one package. It's minimalist and uses Laravel's facades for easy access.
+APIs can be hard. Reading documentation is a drag. And what if you only want to use a few calls? Do you really have to learn everything? This framework gives you the power of many APIs in one package. It's minimalist and uses Laravel's facades for easy access.  
 Each call is tested using stubs which doubles as a handy reference.
 
 ## Contribution Guidelines
-
-New contributions are super welcome!
 
 1. Fork the repository
 2. Create a new branch for your changes (`git checkout -b feature/amazing-api`)
 3. Make your changes
 4. Run the tests (`./vendor/bin/pest`)
 5. Run Larastan (`./vendor/bin/phpstan analyse`)
-5. Submit a pull request
+6. Submit a pull request
 
-When adding a new API, it has to be added to both ApiServiceProvider, ApiManager and a Facade.
+When adding a new API, add both ApiServiceProvider, ApiManager and a Facade.
 
 ### Code Style & Standards
 
@@ -264,6 +290,8 @@ When adding a new API, it has to be added to both ApiServiceProvider, ApiManager
     "output" => "Error message here",
 ]
 ```
+
+
 
 ### Need Help?
 
