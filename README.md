@@ -1,8 +1,8 @@
 # API Framework
 
-[Tests](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml)
-[Larastan](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml)
-[Downloads](https://packagist.org/packages/eugenefvdm/api-framework)
+[![Tests](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/tests.yml)
+[![Larastan](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml/badge.svg)](https://github.com/eugenefvdm/api-framework/actions/workflows/larastan.yml)
+[![Downloads](https://img.shields.io/packagist/dt/eugenefvdm/api-framework.svg)](https://packagist.org/packages/eugenefvdm/api-framework)
 
 Another day, another API.
 
