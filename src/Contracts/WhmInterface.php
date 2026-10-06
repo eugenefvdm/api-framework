@@ -61,5 +61,15 @@ interface WhmInterface
      */
     public function findParkedDomain(string $domain, ?string $cpanelUsername = null): ?array;
 
+    /**
+     * Look up one DNS zone on this server.
+     *
+     * Point the client at a DNS cluster member. A synchronized cluster already
+     * holds every member's zones, so this is a single parse_dns_zone call.
+     *
+     * @return array{domain: string, payload: list<mixed>}|null
+     */
+    public function findDnsZone(string $domain): ?array;
+
     public static function generatePassword(): string;
 }

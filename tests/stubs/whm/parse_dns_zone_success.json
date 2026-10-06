@@ -1,0 +1,24 @@
+{
+    "metadata": {
+        "command": "parse_dns_zone",
+        "reason": "OK",
+        "result": 1,
+        "version": 1
+    },
+    "data": {
+        "payload": [
+            {
+                "line_index": 0,
+                "type": "control",
+                "dname_b64": "ZXhhbXBsZS5jb20u",
+                "text_b64": "JFRUTCAxNDQwMA=="
+            },
+            {
+                "line_index": 1,
+                "type": "record",
+                "dname_b64": "ZXhhbXBsZS5jb20u",
+                "text_b64": "ZXhhbXBsZS5jb20uIElOIEEgMTkyLjAuMi4x"
+            }
+        ]
+    }
+}

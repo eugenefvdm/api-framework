@@ -503,6 +503,44 @@ class Whm implements WhmInterface
     }
 
     /**
+     * Look up one DNS zone on this server.
+     *
+     * WHM API 1 parse_dns_zone is the supported replacement for dumpzone.
+     * It asks the DNS role for a single zone. On a synchronized DNS cluster
+     * that role already has every member's zones, so callers should point
+     * this client at a cluster DNS server instead of querying each web server.
+     * Returns null when the zone is not present.
+     *
+     * @link https://api.docs.cpanel.net/specifications/whm.openapi/dns-zones/parse_dns_zone.md
+     *
+     * @return array{domain: string, payload: list<mixed>}|null
+     */
+    public function findDnsZone(string $domain): ?array
+    {
+        $domain = strtolower(rtrim(trim($domain), '.'));
+
+        if ($domain === '') {
+            return null;
+        }
+
+        $response = $this->client()->get('/json-api/parse_dns_zone', [
+            'api.version' => 1,
+            'zone' => $domain,
+        ])->json();
+
+        if ((int) ($response['metadata']['result'] ?? 0) !== 1) {
+            return null;
+        }
+
+        $payload = $response['data']['payload'] ?? [];
+
+        return [
+            'domain' => $domain,
+            'payload' => is_array($payload) ? array_values($payload) : [],
+        ];
+    }
+
+    /**
      * Generate a random password of 12 characters
      */
     public static function generatePassword(): string

@@ -203,6 +203,7 @@ Whm::parkDomain('alias.example.com', 'cpanel_username', 'example.com');
 $owner = Whm::domainOwner('alias.example.com'); // cPanel username or null
 $parked = Whm::listParkedDomains('cpanel_username');
 $match = Whm::findParkedDomain('alias.example.com'); // parked domain row or null
+$zone = Whm::findDnsZone('alias.example.com'); // DNS zone on this cluster member, or null
 
 Cpanel::createEmail('user@example.com', 'password');
 Cpanel::deleteEmail('user@example.com');
@@ -234,14 +235,16 @@ Create a token in WHM → **Development → Manage API Tokens**. Whitelist the c
 | Park (alias) a domain                        | `Whm::parkDomain()` → `create_parked_domain_for_user`                                     | `park-dns`                        | DNS → Park DNS Zones                                                           |
 | List parked domains for an account           | `Whm::listParkedDomains()` → cPanel API2 `Park::listparkeddomains` via `/json-api/cpanel` | `cpanel-api`                      | Initial Privileges → Perform cPanel API and UAPI functions through the WHM API |
 | Find one parked domain (owner lookup + list) | `Whm::findParkedDomain()`                                                                 | `list-accts` **and** `cpanel-api` | As above                                                                       |
+| Look up one DNS zone on the cluster          | `Whm::findDnsZone()` → `parse_dns_zone`                                                   | `list-zones`                      | DNS → List Zones                                                               |
 
 
-**Minimum set for parking + package listing:** `park-dns`, `list-accts`, `cpanel-api`, `list-pkgs`.
+**Minimum set for parking + package listing:** `park-dns`, `list-accts`, `cpanel-api`, `list-pkgs`. Add `list-zones` when you also call `findDnsZone()`.
 
 Notes:
 
 - `listParkedDomains` / email helpers go through the WHM cPanel proxy, so they need `cpanel-api`, not a separate “list parked domains” ACL.
 - `listPackages(want: 'all')` returns root and reseller packages; package create/edit/delete privileges are not required.
+- `findDnsZone()` calls `parse_dns_zone` once against the configured WHM server. Use a DNS cluster member: a synchronized cluster already has every member's zones, so there is no need to query each web server. `dumpzone` is the deprecated equivalent. The call needs the DNS role; WHM disables it when that role is off.
 
 ## Testing
 

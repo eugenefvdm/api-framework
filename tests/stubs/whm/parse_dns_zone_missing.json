@@ -1,0 +1,8 @@
+{
+    "metadata": {
+        "command": "parse_dns_zone",
+        "reason": "The system could not find the specified zone.",
+        "result": 0,
+        "version": 1
+    }
+}

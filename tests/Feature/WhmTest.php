@@ -171,7 +171,7 @@ test('any api call throws RuntimeException when not configured', function () {
     $whm = new Whm(null, null, null);
 
     $whm->bandwidth();
-})->throws(\RuntimeException::class, 'WHM is not configured');
+})->throws(RuntimeException::class, 'WHM is not configured');
 
 test('it can delete an email account successfully', function () {
     $whm = mock(WhmInterface::class);
@@ -344,6 +344,51 @@ test('findParkedDomain returns a match using domain owner lookup', function () {
         ->and($result['domain'])->toBe('dripread.co.za')
         ->and($result['username'])->toBe('park')
         ->and($result['status'])->toBe('not redirected');
+});
+
+test('findDnsZone returns the parsed zone from the DNS cluster member', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/parse_dns_zone_success.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/parse_dns_zone*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    $result = $api->findDnsZone('Example.com.');
+
+    expect($result)->toBeArray()
+        ->and($result['domain'])->toBe('example.com')
+        ->and($result['payload'])->toHaveCount(2)
+        ->and($result['payload'][1]['type'])->toBe('record');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), '/json-api/parse_dns_zone')
+            && $request['api.version'] == 1
+            && $request['zone'] === 'example.com';
+    });
+});
+
+test('findDnsZone returns null when the zone is not in the cluster', function () {
+    $stub = json_decode(file_get_contents(__DIR__.'/../stubs/whm/parse_dns_zone_missing.json'), true);
+
+    Http::fake([
+        'test.example.com:2087/json-api/parse_dns_zone*' => Http::response($stub, 200),
+    ]);
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    expect($api->findDnsZone('missing.example.com'))->toBeNull();
+});
+
+test('findDnsZone returns null for a blank domain without calling WHM', function () {
+    Http::fake();
+
+    $api = new Whm('root', 'token', 'https://test.example.com:2087');
+
+    expect($api->findDnsZone('  '))->toBeNull();
+
+    Http::assertNothingSent();
 });
 
 test('findParkedDomain returns null when the domain is not parked', function () {
